@@ -1,0 +1,50 @@
+import * as React from "react";
+import { Grid, TextField, Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import PersonIcon from "@material-ui/icons/Person";
+import SendIcon from "@material-ui/icons/Send";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.primary.light,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  iconClass: {
+    height: "100%",
+    alignItems: "center",
+  },
+  iconPerson: {
+    backgroundColor: "#bdbdbd",
+    height: "100%",
+    alignItems: "center",
+    padding: "0px 15px",
+    borderRadius: 50,
+  },
+}));
+
+export const PostReply = (props): JSX.Element => {
+  const classes = useStyles();
+  return (
+    <Grid container xs={12} className={classes.root}>
+      <Grid item xs={1}>
+        <PersonIcon className={classes.iconPerson} />
+      </Grid>
+      <Grid item xs={10}>
+        <form action="" noValidate autoComplete="off">
+          <TextField
+            fullWidth
+            id="outlined-basic"
+            label={props.label}
+            variant="outlined"
+          />
+        </form>
+      </Grid>
+      <Grid item xs={1}>
+        <Button className={classes.iconClass}>
+          <SendIcon />
+        </Button>
+      </Grid>
+    </Grid>
+  );
+};
