@@ -1,0 +1,5 @@
+mutation generateMetricsAndGetJson($input: GenerateMetricsAndGetJsonInput!) {
+  generateMetricsAndGetJson(input: $input) {
+    json
+  }
+}

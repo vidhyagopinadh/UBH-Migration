@@ -398,7 +398,7 @@ export const TOUR_CONSTANTS = {
                   marginLeft: "20%",
                 }}
               >
-                <Assignment style={{ fontSize: "20px", marginRight: "20px" }} />
+                <AssignmentIcon style={{ fontSize: "20px", marginRight: "20px" }} />
 
                 <Typography
                   variant="subtitle1"
@@ -451,7 +451,7 @@ export const TOUR_CONSTANTS = {
                   marginLeft: "20%",
                 }}
               >
-                <Apartment style={{ fontSize: "20px", marginRight: "20px" }} />
+                <ApartmentIcon style={{ fontSize: "20px", marginRight: "20px" }} />
                 <Typography
                   variant="subtitle1"
                   style={{ fontWeight: "600", lineHeight: "15px" }}
@@ -526,7 +526,7 @@ export const TOUR_CONSTANTS = {
               }}
             >
               {" "}
-              <Assignment style={{ marginRight: "10px" }} />
+              <AssignmentIcon style={{ marginRight: "10px" }} />
               <Typography variant="subtitle1" style={{ fontWeight: 600 }}>
                 {" "}
                 Create Medical Records Requests
@@ -781,7 +781,7 @@ export const TOUR_CONSTANTS = {
                   marginLeft: "20%",
                 }}
               >
-                <Assignment style={{ fontSize: "20px", marginRight: "20px" }} />
+                <AssignmentIcon style={{ fontSize: "20px", marginRight: "20px" }} />
 
                 <Typography
                   variant="subtitle1"
@@ -834,7 +834,7 @@ export const TOUR_CONSTANTS = {
                   marginLeft: "20%",
                 }}
               >
-                <Apartment style={{ fontSize: "20px", marginRight: "20px" }} />
+                <ApartmentIcon style={{ fontSize: "20px", marginRight: "20px" }} />
                 <Typography
                   variant="subtitle1"
                   style={{ fontWeight: "600", lineHeight: "15px" }}

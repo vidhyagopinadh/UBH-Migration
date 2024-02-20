@@ -1,0 +1,9 @@
+mutation updatePersonProfilePic($input: UpdatePersonProfilePicInput!) {
+  updatePersonProfilePic(input: $input) {
+    requestResult {
+      result
+      status
+      success
+    }
+  }
+}

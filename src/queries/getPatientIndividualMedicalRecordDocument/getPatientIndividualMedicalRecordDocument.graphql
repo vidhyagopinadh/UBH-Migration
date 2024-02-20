@@ -1,0 +1,14 @@
+mutation getPatientIndividualMedicalRecordDocument(
+  $input: GetPatientIndividualMedicalRecordDocumentInput!
+) {
+  getPatientIndividualMedicalRecordDocument(input: $input) {
+    requestApiResponse {
+      data
+      status {
+        code
+        message
+      }
+      success
+    }
+  }
+}

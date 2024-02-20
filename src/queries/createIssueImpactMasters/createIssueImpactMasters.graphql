@@ -1,0 +1,5 @@
+mutation createIssueImpactMasters($input: CreateIssueImpactMastersInput!) {
+  createIssueImpactMasters(input: $input) {
+    clientMutationId
+  }
+}

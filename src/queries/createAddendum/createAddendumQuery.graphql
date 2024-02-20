@@ -1,0 +1,8 @@
+mutation createAddendumRecordsRequest(
+  $input: CreateAddendumRecordsRequestInput!
+) {
+  createAddendumRecordsRequest(input: $input) {
+    clientMutationId
+    recordId
+  }
+}

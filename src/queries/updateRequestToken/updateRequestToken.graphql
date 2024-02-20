@@ -1,0 +1,6 @@
+mutation updateRequestTokens($input: UpdateRequestTokensInput!) {
+  updateRequestTokens(input: $input) {
+    clientMutationId
+    recordId
+  }
+}

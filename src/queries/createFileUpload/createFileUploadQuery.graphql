@@ -1,0 +1,8 @@
+mutation createFileUpload($input: CreateFileUploadInput!) {
+  createFileUpload(input: $input) {
+    clientMutationId
+    fileUpload {
+      id
+    }
+  }
+}

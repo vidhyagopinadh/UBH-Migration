@@ -9,7 +9,6 @@ import type {
   SaveUserTourProgressInput,
   SaveUserTourProgressMutation,
   SaveUserTourProgressMutationVariables,
-  SaveUserTourProgressMutationVariables,
   TourResponseType,
 } from "../../__generated__/typescript-operations_all";
 //import saveUserTourProgress from "../../queries/saveUserTourProgress/saveUserTourProgress";
@@ -18,13 +17,14 @@ import { BootstrapTooltip as Tooltip } from "../Tooltip";
 import { useTranslate } from "react-admin";
 import getUserTourStatus from "../../queries/getUserTourStatus/getUserTourStatus";
 import moment from "moment";
-import { IconButton, useTheme } from "@mui/material";
-import { useLazyQuery } from "@apollo/client";
+import { IconButton, useMediaQuery, useTheme } from "@mui/material";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import saveUserTourProgress from "../../queries/saveUserTourProgress/saveUserTourProgress";
 interface ITourProps {
   tourSteps: object;
   type?: string;
 }
-const { REACT_APP_BASE_URL } = process.env;
+const { REACT_APP_BASE_URL } = import.meta.env;
 const Tour = ({ tourSteps, type = "" }: ITourProps) => {
   const translate = useTranslate();
   const [tourProgress, setTourProgress] = useState<SaveUserTourProgressInput>({
@@ -45,7 +45,7 @@ const Tour = ({ tourSteps, type = "" }: ITourProps) => {
   const [submitTourProgress, setSubmitTourProgress] = useState<boolean>(false);
   const [tourResponse, setTourResponse] = useState<TourResponseType>({});
   // const feedback = useSelector((state: AppState) => state.feedbackReducer);
-  const feedback: any;
+  let feedback: any;
   const INITIAL_STATE = {
     key: new Date(),
     run: false,
@@ -55,7 +55,7 @@ const Tour = ({ tourSteps, type = "" }: ITourProps) => {
     steps: tourSteps,
     type: type,
   };
-  const reducer = (state = INITIAL_STATE, action) => {
+  const reducer = (state = INITIAL_STATE, action: { type: any; payload: any; }) => {
     switch (action.type) {
       case "START":
         return { ...state, run: true };
@@ -116,7 +116,7 @@ const Tour = ({ tourSteps, type = "" }: ITourProps) => {
       });
     }
   }, [submitTourProgress]);
-  const callback = (data) => {
+  const callback = (data: { action: any; index: any; type: any; status: any; }) => {
     const { action, index, type, status } = data;
     if (
       action === ACTIONS.CLOSE ||

@@ -1,26 +1,31 @@
 import React from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/styles";
-import { Typography } from "@material-ui/core";
 import placeHolderImage from "../../images/undraw_empty_xct9.svg";
+import { styled } from '@mui/material/styles';
+import { Typography } from "@mui/material";
 
-const useStyles = makeStyles(() => ({
-  root: {
+
+const PREFIX = 'Placeholder';
+const classes = {
+  root: `${PREFIX}-root`,
+  image: `${PREFIX}-image`
+}
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
     textAlign: "center",
     padding: 20,
   },
-  image: {
+  [`& .${classes.image}`]: {
     height: 240,
     backgroundImage: `url(${placeHolderImage})`,
     backgroundPositionX: "right",
     backgroundPositionY: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-  },
-}));
+  }
+}))
 
 function Placeholder({ ...rest }) {
-  const classes = useStyles();
 
   return (
     <div {...rest} className={clsx(classes.root)} id="test-placeholder">

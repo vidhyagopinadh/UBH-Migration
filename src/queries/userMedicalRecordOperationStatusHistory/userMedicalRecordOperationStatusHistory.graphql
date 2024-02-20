@@ -1,0 +1,14 @@
+mutation userMedicalRecordOperationStatusHistory(
+  $input: UserMedicalRecordOperationStatusHistoryInput!
+) {
+  userMedicalRecordOperationStatusHistory(input: $input) {
+    requestApiResponse {
+      data
+      status {
+        code
+        message
+      }
+      success
+    }
+  }
+}

@@ -1,0 +1,24 @@
+mutation getIdVerificationTransaction(
+  $input: GetIdVerificationTransactionInput!
+) {
+  getIdVerificationTransaction(input: $input) {
+    transactionRequestLogResponse {
+      data {
+        createdAt
+        externalSystemPartyId
+        id
+        partyId
+        transactionId
+        transactionLog
+        verificationResponse
+        verificationStatus
+        verifiedAt
+      }
+      status {
+        code
+        message
+      }
+      success
+    }
+  }
+}

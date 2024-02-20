@@ -1,0 +1,5 @@
+mutation createNotificationRead($input: CreateNotificationReadInput!) {
+  createNotificationRead(input: $input) {
+    clientMutationId
+  }
+}

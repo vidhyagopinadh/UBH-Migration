@@ -1,0 +1,11 @@
+mutation saveUserTourProgress($input: SaveUserTourProgressInput!) {
+  saveUserTourProgress(input: $input) {
+    responseResultStatus {
+      status {
+        code
+        message
+      }
+      success
+    }
+  }
+}

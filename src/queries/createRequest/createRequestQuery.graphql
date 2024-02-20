@@ -1,0 +1,12 @@
+mutation createMedicalRecordsRequest(
+  $input: CreateMedicalRecordsRequestInput!
+) {
+  createMedicalRecordsRequest(input: $input) {
+    clientMutationId
+    requestResult {
+      success
+      status
+      result
+    }
+  }
+}

@@ -1,0 +1,5 @@
+mutation createPersonDemographics($input: CreatePersonDemographicsInput!) {
+  createPersonDemographics(input: $input) {
+    clientMutationId
+  }
+}

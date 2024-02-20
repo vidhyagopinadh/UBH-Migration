@@ -1,0 +1,10 @@
+mutation editInstitution($input: EditInstitutionInput!) {
+  editInstitution(input: $input) {
+    clientMutationId
+    requestResult {
+      result
+      status
+      success
+    }
+  }
+}

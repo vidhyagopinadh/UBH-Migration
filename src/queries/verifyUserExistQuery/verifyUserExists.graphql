@@ -1,0 +1,6 @@
+mutation verifyUserExists($input: VerifyUserExistsInput!) {
+  verifyUserExists(input: $input) {
+    clientMutationId
+    userExists
+  }
+}

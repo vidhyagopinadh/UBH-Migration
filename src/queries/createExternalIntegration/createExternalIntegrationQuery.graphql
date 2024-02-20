@@ -1,0 +1,9 @@
+mutation saveExternalIntegration($input: SaveExternalIntegrationInput!) {
+  saveExternalIntegration(input: $input) {
+    requestResult {
+      result
+      status
+      success
+    }
+  }
+}

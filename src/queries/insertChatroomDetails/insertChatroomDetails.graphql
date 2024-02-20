@@ -1,0 +1,6 @@
+mutation insertChatroomDetails($input: InsertChatroomDetailsInput!) {
+  insertChatroomDetails(input: $input) {
+    clientMutationId
+    boolean
+  }
+}

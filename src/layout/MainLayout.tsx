@@ -1,7 +1,7 @@
 import * as React from "react";
 //import { useDispatch, useSelector } from "react-redux";
 import type { LayoutProps } from "react-admin";
-import { Layout, Sidebar, useAuthProvider, useSetLocale } from "react-admin";
+import { Layout, Sidebar, useAuthProvider, useGetList, useSetLocale } from "react-admin";
 import AppBar from "./appBar";
 // import Menu from "./menu";
 // import { darkTheme, lightTheme } from "./themes";
@@ -10,7 +10,7 @@ import { useDataProvider } from "react-admin";
 // import Feedback from "../components/feedback/index";
 // import { perPageMin } from "../utils/pageConstants";
 // import { Helmet } from "react-helmet";
-// import secureLocalStorage from "react-secure-storage";
+import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 // import { isCommentProviderIsCactusComment } from "../utils/comments";
 //import "typeface-roboto";
@@ -23,12 +23,22 @@ import { decodeJwt } from "../lib/universal/utils/parseJwt";
 import { isExpired, decodeToken } from "react-jwt";
 import { perPageMin } from "../lib/universal/utils/pageConstants";
 import emptySideBar from "./EmptySidebar";
+import { createContext } from 'react';
+import { UserProps, TokenProps } from "../types/comptypes";
+
 
 const MainLayout = (props: LayoutProps): JSX.Element => {
     const navigate = useNavigate();
     const dataProviderBypass = useDataProvider();
     const setLocale = useSetLocale();
     const keycloak = useAuthProvider();
+
+    const [userInfo, setUserInfo] = React.useState<UserProps>();
+
+    const UserContext = createContext(null);
+
+
+
     // const { decodedToken, isExpired } = useJwt(token);
 
     // const dispatch = useDispatch();
@@ -55,39 +65,42 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
         console.log(keycloak)
         // const value = keycloak.checkAuth()
         keycloak.refreshToken = localStorage.getItem("refresh_token");
-        const tokenParsed = decodeToken(localStorage.getItem("access_token") || "");
+        const tokenParsed: any = decodeToken(localStorage.getItem("access_token") || "");
         console.log(tokenParsed)
         if (!ifAuthForm || tokenParsed) {
-            const queryOption = {
+            const queryOption: any = {
                 pagination: { page: 1, perPage: perPageMin },
                 sort: { field: "id", order: "ASC" },
                 filter: {},
             };
             const fetchData = async () => {
                 try {
-                    // const { data } = await dataProviderBypass.getList(
-                    //     "personProfile",
-                    //     queryOption,
-                    // );
-                    // if (data.length > 0) {
-                    //     dispatch(
-                    //         userInfoAction({
-                    //             username: tokenParsed.email,
-                    //             firstName: tokenParsed.given_name,
-                    //             lastName: tokenParsed.family_name,
-                    //             email: tokenParsed.email,
-                    //             name: tokenParsed.name,
-                    //             groups:
-                    //                 secureLocalStorage.getItem("role") === CO_ROLE_MRA
-                    //                     ? tokenParsed.payload.groups[0]
-                    //                     : "",
-                    //             role: secureLocalStorage.getItem("role") + "",
-                    //             id: data.length > 0 ? data[0]?.id : "",
-                    //             emailVerified: tokenParsed.payload.email_verified,
-                    //             profilePicId: data[0]?.profilePicId,
-                    //         }),
-                    //     );
-                    // }
+
+                    const { data } = await dataProviderBypass.getList(
+                        "personProfile",
+                        queryOption,
+                    );
+
+                    console.log(data)
+                    if (data.length > 0) {
+                        setUserInfo({
+                            username: tokenParsed.email,
+                            firstName: tokenParsed.given_name,
+                            lastName: tokenParsed.family_name,
+                            email: tokenParsed.email,
+                            name: tokenParsed.name,
+                            groups:
+                                secureLocalStorage.getItem("role") === CO_ROLE_MRA
+                                    ? tokenParsed.groups[0]
+                                    : "",
+                            role: secureLocalStorage.getItem("role") + "",
+                            id: data.length > 0 ? data[0]?.id : "",
+                            emailVerified: tokenParsed.email_verified,
+                            profilePicId: data[0]?.profilePicId,
+                        })
+
+
+                    }
                 } catch (error) {
                     console.error("Error fetching data:", error);
                 } finally {
@@ -107,6 +120,7 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
 
     const authenticated = localStorage.getItem("authState")
 
+
     return (
         <>
             {/* {isCommentProviderIsCactusComment ? (
@@ -120,15 +134,17 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
                 ""
             )} */}
             {(authenticated || ifAuthForm) && !loading && (
-                <div style={{ fontFamily: "Roboto, sans-serif" }}>
-                    <Layout
-                        {...props}
-                        appBar={ifAuthForm ? emptySideBar : AppBar}
-                    //sidebar={ifAuthForm ? emptySideBar : CustomSidebar}
-                    // menu={Menu}
-                    // theme={theme}
-                    />
-                </div>
+                <UserContext.Provider value={userInfo}>
+                    <div style={{ fontFamily: "Roboto, sans-serif" }}>
+                        <Layout
+                            {...props}
+                            appBar={ifAuthForm ? emptySideBar : AppBar}
+                        //sidebar={ifAuthForm ? emptySideBar : CustomSidebar}
+                        // menu={Menu}
+                        // theme={theme}
+                        />
+                    </div>
+                </UserContext.Provider>
             )}
         </>
     );

@@ -1,0 +1,9 @@
+mutation getInstitutionApprovalInfo($input: GetInstitutionApprovalInfoInput!) {
+  getInstitutionApprovalInfo(input: $input) {
+    results {
+      approvedMetaValue
+      communicationMetaValue
+      id
+    }
+  }
+}

@@ -1,53 +1,62 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
 import NotificationList from "./NotificationList";
 import Placeholder from "./Placeholder";
-import { CardHeader, Divider, Popover } from "@mui/material";
+import { CardHeader, Divider, Popover, colors } from "@mui/material";
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(() => ({
-  root: {
+const PREFIX = 'Notif';
+const classes = {
+  root: `${PREFIX}-root`,
+  title: `${PREFIX}-title`,
+  actions: `${PREFIX}-actions`,
+}
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
     width: 350,
     maxWidth: "100%",
   },
-  title: {
+  [`& .${classes.title}`]: {
     fontSize: "1rem",
   },
-  actions: {
+  [`& .${classes.actions}`]: {
     backgroundColor: colors.grey[50],
     justifyContent: "center",
-  },
-}));
+  }
+}))
 
-function NotificationsPopover({ notifications, anchorEl, open, ...rest }) {
-  const classes = useStyles();
+
+function NotificationsPopover({ notifications, anchorEl, open, ...rest }: any) {
 
   return (
-    <Popover
-      {...rest}
-      anchorEl={anchorEl}
-      open={open}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "center",
-      }}
-    >
-      <div className={classes.root}>
-        <CardHeader
-          title="Notifications"
-          classes={{
-            title: classes.title,
-          }}
-        />
-        <Divider />
-        {notifications && notifications.length > 0 ? (
-          <NotificationList notifications={notifications} />
-        ) : (
-          <Placeholder />
-        )}
-        <Divider />
-      </div>
-    </Popover>
+    <StyledDiv>
+      <Popover
+        {...rest}
+        anchorEl={anchorEl}
+        open={open}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+      >
+        <div className={classes.root}>
+          <CardHeader
+            title="Notifications"
+            classes={{
+              title: classes.title,
+            }}
+          />
+          <Divider />
+          {notifications && notifications.length > 0 ? (
+            <NotificationList notifications={notifications} />
+          ) : (
+            <Placeholder />
+          )}
+          <Divider />
+        </div>
+      </Popover>
+    </StyledDiv>
+
   );
 }
 

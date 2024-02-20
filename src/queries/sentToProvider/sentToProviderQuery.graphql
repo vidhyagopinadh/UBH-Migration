@@ -1,0 +1,5 @@
+mutation sentRequestToProvider($input: SentRequestToProviderInput!) {
+  sentRequestToProvider(input: $input) {
+    userInviteId
+  }
+}

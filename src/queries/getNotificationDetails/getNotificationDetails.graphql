@@ -1,0 +1,6 @@
+mutation getNotificationDetails($input: GetNotificationDetailsInput!) {
+  getNotificationDetails(input: $input) {
+    clientMutationId
+    json
+  }
+}

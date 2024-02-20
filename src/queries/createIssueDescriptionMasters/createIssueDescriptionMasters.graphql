@@ -1,0 +1,7 @@
+mutation createIssueDescriptionMasters(
+  $input: CreateIssueDescriptionMastersInput!
+) {
+  createIssueDescriptionMasters(input: $input) {
+    clientMutationId
+  }
+}

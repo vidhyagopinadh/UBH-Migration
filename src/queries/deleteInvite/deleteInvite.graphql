@@ -1,0 +1,5 @@
+mutation deleteInvite($input: DeleteInviteInput!) {
+  deleteInvite(input: $input) {
+    clientMutationId
+  }
+}

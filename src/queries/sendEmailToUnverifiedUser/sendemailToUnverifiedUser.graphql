@@ -1,0 +1,5 @@
+mutation sendEmailToUnverifiedUser($input: SendEmailToUnverifiedUserInput!) {
+  sendEmailToUnverifiedUser(input: $input) {
+    json
+  }
+}

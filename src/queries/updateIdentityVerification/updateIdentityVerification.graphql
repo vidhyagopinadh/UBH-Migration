@@ -1,0 +1,11 @@
+mutation updateIdentityVerificationV1(
+  $input: UpdateIdentityVerificationV1Input!
+) {
+  updateIdentityVerificationV1(input: $input) {
+    requestResult {
+      result
+      status
+      success
+    }
+  }
+}

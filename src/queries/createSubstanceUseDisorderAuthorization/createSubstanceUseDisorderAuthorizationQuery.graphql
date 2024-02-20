@@ -1,0 +1,8 @@
+mutation createSubstanceUseDisorderAuthorization(
+  $input: CreateSubstanceUseDisorderAuthorizationInput!
+) {
+  createSubstanceUseDisorderAuthorization(input: $input) {
+    clientMutationId
+    recordId
+  }
+}

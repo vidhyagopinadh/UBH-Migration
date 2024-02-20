@@ -51,7 +51,6 @@ const initOptions: KeycloakInitOptions = {
 // here you can implement the permission mapping logic for react-admin
 const getPermissions = (decoded: KeycloakTokenParsed) => {
   const roles = decoded?.realm_access?.roles;
-  console.log(roles);
 
   if (!roles) {
     return false;
@@ -80,7 +79,6 @@ const App = () => {
       // init the keycloak client
 
       const keycloakClient = new Keycloak(config);
-      console.log(keycloakClient);
 
       await keycloakClient.init(initOptions);
       // use keycloakAuthProvider to create an authProvider
@@ -102,9 +100,7 @@ const App = () => {
       initKeyCloakClient();
     }
     else { //Keycloak success
-      console.log(keycloak.authenticated)
-      console.log(authProvider)
-      console.log(dataProvider)
+
       if (keycloak.authenticated) {
         //ACCESS_TOKEN = keycloak.token;
         localStorage.setItem("access_token", keycloak.token || "");
@@ -133,7 +129,6 @@ const App = () => {
     fetchDataProvider();
   }, []);
 
-  console.log(keycloak)
   // hide the admin until the keycloak client is ready
   if (!keycloak) return <p>Loading...</p>;
   if (!dataProvider) {

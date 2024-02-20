@@ -27,19 +27,20 @@ import {
 } from "../utils/roles";
 import { Logout } from "@mui/icons-material";
 import secureLocalStorage from "react-secure-storage";
-//import useLogout from "../hooks/useLogout";
+import useLogout from "../hooks/useLogout";
 //import createNotificationRead from "../queries/createNotificationRead/createNotificationRead";
 //import type { AppState } from "../types";
 //import { useSelector } from "react-redux";
 import PersonIcon from '@mui/icons-material/Person';
 import { getImagesByFileUploadId } from "../service/restConfig";
 import { blobToFile } from "../lib/universal/utils/images/blobToFile";
-//import LogoutModal from "../components/logoutModal";
+import LogoutModal from "../components/logoutModal";
 import { TOUR_CONSTANTS } from "../lib/universal/utils/tour/tourConstants";
 import Tour from "../components/joyride/tour";
 import { useMutation } from "@apollo/client";
 //import useTraces from "../hooks/useTraces";
 import { styled } from '@mui/material/styles';
+import createNotificationRead from "../queries/createNotificationRead/createNotificationRead";
 
 
 const PREFIX = 'AppBar';
@@ -126,7 +127,7 @@ const ProfileMenu = forwardRef<any, any>((props, ref) => {
 
 const LogoutMenu = forwardRef<any, any>(({ onClick, setOpenLogoutModal }) => {
   LogoutMenu.displayName = "LogoutMenu";
-  const classes = useStyles();
+  // const classes = useStyles();
   return (
     <>
       <Button
@@ -178,7 +179,7 @@ const CustomUserMenu = (props: any): JSX.Element => {
 const MyCustomIcon = () => {
   const dataProvider = useDataProvider();
   // const userInfo = useSelector((state: AppState) => state.userInfoReducer);
-  const [fileResult, setFileResult] = useState(null);
+  const [fileResult, setFileResult] = useState(null || '');
   // useEffect(() => {
   //   if (userInfo.profilePicId) {
   //     getFileDetails(userInfo.profilePicId);
@@ -187,7 +188,7 @@ const MyCustomIcon = () => {
   //   }
   // }, [userInfo]);
   function getFileDetails(picId: string): void {
-    const queryOptionFile = {
+    const queryOptionFile: any = {
       pagination: { page: 1, perPage: 1 },
       sort: { field: "id", order: "ASC" },
       filter: {
@@ -225,7 +226,7 @@ const MyCustomIcon = () => {
   );
 };
 const CustomAppBar = (props: any): JSX.Element => {
-  const classes = useStyles();
+  //const classes = useStyles();
   const { keycloakLogout } = useLogout();
   const [openNotifications, setOpenNotifications] = useState(false);
   const notificationsRef = useRef(null);
@@ -233,7 +234,7 @@ const CustomAppBar = (props: any): JSX.Element => {
   const [unreadNotifications, setUnreadNotifications] = useState([]);
   const [notificationsCount, setNotificationsCount] = useState(0);
   const dataProvider = useDataProvider();
-  const userInfo = useSelector((state: AppState) => state.userInfoReducer);
+  //const userInfo = useSelector((state: AppState) => state.userInfoReducer);
   const { permissions } = usePermissions();
   const [subscribeUpdateNotificationMutation] = useMutation(
     createNotificationRead,
@@ -252,9 +253,11 @@ const CustomAppBar = (props: any): JSX.Element => {
   ];
   useEffect(() => {
     const handleScroll = (): any => {
-      document.getElementById("scrollable-app-bar").style.transform =
-        "translateY(0px)";
-      document.getElementById("scrollable-app-bar").style.transition = "none";
+      const element = document.getElementById("scrollable-app-bar")?.style;
+      if (element) {
+        element.transform = "translateY(0px)";
+        element.transition = "none";
+      }
     };
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -263,7 +266,7 @@ const CustomAppBar = (props: any): JSX.Element => {
   }, []);
   const handleNotificationsOpen = (): void => {
     setOpenNotifications(true);
-    unreadNotifications.map((notification) => {
+    unreadNotifications.map((notification: any) => {
       subscribeUpdateNotificationMutation({
         variables: {
           input: { requestLogId: notification.id },
@@ -277,8 +280,8 @@ const CustomAppBar = (props: any): JSX.Element => {
   };
   const [mounted, setMounted] = React.useState(false);
 
-  const updateNotificationCount = (notifications): void => {
-    const notificationsUnread = [];
+  const updateNotificationCount = (notifications: any[]): void => {
+    const notificationsUnread: any = [];
     notifications.map((value) => {
       if (!value.hasRead) {
         notificationsUnread.push(value);
@@ -300,7 +303,7 @@ const CustomAppBar = (props: any): JSX.Element => {
   useEffect(() => {
     setMounted(true);
     let mount = true;
-    const queryOption = {
+    const queryOption: any = {
       pagination: { page: 1, perPage: perPageMax },
       sort: { field: "createdAt", order: "DESC" },
       filter: {},
@@ -308,7 +311,7 @@ const CustomAppBar = (props: any): JSX.Element => {
     const fetchNotifications = (): any => {
       dataProvider
         .getList("notificationListV1s", queryOption)
-        .then(({ data }) => {
+        .then(({ data }: any) => {
           if (mount) {
             setNotifications(data);
             updateNotificationCount(data);
@@ -330,7 +333,7 @@ const CustomAppBar = (props: any): JSX.Element => {
   }, []);
 
   return (
-    <>
+    <StyledDiv>
       <AppBar
         {...props}
         style={{ ...props.style, ...customStyle }}
@@ -395,7 +398,7 @@ const CustomAppBar = (props: any): JSX.Element => {
           </Toolbar>
         )}
       </AppBar>
-    </>
+    </StyledDiv>
   );
 };
 

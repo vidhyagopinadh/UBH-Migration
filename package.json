@@ -16,6 +16,7 @@
     "@mui/material": "^5.15.9",
     "apollo-upload-client": "^17.0.0",
     "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
     "ra-data-graphql": "^4.16.10",
     "ra-data-json-server": "^4.16.9",
     "ra-data-simple-rest": "^4.16.9",
