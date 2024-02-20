@@ -33,9 +33,31 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
     const setLocale = useSetLocale();
     const keycloak = useAuthProvider();
 
-    const [userInfo, setUserInfo] = React.useState<UserProps>();
+    const [userInfo, setUserInfo] = React.useState<UserProps>({
+        username: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        name: "",
+        groups: "",
+        role: "",
+        id: "",
+        emailVerified: false,
+        profilePicId: "",
+    });
 
-    const UserContext = createContext(null);
+    const UserContext = createContext<UserProps>({
+        username: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        name: "",
+        groups: "",
+        role: "",
+        id: "",
+        emailVerified: false,
+        profilePicId: "",
+    });
 
 
 
@@ -62,11 +84,9 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
         }
     }, []);
     React.useEffect(() => {
-        console.log(keycloak)
         // const value = keycloak.checkAuth()
         keycloak.refreshToken = localStorage.getItem("refresh_token");
         const tokenParsed: any = decodeToken(localStorage.getItem("access_token") || "");
-        console.log(tokenParsed)
         if (!ifAuthForm || tokenParsed) {
             const queryOption: any = {
                 pagination: { page: 1, perPage: perPageMin },
@@ -81,7 +101,6 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
                         queryOption,
                     );
 
-                    console.log(data)
                     if (data.length > 0) {
                         setUserInfo({
                             username: tokenParsed.email,

@@ -115,8 +115,6 @@ const App = () => {
         keycloak.login();
       }
 
-
-
     }
   }, [keycloak]);
 
