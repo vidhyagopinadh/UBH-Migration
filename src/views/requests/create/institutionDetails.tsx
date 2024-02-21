@@ -46,7 +46,7 @@ import { Base64 } from "js-base64";
 import { REQUEST_MESSAGES } from "../../../utils/messages/requestMessages";
 import { Autocomplete } from "@mui/material";
 import { correlationConstants } from "../../../utils/OT/correlationConstants";
-import useTraces from "../../../hooks/useTraces";
+// import useTraces from "../../../hooks/useTraces";
 import InstitutionModal from "../../../components/institutionModal";
 import moment from "moment";
 

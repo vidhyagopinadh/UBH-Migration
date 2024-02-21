@@ -18,7 +18,7 @@ import createFileUploadQuery from "../../queries/createFileUpload/createFileUplo
 import createIssueDescriptionMasters from "../../queries/createIssueDescriptionMasters/createIssueDescriptionMasters";
 import createIssueImpactMasters from "../../queries/createIssueImpactMasters/createIssueImpactMasters";
 import { HOW_LONG_LIST, STANDARD_PRIORITY } from "../../utils/constants";
-import useTraces from "../useTraces";
+// import useTraces from "../useTraces";
 import type {
   AppState,
   ICheckPatientValidatorProps,
@@ -1030,12 +1030,12 @@ const useCreateRequest = () => {
         if (permissions === CO_ROLE_PATIENT) {
           setMailToAddress(
             (patient.street ? patient.street + "\n" : "") +
-              (patient.addressLine2 ? patient.addressLine2 + "\n" : "") +
-              (patient.city ? patient.city + "\n" : "") +
-              (patient.stateValue ? patient.stateValue + ", " : "") +
-              patient.countryValue +
-              "\n" +
-              (patient.zipCode !== "" ? patient.zipCode : ""),
+            (patient.addressLine2 ? patient.addressLine2 + "\n" : "") +
+            (patient.city ? patient.city + "\n" : "") +
+            (patient.stateValue ? patient.stateValue + ", " : "") +
+            patient.countryValue +
+            "\n" +
+            (patient.zipCode !== "" ? patient.zipCode : ""),
           );
         }
       },
@@ -1266,16 +1266,16 @@ const useCreateRequest = () => {
         translate("resources.requests.dropdown.duration") ||
         howLongVal.howLong === "0") &&
       howLongVal.howLongUnit !==
-        translate("resources.requests.dropdown.periodType")
+      translate("resources.requests.dropdown.periodType")
     ) {
       setHowLongStatus(true);
     }
     if (
       howLongVal.howLong !==
-        translate("resources.requests.dropdown.duration") &&
+      translate("resources.requests.dropdown.duration") &&
       howLongVal.howLong !== "0" &&
       howLongVal.howLongUnit ===
-        translate("resources.requests.dropdown.periodType")
+      translate("resources.requests.dropdown.periodType")
     ) {
       setHowLongUnitStatus(true);
     }
@@ -1463,12 +1463,12 @@ const useCreateRequest = () => {
         translate("resources.requests.dropdown.duration") ||
         howLongVal.howLong === "0") &&
         howLongVal.howLongUnit !==
-          translate("resources.requests.dropdown.periodType")) ||
+        translate("resources.requests.dropdown.periodType")) ||
       (howLongVal.howLong !==
         translate("resources.requests.dropdown.duration") &&
         howLongVal.howLong !== "0" &&
         howLongVal.howLongUnit ===
-          translate("resources.requests.dropdown.periodType")) ||
+        translate("resources.requests.dropdown.periodType")) ||
       (!addInstitution &&
         !submittedProviderView &&
         (formvalues.sourceNature === 0 ||
@@ -1536,11 +1536,11 @@ const useCreateRequest = () => {
               ? "attachment"
               : attachmentResponse.name ===
                 "upload_file_health_information_auth"
-              ? "hipaaAuthorizationFile"
-              : attachmentResponse.name ===
-                "upload_file_personal_representative_document"
-              ? "proxyDocument"
-              : "disorderDisclosureAuthorizationFile";
+                ? "hipaaAuthorizationFile"
+                : attachmentResponse.name ===
+                  "upload_file_personal_representative_document"
+                  ? "proxyDocument"
+                  : "disorderDisclosureAuthorizationFile";
           fileUploadResponse[fieldSet] =
             res.data.createFileUpload.fileUpload.id;
 

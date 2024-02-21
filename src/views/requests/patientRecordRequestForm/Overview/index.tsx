@@ -4,7 +4,7 @@ import { Grid } from "@material-ui/core";
 import Brief from "./brief";
 import { Patient } from "./patient";
 import type { AppState } from "../../../../types";
-import useTraces from "../../../../hooks/useTraces";
+// import useTraces from "../../../../hooks/useTraces";
 import { useSelector } from "react-redux";
 
 function Overview(props): JSX.Element {

@@ -13,7 +13,7 @@ import type {
   FileUploadInput,
   UpdateRequestFiledetailV1Input,
 } from "../__generated__/typescript-operations_all";
-import useTraces from "./useTraces";
+// import useTraces from "./useTraces";
 import updateRequestFiledetail from "../queries/updateRequestFiledetail/updateRequestFiledetail";
 import createFileUploadQuery from "../queries/createFileUpload/createFileUploadQuery";
 import { useSelector } from "react-redux";

@@ -6,19 +6,6 @@ import clsx from "clsx";
 import moment from "moment";
 // import { makeStyles } from "@material-ui/core/styles";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Chip,
-  CircularProgress,
-  colors,
-  Divider,
-  Grid,
-  IconButton,
-  Link,
-  Typography,
-} from "@material-ui/core";
 import { BootstrapTooltip as Tooltip } from "./Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GetAppIcon from "@material-ui/icons/GetApp";

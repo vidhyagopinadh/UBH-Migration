@@ -8,7 +8,7 @@ import {
 import LowPriorityIcon from '@mui/icons-material/LowPriority';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import useTraces from "../../../hooks/useTraces";
+// import useTraces from "../../../hooks/useTraces";
 import {
   CO_ROLE_MRA,
   CO_ROLE_PATIENT,

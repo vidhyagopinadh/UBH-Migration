@@ -38,7 +38,7 @@ import { useHistory } from "react-router";
 import type { AppState } from "../../../types";
 import { useSelector } from "react-redux";
 import { perPageMax } from "../../../utils/pageConstants";
-import useTraces from "../../../hooks/useTraces";
+// import useTraces from "../../../hooks/useTraces";
 import { correlationConstants } from "../../../utils/OT/correlationConstants";
 import { validateMRN } from "../../../utils/validator";
 import {

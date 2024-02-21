@@ -25,7 +25,7 @@ import type {
 import { useMutation } from "@apollo/react-hooks";
 import { blobToFile } from "./../../../../utils/images/blobToFile";
 import b64toBlob from "./../../../../utils/images/b64toBlob";
-import useTraces from "../../../../hooks/useTraces";
+// import useTraces from "../../../../hooks/useTraces";
 import type { AppState } from "../../../../types";
 import { useSelector } from "react-redux";
 import secureLocalStorage from "react-secure-storage";
@@ -211,8 +211,8 @@ function Brief({ request, onSuccess, ...rest }): JSX.Element {
               {request.categoryType === "request"
                 ? "Medical Record Requested By: "
                 : request.categoryType === "addendum"
-                ? "Correction/Amendment Requested By: "
-                : "Billing/Insurance Question Requested By: "}
+                  ? "Correction/Amendment Requested By: "
+                  : "Billing/Insurance Question Requested By: "}
               <b
                 style={{
                   color: "#718cc7",

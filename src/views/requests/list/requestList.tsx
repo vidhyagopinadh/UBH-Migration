@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, List, Tab, usePermissions, useTranslate } from "react-admin";
-import ProjectCard from "./../../../components/projectCard";
+// import ProjectCard from "./../../../components/projectCard";
 import {
   PatientDependentFilter,
   PriorityFilter,
@@ -103,9 +103,9 @@ export const CommentGrid = ({ ids, data, basePath }): JSX.Element => {
                 xs={12}
                 style={{ padding: 10 }}
               >
-                {data[d] !== undefined && (
+                {/* {data[d] !== undefined && (
                   <ProjectCard path={basePath} project={data[d]} />
-                )}
+                )} */}
               </Grid>
             ))}
           </Grid>
