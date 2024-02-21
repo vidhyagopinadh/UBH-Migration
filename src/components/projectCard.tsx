@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import moment from "moment";
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import {
   Card,
@@ -616,8 +616,8 @@ function ProjectCard({ project, ...rest }) {
       }}
     >
       {permissions === CO_ROLE_MRA &&
-      project.outstandingRequest &&
-      !project.expired ? (
+        project.outstandingRequest &&
+        !project.expired ? (
         <IconButton
           className={classes.timer}
           size="medium"
@@ -641,9 +641,9 @@ function ProjectCard({ project, ...rest }) {
         style={{
           filter:
             !hideTimer &&
-            permissions === CO_ROLE_MRA &&
-            project.outstandingRequest &&
-            !project.expired
+              permissions === CO_ROLE_MRA &&
+              project.outstandingRequest &&
+              !project.expired
               ? "blur(2px)"
               : "none",
         }}
@@ -681,8 +681,8 @@ function ProjectCard({ project, ...rest }) {
             to={
               permissions === CO_ROLE_PATIENT
                 ? `/` +
-                  window.location.href.split("/")[3] +
-                  `/${project.trackId}/overview`
+                window.location.href.split("/")[3] +
+                `/${project.trackId}/overview`
                 : `/requests/${project.trackId}/overview`
             }
             variant="h4"
@@ -707,9 +707,9 @@ function ProjectCard({ project, ...rest }) {
         style={{
           filter:
             !hideTimer &&
-            permissions === CO_ROLE_MRA &&
-            project.outstandingRequest &&
-            !project.expired
+              permissions === CO_ROLE_MRA &&
+              project.outstandingRequest &&
+              !project.expired
               ? "blur(2px)"
               : "none",
         }}
@@ -717,7 +717,7 @@ function ProjectCard({ project, ...rest }) {
         <div className={classes.description}>
           <Typography color="textSecondary" variant="subtitle2">
             {project.communicationRequestId &&
-            project.requeststatus === "Pending" ? (
+              project.requeststatus === "Pending" ? (
               <>
                 <Truncate lines={1} ellipsis="...">
                   <b style={{ color: "#263238" }}>Institution:</b>{" "}
@@ -904,10 +904,10 @@ function ProjectCard({ project, ...rest }) {
                   <Typography variant="h5" style={{ fontSize: "15px" }}>
                     {project.assignedfname !== null
                       ? project.assignedfname +
-                        " " +
-                        project.assignedmname +
-                        " " +
-                        project.assignedlastname
+                      " " +
+                      project.assignedmname +
+                      " " +
+                      project.assignedlastname
                       : " "}
                   </Typography>
                 </Grid>

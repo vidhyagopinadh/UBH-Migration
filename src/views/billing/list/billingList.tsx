@@ -10,11 +10,12 @@ import {
 } from "react-admin";
 import { linkToRecord } from "react-admin";
 import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+
 import type { ReactElement } from "react";
 import EmptyList from "../../../components/emptyList";
+import { Button } from "@mui/material";
 
-const CustomButtonLinkField = (props): JSX.Element => {
+const CustomButtonLinkField = (props: any): JSX.Element => {
   const linkToUser = linkToRecord(
     "/insuranceQuestionRequests",
     props.record.id,
@@ -52,7 +53,7 @@ const BillingList = (props: ListProps): ReactElement => {
           <TextField source="pan" label="PAN" />
           <FunctionField
             label="Patient Name"
-            render={(record) =>
+            render={(record: any) =>
               `${record.personFname} ${record.personMname} ${record.personLname}`
             }
           />

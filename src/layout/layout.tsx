@@ -15,7 +15,7 @@ import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 
 import { isCommentProviderIsCactusComment } from "../lib/universal/utils/comments"
-import "typeface-roboto";
+//import "typeface-roboto";
 import { decodeJwt } from "../lib/universal/utils/parseJwt";
 import { CO_ROLE_MRA } from "../utils/roles";
 const CustomSidebar = (props: any): JSX.Element => (

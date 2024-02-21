@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button } from "@material-ui/core";
 import FeedBack from "./feedback";
-import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import html2canvas from "html2canvas";
 import { usePermissions } from "react-admin";
 import { CO_ROLE_ADMIN } from "../../utils/roles";
+import { Button } from "@mui/material";
 
-function FeedBackForm({ page }) {
+function FeedBackForm({ page }: any) {
   const [feedBackStatus, setFeedBackStatus] = useState(false);
   const [canvasVal, setCanvasVal] = useState({});
   const { permissions } = usePermissions();

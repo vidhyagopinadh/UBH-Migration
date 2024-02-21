@@ -5,26 +5,26 @@ import {
   useListContext,
   usePermissions,
 } from "react-admin";
-import LowPriorityIcon from "@material-ui/icons/LowPriority";
-import EqualizerIcon from "@material-ui/icons/Equalizer";
-import DoneAllIcon from "@material-ui/icons/DoneAll";
+import LowPriorityIcon from '@mui/icons-material/LowPriority';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import useTraces from "../../../hooks/useTraces";
 import {
   CO_ROLE_MRA,
   CO_ROLE_PATIENT,
   CO_ROLE_PPA,
 } from "../../../utils/roles";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import type { AppState } from "../../../types";
-import { Category } from "@material-ui/icons";
+import CategoryIcon from '@mui/icons-material/Category';
 export const PriorityFilter = (): JSX.Element => {
   const { filterValues } = useListContext();
   const { getTrace } = useTraces();
   const [mount, setMount] = useState(false);
   const { permissions } = usePermissions();
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
   useEffect(() => {
     setMount(true);
     if (mount === true && permissions === CO_ROLE_PPA) {
@@ -66,9 +66,9 @@ export const StatusFilter = (): JSX.Element => {
   const { filterValues } = useListContext();
   const [mount, setMount] = useState(false);
   const { permissions } = usePermissions();
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
   useEffect(() => {
     setMount(true);
     if (mount === true && permissions === CO_ROLE_PPA) {
@@ -126,9 +126,9 @@ export const StatusFilter = (): JSX.Element => {
 
 export const RequestTypeFilter = (): JSX.Element => {
   const { getTrace } = useTraces();
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
   const { filterValues } = useListContext();
   const [mount, setMount] = useState(false);
   const { permissions } = usePermissions();
@@ -192,7 +192,7 @@ export const PatientDependentFilter = (): JSX.Element => {
   return (
     <FilterList
       label="resources.requests.filters.requestCategory"
-      icon={<Category />}
+      icon={<CategoryIcon />}
     >
       <FilterListItem label="My Requests" value={{ isDependent: false }} />
       <FilterListItem
