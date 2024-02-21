@@ -25,24 +25,36 @@ import {
 import { Link } from "react-router-dom";
 // import NotVerifiedBanner from "../../../components/notVerifiedBanner";
 // import LinearProgressWithLabel from "../../../components/linearProgressWithLabel";
-import { Typography, Box, Tabs, Divider, Grid, Card, CardContent, Container, makeStyles, withStyles } from "@mui/material";
+import { Typography, Box, Tabs, Divider, Grid, Card, CardContent, Container } from "@mui/material";
 import useRequestList from "./useRequestList";
+import { styled } from '@mui/material/styles';
 
 
 
 
-const useListStyles = makeStyles({
-  content: {
+
+const PREFIX = 'RequestDetails';
+const classes = {
+  root: `${PREFIX}-root`,
+  content: `${PREFIX}-content`,
+  header: `${PREFIX}-header`,
+ 
+}
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
+    border: "0px solid #ffffff",
+  },
+  [`& .${classes.content}`]: {
     backgroundColor: "transparent",
     border: "0px solid #ffffff",
   },
-  root: {
-    border: "0px solid #ffffff",
-  },
-  header: {
+  [`& .${classes.header}`]: {
     backgroundColor: "Lavender",
   },
-});
+  
+}))
+
 
 // const Card = withStyles((theme) => ({
 //   root: {
@@ -131,16 +143,24 @@ CommentGrid.defaultProps = {
 };
 
 const FilterSidebar = ({ type = null }): JSX.Element => {
-  const useStyles = makeStyles((theme) => ({
-    filter: {
-      backgroundColor: theme.palette.primary.light,
-    },
-  }));
+  const PREFIX = 'RequestList';
+
+  const classes = {
+    filter: `${PREFIX}-filter`,
+    }
+    
+  const Root = styled('div')(({ theme }) => ({
+      [`&.${classes.filter}`]: {
+        backgroundColor: theme.palette.primary.light,
+      },
+   
+    }));
   const userInfoReducer = useSelector(
     (state: AppState) => state.userInfoReducer,
   );
-  const classes = useStyles();
+  //const classes = useStyles();
   return (
+    <Root>
     <Card className={classes.filter} id="filter-sidebar" sx={{ display: { sm: "none" } }}>
       <CardContent>
         <PriorityFilter />
@@ -151,10 +171,10 @@ const FilterSidebar = ({ type = null }): JSX.Element => {
         )}
       </CardContent>
     </Card>
+    </Root>
   );
 };
 export const RequestList = (props): JSX.Element => {
-  const classes = useStyles();
   const history = useHistory();
   const listStyles = useListStyles();
   const translate = useTranslate();
@@ -209,6 +229,7 @@ export const RequestList = (props): JSX.Element => {
   };
   return (
     <>
+    <StyledDiv>
       {userInfoReducer.role !== CO_ROLE_ADMIN ? (
         <Container style={{ maxWidth: "unset" }}>
           <div style={{ display: "column" }}>
@@ -356,6 +377,7 @@ export const RequestList = (props): JSX.Element => {
       ) : (
         <PageNotFound />
       )}
+      </StyledDiv>
     </>
   );
 };

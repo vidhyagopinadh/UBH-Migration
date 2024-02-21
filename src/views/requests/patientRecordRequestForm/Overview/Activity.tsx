@@ -1,38 +1,74 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/styles";
+//import { makeStyles } from "@material-ui/styles";
 import { Avatar, Card, Typography } from "@material-ui/core";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import DashboardIcon from "@material-ui/icons/DashboardOutlined";
 import ListAltIcon from "@material-ui/icons/ListAlt";
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(() => ({
-  root: {
+// const useStyles = makeStyles(() => ({
+//   root: {
+//     display: "flex",
+//     alignItems: "center",
+//   },
+//   card: {
+//     flexGrow: 1,
+//     display: "flex",
+//     border: 0,
+//     marginLeft: "10px",
+//     alignItems: "center",
+//   },
+
+//   listItems: {
+//     "&.MuiListItem-gutters": {
+//       paddingLeft: 0,
+
+//       paddingRight: 0,
+//     },
+//   },
+//   date: {
+//     marginLeft: "auto",
+//     flexShrink: 0,
+//   },
+// }));
+
+const PREFIX = 'PatientRecordRequestHeader';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  card: `${PREFIX}-card`,
+  listItems: `${PREFIX}-listItems`,
+  date: `${PREFIX}-date`,
+}
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
     display: "flex",
     alignItems: "center",
   },
-  card: {
+  [`& .${classes.card}`]: {
     flexGrow: 1,
     display: "flex",
     border: 0,
     marginLeft: "10px",
     alignItems: "center",
   },
-
-  listItems: {
+  [`& .${classes.listItems}`]: {
     "&.MuiListItem-gutters": {
       paddingLeft: 0,
 
       paddingRight: 0,
     },
   },
-  date: {
+  [`& .${classes.date}`]: {
     marginLeft: "auto",
     flexShrink: 0,
   },
-}));
+  
+}))
 
 function Activity({ activity, className, ...rest }): JSX.Element {
   const classes = useStyles();
@@ -65,7 +101,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
   };
 
   return (
-    <div {...rest} className={clsx(classes.root, className)}>
+    <StyledDiv {...rest} className={clsx(classes.root, className)}>
       {avatars[activity.action_type]}
       <Card className={classes.card}>
         <Typography variant="body1">
@@ -102,7 +138,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
         </Typography>
         <br />
       </Card>
-    </div>
+    </StyledDiv>
   );
 }
 

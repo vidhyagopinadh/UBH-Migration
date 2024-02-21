@@ -8,7 +8,7 @@ import {
   ListItem,
   Divider,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+//import { makeStyles } from "@material-ui/core/styles";
 import { PatientContact } from "./patientContact";
 import { tommddyyyy } from "../../../../utils/dateFormator";
 import { useDataProvider } from "react-admin";
@@ -17,22 +17,47 @@ import type { IRequestToken } from "../../../../types";
 import { perPageMax } from "../../../../utils/pageConstants";
 import { Tab, Tabs } from "@mui/material";
 import { titleCase } from "../../../../utils/titleCase";
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   cardBottom: {
+//     marginBottom: "15px",
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   listItems: {
+//     "&.MuiListItem-gutters": {
+//       paddingLeft: 0,
+//       paddingRight: 0,
+//     },
+//   },
+// }));
+
+const PREFIX = 'OverviewPatient';
+const classes = {
+  root: `${PREFIX}-root`,
+  cardBottom: `${PREFIX}-cardBottom`,
+  listItems: `${PREFIX}-listItems`,
+}
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: theme.palette.primary.light,
   },
-  cardBottom: {
+  [`& .${classes.cardBottom}`]: {
     marginBottom: "15px",
     backgroundColor: theme.palette.primary.light,
   },
-  listItems: {
+  [`& .${classes.listItems}`]: {
     "&.MuiListItem-gutters": {
       paddingLeft: 0,
       paddingRight: 0,
     },
   },
-}));
+  
+}))
 
 export function Patient({ request }): JSX.Element {
   const dataProvider = useDataProvider();
@@ -61,10 +86,10 @@ export function Patient({ request }): JSX.Element {
     }
     getDetails();
   }, []);
-  const classes = useStyles();
+ // const classes = useStyles();
 
   return (
-    <div>
+    <StyledDiv>
       <Card style={{ marginBottom: "15px" }} className={classes.root}>
         <CardContent>
           <Typography component="h6" variant="subtitle1">
@@ -452,6 +477,6 @@ export function Patient({ request }): JSX.Element {
           </List>
         </CardContent>
       </Card>
-    </div>
+    </StyledDiv>
   );
 }

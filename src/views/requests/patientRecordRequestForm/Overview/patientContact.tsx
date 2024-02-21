@@ -1,30 +1,59 @@
 import * as React from "react";
 import { Grid, Button, ButtonGroup } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+//import { makeStyles } from "@material-ui/core/styles";
 import CallOutlinedIcon from "@material-ui/icons/CallOutlined";
 import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
 import MailOutlinedIcon from "@material-ui/icons/MailOutlined";
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(() => ({
-  root: {},
-  buttongroup: {
+// const useStyles = makeStyles(() => ({
+//   root: {},
+//   buttongroup: {
+//     height: 30,
+//     width: "100%",
+//     color: "grey",
+//   },
+//   icon: {
+//     color: "grey",
+//   },
+//   button: {
+//     minWidth: 45,
+//     paddingTop: 10,
+//     width: "100%",
+//   },
+// }));
+
+const PREFIX = 'OverviewPatientContact';
+const classes = {
+  root: `${PREFIX}-root`,
+  buttongroup: `${PREFIX}-buttongroup`,
+  icon: `${PREFIX}-icon`,
+  button: `${PREFIX}-button`,
+}
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
+  },
+  [`& .${classes.buttongroup}`]: {
     height: 30,
     width: "100%",
     color: "grey",
   },
-  icon: {
+  [`& .${classes.icon}`]: {
     color: "grey",
   },
-  button: {
+  [`& .${classes.button}`]: {
     minWidth: 45,
     paddingTop: 10,
     width: "100%",
   },
-}));
+  
+}))
 
 export const PatientContact: React.FC = () => {
-  const classes = useStyles();
+ // const classes = useStyles();
   return (
+    <StyledDiv>
     <Grid container>
       <Grid item xs={12}>
         <ButtonGroup className={classes.buttongroup}>
@@ -46,5 +75,6 @@ export const PatientContact: React.FC = () => {
         </ButtonGroup>
       </Grid>
     </Grid>
+    </StyledDiv>
   );
 };

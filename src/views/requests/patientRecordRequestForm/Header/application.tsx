@@ -2,48 +2,102 @@ import type { BaseSyntheticEvent } from "react";
 import React, { useState } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
+//import { makeStyles } from "@material-ui/core/styles";
 import { Dialog, TextField, Typography, colors } from "@material-ui/core";
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     width: 960,
+//   },
+//   header: {
+//     padding: theme.spacing(3),
+//     maxWidth: 720,
+//     margin: "0 auto",
+//   },
+//   content: {
+//     padding: theme.spacing(0, 2),
+//     maxWidth: 720,
+//     margin: "0 auto",
+//   },
+//   helperText: {
+//     textAlign: "right",
+//     marginRight: 0,
+//   },
+//   author: {
+//     margin: theme.spacing(4, 0),
+//     display: "flex",
+//   },
+//   avatar: {
+//     marginRight: theme.spacing(2),
+//   },
+//   actions: {
+//     backgroundColor: colors.grey[100],
+//     padding: theme.spacing(2),
+//     display: "flex",
+//     justifyContent: "center",
+//   },
+//   applyButton: {
+//     color: theme.palette.common.white,
+//     backgroundColor: colors.green[600],
+//     "&:hover": {
+//       backgroundColor: colors.green[900],
+//     },
+//   },
+// }));
+
+const PREFIX = 'SuccessSnackbar';
+const classes = {
+  root: `${PREFIX}-root`,
+  header: `${PREFIX}-header`,
+  content: `${PREFIX}-shareButton`,
+  helperText: `${PREFIX}-helperText`,
+  author: `${PREFIX}-author`,
+  avatar: `${PREFIX}-avatar`,
+  actions: `${PREFIX}-actions`,
+  applyButton: `${PREFIX}-applyButton`,
+}
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
     width: 960,
   },
-  header: {
+  [`& .${classes.header}`]: {
     padding: theme.spacing(3),
     maxWidth: 720,
     margin: "0 auto",
   },
-  content: {
+  [`& .${classes.content}`]: {
     padding: theme.spacing(0, 2),
     maxWidth: 720,
     margin: "0 auto",
   },
-  helperText: {
+  [`& .${classes.helperText}`]: {
     textAlign: "right",
     marginRight: 0,
   },
-  author: {
+  [`& .${classes.author}`]: {
     margin: theme.spacing(4, 0),
     display: "flex",
   },
-  avatar: {
+  [`& .${classes.avatar}`]: {
     marginRight: theme.spacing(2),
   },
-  actions: {
+  [`& .${classes.actions}`]: {
     backgroundColor: colors.grey[100],
     padding: theme.spacing(2),
     display: "flex",
     justifyContent: "center",
   },
-  applyButton: {
+  [`& .${classes.applyButton}`]: {
     color: theme.palette.common.white,
     backgroundColor: colors.green[600],
     "&:hover": {
       backgroundColor: colors.green[900],
     },
   },
-}));
+  
+}))
 
 function Application({
   owner,
@@ -53,7 +107,7 @@ function Application({
   ...rest
 }): JSX.Element {
   const [value, setValue] = useState("");
-  const classes = useStyles();
+  //const classes = useStyles();
 
   const handleChange = (event: BaseSyntheticEvent): void => {
     event.persist();
@@ -62,7 +116,7 @@ function Application({
 
   return (
     <Dialog maxWidth="lg" onClose={onClose} open={open}>
-      <div {...rest} className={clsx(classes.root, className)}>
+      <StyledDiv {...rest} className={clsx(classes.root, className)}>
         <div className={classes.header}>
           <Typography align="center" gutterBottom variant="h3">
             The project owner requires an introduction
@@ -95,7 +149,7 @@ function Application({
             </div>
           </div>
         </div>
-      </div>
+      </StyledDiv>
     </Dialog>
   );
 }

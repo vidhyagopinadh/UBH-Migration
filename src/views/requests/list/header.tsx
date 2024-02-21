@@ -1,19 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 import { useTranslate } from "react-admin";
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(() => ({
-  root: {},
-}));
+const PREFIX = 'RequestList';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  }
+  
+const StyledDiv = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
+    },
+ 
+  }));
 
 function Header({ className, ...rest }): JSX.Element {
-  const classes = useStyles();
   const translate = useTranslate();
   return (
-    <div {...rest} className={clsx(classes.root, className)}>
+    <StyledDiv {...rest} className={clsx(classes.root, className)}>
       <Grid
         alignItems="flex-end"
         container
@@ -29,7 +36,7 @@ function Header({ className, ...rest }): JSX.Element {
           </Typography>
         </Grid>
       </Grid>
-    </div>
+      </StyledDiv>
   );
 }
 

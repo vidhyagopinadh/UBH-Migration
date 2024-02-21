@@ -17,51 +17,108 @@ import {
 import { perPageMax } from "../../../utils/pageConstants";
 import secureLocalStorage from "react-secure-storage";
 const { REACT_APP_GUEST_USERNAME, REACT_APP_GUEST_PASSWORD } = process.env;
-const useStyles = makeStyles((theme) => ({
-  root: {
+import { styled } from '@mui/material/styles';
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     paddingTop: theme.spacing(3),
+//     paddingBottom: theme.spacing(3),
+//   },
+//   tabs: {
+//     marginTop: theme.spacing(3),
+//   },
+//   divider: {
+//     backgroundColor: colors.grey[300],
+//   },
+//   alert: {
+//     marginTop: theme.spacing(3),
+//   },
+//   content: {
+//     marginTop: theme.spacing(3),
+//   },
+//   contentMain: {
+//     backgroundColor: "transparent",
+//     border: "0px solid #ffffff",
+//   },
+//   h6_title: {
+//     width: "55%",
+//     float: "left",
+//   },
+//   subtitle: {
+//     width: "40%",
+//     float: "left",
+//     marginLeft: "5%",
+//   },
+//   listitemStyle: {
+//     display: "inline-block !important",
+//     borderBottom: "1px solid #eaeaea !important",
+//   },
+//   listitemStyle2: {
+//     display: "inline-block !important",
+//     borderBottom: "unset !important",
+//   },
+// }));
+
+const PREFIX = 'RequestDetails';
+const classes = {
+  root: `${PREFIX}-root`,
+  tabs: `${PREFIX}-tabs`,
+  divider: `${PREFIX}-divider`,
+  alert: `${PREFIX}-alert`,
+  content: `${PREFIX}-content`,
+  contentMain: `${PREFIX}-contentMain`,
+  h6_title: `${PREFIX}-h6_title`,
+  subtitle: `${PREFIX}-subtitle`,
+  listitemStyle: `${PREFIX}-listitemStyle`,
+  listitemStyle2: `${PREFIX}-listitemStyle2`,
+}
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
   },
-  tabs: {
+  [`& .${classes.tabs}`]: {
     marginTop: theme.spacing(3),
   },
-  divider: {
+  [`& .${classes.divider}`]: {
     backgroundColor: colors.grey[300],
   },
-  alert: {
+  [`& .${classes.alert}`]: {
     marginTop: theme.spacing(3),
   },
-  content: {
+  [`& .${classes.content}`]: {
     marginTop: theme.spacing(3),
   },
-  contentMain: {
+  [`& .${classes.contentMain}`]: {
     backgroundColor: "transparent",
     border: "0px solid #ffffff",
   },
-  h6_title: {
+  [`& .${classes.h6_title}`]: {
     width: "55%",
     float: "left",
   },
-  subtitle: {
+  [`& .${classes.subtitle}`]: {
     width: "40%",
     float: "left",
     marginLeft: "5%",
   },
-  listitemStyle: {
+  [`& .${classes.listitemStyle}`]: {
     display: "inline-block !important",
     borderBottom: "1px solid #eaeaea !important",
   },
-  listitemStyle2: {
+  [`& .${classes.listitemStyle2}`]: {
     display: "inline-block !important",
     borderBottom: "unset !important",
   },
-}));
+  
+}))
 
 export const RequestDetailComponent = (props): JSX.Element => {
   const dataProvider = useDataProvider();
   const { id, tab } = props;
   const history = useHistory();
-  const classes = useStyles();
+ // const classes = useStyles();
   const login = useLogin();
   const [requestViewList, setRequestViewList] = useState<any>({});
   const [openBase, setOpenBase] = useState(false);
@@ -147,6 +204,7 @@ export const RequestDetailComponent = (props): JSX.Element => {
   };
 
   return (
+    <StyledDiv>
     <Container maxWidth="lg">
       {alreadyLoggedIn.alreadyThere &&
       alreadyLoggedIn.role !== CO_ROLE_PATIENT ? (
@@ -210,5 +268,6 @@ export const RequestDetailComponent = (props): JSX.Element => {
         </>
       )}
     </Container>
+    </StyledDiv>
   );
 };

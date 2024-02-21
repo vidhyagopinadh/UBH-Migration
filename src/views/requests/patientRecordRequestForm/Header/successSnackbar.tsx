@@ -1,26 +1,50 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
+//import { makeStyles } from "@material-ui/core/styles";
 import { Snackbar, SnackbarContent, colors } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircleOutlined";
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme) => ({
-  content: {
+// const useStyles = makeStyles((theme) => ({
+//   content: {
+//     backgroundColor: colors.green[600],
+//   },
+//   message: {
+//     display: "flex",
+//     alignItems: "center",
+//   },
+//   icon: {
+//     marginRight: theme.spacing(2),
+//   },
+// }));
+
+const PREFIX = 'SuccessSnackbar';
+
+const classes = {
+  content: `${PREFIX}-content`,
+  message: `${PREFIX}-message`,
+  icon: `${PREFIX}-icon`,
+}
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.content}`]: {
     backgroundColor: colors.green[600],
   },
-  message: {
+  [`& .${classes.message}`]: {
     display: "flex",
     alignItems: "center",
   },
-  icon: {
+  [`& .${classes.icon}`]: {
     marginRight: theme.spacing(2),
   },
-}));
+  
+}))
 
 function SuccessSnackbar({ open, onClose }): JSX.Element {
-  const classes = useStyles();
+  //const classes = useStyles();
 
   return (
+    <StyledDiv>
     <Snackbar
       anchorOrigin={{
         vertical: "top",
@@ -40,6 +64,7 @@ function SuccessSnackbar({ open, onClose }): JSX.Element {
         }
       />
     </Snackbar>
+    </StyledDiv>
   );
 }
 

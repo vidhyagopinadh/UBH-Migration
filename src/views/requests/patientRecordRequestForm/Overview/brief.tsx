@@ -25,7 +25,7 @@ import type {
 import { useMutation } from "@apollo/react-hooks";
 import { blobToFile } from "./../../../../utils/images/blobToFile";
 import b64toBlob from "./../../../../utils/images/b64toBlob";
-// import useTraces from "../../../../hooks/useTraces";
+//import useTraces from "../../../../hooks/useTraces";
 import type { AppState } from "../../../../types";
 import { useSelector } from "react-redux";
 import secureLocalStorage from "react-secure-storage";
@@ -35,46 +35,100 @@ import { useHistory } from "react-router";
 import ProviderView from "../../../../components/providerView";
 import { compareObjects } from "../../../../utils/compareObjects";
 import { perPageList } from "../../../../utils/pageConstants";
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(() => ({
-  root: {
+// const useStyles = makeStyles(() => ({
+//   root: {
+//     backgroundColor: "#FFFFFF",
+//     marginBottom: "15px",
+//   },
+//   h6_title: {
+//     width: "55%",
+//     float: "left",
+//     fontWeight: 600,
+//   },
+//   subtitle: {
+//     width: "40%",
+//     float: "left",
+//     marginLeft: "5%",
+//   },
+//   notes: {
+//     width: "100%",
+//     textAlign: "justify",
+//     fontWeight: 400,
+//     whiteSpace: "pre-line",
+//   },
+//   notesTitle: {
+//     width: "100%",
+//     fontWeight: 600,
+//   },
+//   listitemStyle: {
+//     display: "inline-block !important",
+//     borderBottom: "1px solid #eaeaea !important",
+//   },
+//   listitemStyle2: {
+//     display: "inline-block !important",
+//     borderBottom: "unset !important",
+//   },
+// }));
+
+
+const PREFIX = 'OverviewBrief';
+const classes = {
+  root: `${PREFIX}-root`,
+  h6_title: `${PREFIX}-h6_title`,
+  subtitle: `${PREFIX}-subtitle`,
+  helperText: `${PREFIX}-helperText`,
+  notes: `${PREFIX}-notes`,
+  notesTitle: `${PREFIX}-notesTitle`,
+  listitemStyle: `${PREFIX}-listitemStyle`,
+  listitemStyle2: `${PREFIX}-listitemStyle2`,
+}
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: "#FFFFFF",
     marginBottom: "15px",
   },
-  h6_title: {
+  [`& .${classes.h6_title}`]: {
     width: "55%",
     float: "left",
     fontWeight: 600,
   },
-  subtitle: {
+  [`& .${classes.subtitle}`]: {
     width: "40%",
     float: "left",
     marginLeft: "5%",
   },
-  notes: {
+  [`& .${classes.helperText}`]: {
+    textAlign: "right",
+    marginRight: 0,
+  },
+  [`& .${classes.notes}`]: {
     width: "100%",
     textAlign: "justify",
     fontWeight: 400,
     whiteSpace: "pre-line",
   },
-  notesTitle: {
+  [`& .${classes.notesTitle}`]: {
     width: "100%",
     fontWeight: 600,
   },
-  listitemStyle: {
+  [`& .${classes.listitemStyle}`]: {
     display: "inline-block !important",
     borderBottom: "1px solid #eaeaea !important",
   },
-  listitemStyle2: {
+  [`& .${classes.listitemStyle2}`]: {
     display: "inline-block !important",
     borderBottom: "unset !important",
   },
-}));
+  
+}))
 
 function Brief({ request, onSuccess, ...rest }): JSX.Element {
   const StatusToIgnore = "status";
   const SourceToIgnore = "sourceOfInvitation";
-  const classes = useStyles();
+  //const classes = useStyles();
   const notify = useNotify();
   const translate = useTranslate();
   const dataProvider = useDataProvider();
@@ -192,6 +246,7 @@ function Brief({ request, onSuccess, ...rest }): JSX.Element {
   const listClass = classNames(classes.listitemStyle);
   const listClass2 = classNames(classes.listitemStyle2);
   return (
+    <StyledDiv>
     <Card {...rest} className={classes.root}>
       <CardContent style={{ wordBreak: "break-word" }}>
         {Object.entries(request).length > 0 && (
@@ -211,8 +266,8 @@ function Brief({ request, onSuccess, ...rest }): JSX.Element {
               {request.categoryType === "request"
                 ? "Medical Record Requested By: "
                 : request.categoryType === "addendum"
-                  ? "Correction/Amendment Requested By: "
-                  : "Billing/Insurance Question Requested By: "}
+                ? "Correction/Amendment Requested By: "
+                : "Billing/Insurance Question Requested By: "}
               <b
                 style={{
                   color: "#718cc7",
@@ -486,6 +541,7 @@ function Brief({ request, onSuccess, ...rest }): JSX.Element {
         )}
       </CardActions>
     </Card>
+    </StyledDiv>
   );
 }
 

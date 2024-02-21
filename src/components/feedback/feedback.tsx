@@ -31,10 +31,10 @@ import {
   validateEmail,
   validateString,
   validateSubjectLine,
-  validateDescription,
-} from "../../utils/validator";
-import { perPageMax } from "../../utils/pageConstants";
-import { useSelector } from "react-redux";
+  validateDescription
+} from "../../lib/universal/utils/validator"
+import { perPageMax } from "../../lib/universal/utils/pageConstants";
+// import { useSelector } from "react-redux";
 import MuiPhoneNumber from "material-ui-phone-number";
 import { CO_ROLE_ADMIN, CO_ROLE_MRA, CO_ROLE_PPA } from "../../utils/roles";
 // import useTraces from "../../hooks/useTraces";

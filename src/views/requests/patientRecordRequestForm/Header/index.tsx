@@ -1,40 +1,76 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Grid, colors } from "@material-ui/core";
 import { useTranslate } from "react-admin";
 import Label from "./../../../../components/label";
 import { useSelector } from "react-redux";
 import type { AppState, IRequestPayload } from "../../../../types";
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     [theme.breakpoints.down("md")]: {
+//       marginTop: "20px",
+//     },
+//   },
+//   label: {
+//     marginTop: theme.spacing(1),
+//   },
+//   shareButton: {
+//     backgroundColor: theme.palette.common.white,
+//     marginRight: theme.spacing(2),
+//   },
+//   shareIcon: {
+//     marginRight: theme.spacing(1),
+//   },
+//   applyButton: {
+//     color: theme.palette.common.white,
+//     backgroundColor: colors.green[600],
+//     "&:hover": {
+//       backgroundColor: colors.green[900],
+//     },
+//   },
+// }));
+
+const PREFIX = 'PatientRecordRequestHeader';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  label: `${PREFIX}-label`,
+  shareButton: `${PREFIX}-shareButton`,
+  shareIcon: `${PREFIX}-shareIcon`,
+  applyButton: `${PREFIX}-applyButton`,
+}
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
     [theme.breakpoints.down("md")]: {
       marginTop: "20px",
     },
   },
-  label: {
+  [`& .${classes.label}`]: {
     marginTop: theme.spacing(1),
   },
-  shareButton: {
+  [`& .${classes.shareButton}`]: {
     backgroundColor: theme.palette.common.white,
     marginRight: theme.spacing(2),
   },
-  shareIcon: {
+  [`& .${classes.shareIcon}`]: {
     marginRight: theme.spacing(1),
   },
-  applyButton: {
+  [`& .${classes.applyButton}`]: {
     color: theme.palette.common.white,
     backgroundColor: colors.green[600],
     "&:hover": {
       backgroundColor: colors.green[900],
     },
   },
-}));
+  
+}))
 
 function Header({ request, ...rest }): JSX.Element {
-  const classes = useStyles();
+  //const classes = useStyles();
   const [requestSet, setRequestSet] = useState<IRequestPayload>({});
   const translate = useTranslate();
   const userInfoReducer = useSelector(
@@ -66,7 +102,7 @@ function Header({ request, ...rest }): JSX.Element {
   }
 
   return (
-    <div {...rest} className={clsx(classes.root)}>
+    <StyledDiv {...rest} className={clsx(classes.root)}>
       <Grid alignItems="flex-end" container justify="space-between" spacing={3}>
         <Grid item>
           <Typography component="h2" gutterBottom variant="overline">
@@ -98,7 +134,7 @@ function Header({ request, ...rest }): JSX.Element {
           </div>
         </Grid>
       </Grid>
-    </div>
+    </StyledDiv>
   );
 }
 
