@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 // import { decodeJwt } from "../utils/parseJwt";
 
 import { CO_ROLE_MRA } from "../utils/roles";
-import { decodeJwt } from "../lib/universal/utils/parseJwt";
 
 import { isExpired, decodeToken } from "react-jwt";
 import { perPageMin } from "../lib/universal/utils/pageConstants";

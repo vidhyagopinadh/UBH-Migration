@@ -24,7 +24,7 @@ interface ITourProps {
   tourSteps: object;
   type?: string;
 }
-const { REACT_APP_BASE_URL } = import.meta.env;
+const { VITE_BASE_URL } = import.meta.env;
 const Tour = ({ tourSteps, type = "" }: ITourProps) => {
   const translate = useTranslate();
   const [tourProgress, setTourProgress] = useState<SaveUserTourProgressInput>({
@@ -95,7 +95,7 @@ const Tour = ({ tourSteps, type = "" }: ITourProps) => {
         moment().isAfter(tourResponse?.resumeAfter) &&
         tourResponse?.autoResume &&
         !tourResponse?.isCompleted &&
-        window.location.href === REACT_APP_BASE_URL + "/"
+        window.location.href === VITE_BASE_URL + "/"
       ) {
         startTour(1);
       } else if (!tourResponse) {

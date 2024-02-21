@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Admin, Resource, AdminRouter } from 'react-admin';
+import { withApollo } from "react-apollo";
+import { ApolloProvider } from "@apollo/react-hooks";
+import apolloConfig from "./service/apolloConfig";
+
 import type { DataProvider } from "react-admin";
 import keycloak from './keycloakConfig';
 import { ReactKeycloakProvider } from "@react-keycloak/web";
@@ -33,7 +37,8 @@ import { Layout } from './layout';
 // import BaseModal from './components/baseModal';
 
 // import LogoutButton from "./components/LogoutButton";
-
+const client = apolloConfig();
+console.log(client)
 export let ACCESS_TOKEN = "";
 
 
@@ -54,18 +59,19 @@ const App = () => {
   const { keycloakLogout } = useLogout();
 
   useEffect(() => {
-    const fetchDataProvider = async () => {
-      console.log("fetchdataprovide1111r")
 
-      const dataProviderInstance = await DataProviderConfig();
-      // @ts-ignore
-      setDataProvider(() => dataProviderInstance);
-    };
     fetchDataProvider();
 
   }, []);
+  const fetchDataProvider = async () => {
+    console.log("fetchdataprovide1111r")
 
+    const dataProviderInstance = await DataProviderConfig();
+    // @ts-ignore
+    setDataProvider(() => dataProviderInstance);
+  };
   const onKeycloakTokens = (tokens: any) => {
+    console.log("tokn", tokens)
     if (tokens.token !== undefined) {
       ACCESS_TOKEN = tokens.token;
       localStorage.setItem("access_token", tokens.token);
@@ -73,6 +79,7 @@ const App = () => {
       localStorage.setItem("refresh_token", tokens.refreshToken);
       localStorage.setItem("authState", "true");
       localStorage.setItem("User", keycloak?.idTokenParsed?.name);
+      fetchDataProvider();
     }
     // keycloak.refreshToken = localStorage.getItem("refresh_token");
     // keycloak.idToken = localStorage.getItem("id_token");
@@ -80,7 +87,8 @@ const App = () => {
 
   const onKeycloakEvent = (event: string) => {
     console.log("event", event);
-    console.log(keycloak)
+    // alert(event)
+    // console.log(keycloak)
     if (!ifAuthForm) {
       if (event === "onTokenExpired") {
         keycloak.updateToken(60);
@@ -135,42 +143,45 @@ const App = () => {
     );
   }
   return (
-    <ReactKeycloakProvider authClient={keycloak}
+    <ReactKeycloakProvider
+      authClient={keycloak}
       onEvent={onKeycloakEvent}
       onTokens={onKeycloakTokens}
       initOptions={{
-        onLoad: "login-required",
+        onLoad: "check-sso",
         pkceMethod: "S256",
         silentCheckSsoRedirectUri:
           window.location.origin + "/silent-check-sso.html",
       }}>
+      <ApolloProvider client={client}>
+        <Admin
+          title="Unblock Health"
+          basename="/"
+          //customReducers={ReducerHub}
+          //customRoutes={customRoutes}
+          authProvider={authProvider}
+          dataProvider={dataProvider}
+          dashboard={Dashboard}
+          loginPage={KeycloakLogin}
+          layout={Layout}
+          //logoutButton={LogoutButton}
+          i18nProvider={i18nProvider}
+          catchAll={PageNotFound}
+          disableTelemetry
+        >
 
-      <Admin
-        title="Unblock Health"
-        basename="/"
-        //customReducers={ReducerHub}
-        //customRoutes={customRoutes}
-        authProvider={authProvider}
-        dataProvider={dataProvider}
-        dashboard={Dashboard}
-        loginPage={KeycloakLogin}
-        layout={Layout}
-        //logoutButton={LogoutButton}
-        i18nProvider={i18nProvider}
-        catchAll={PageNotFound}
-        disableTelemetry
-      >
+          <>
+            {/* <Resource name="requests" {...requests} />, */}
+            <CustomRoutes>
+              <Route path="/" element={<Configuration />} />
 
-        <>
-          {/* <Resource name="requests" {...requests} />, */}
-          <CustomRoutes>
-            <Route path="/" element={<Configuration />} />
-
-          </CustomRoutes>
-        </>
+            </CustomRoutes>
+          </>
 
 
-      </Admin>
+        </Admin>
+      </ApolloProvider>
+
 
     </ReactKeycloakProvider>
   );

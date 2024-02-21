@@ -30,7 +30,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import { CorporateFare, GridView } from "@mui/icons-material";
 import { Box, InputLabel } from "@mui/material";
 import styled from "@emotion/styled";
-const { REACT_APP_SYNAPSE_URL, REACT_APP_BASE_URL } = process.env;
+const { REACT_APP_SYNAPSE_URL, VITE_BASE_URL } = import.meta.env
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import LibraryAddOutlinedIcon from '@mui/icons-material/LibraryAddOutlined';
 const PREFIX = 'Menu';
@@ -386,7 +386,7 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
             src={
               REACT_APP_SYNAPSE_URL +
               "/sso/redirect/oidc-keycloak?redirectUrl=" +
-              REACT_APP_BASE_URL
+              VITE_BASE_URL
             }
             width="0px"
             height="0px"

@@ -29,7 +29,7 @@ import sendReminderEmail from "../../../../queries/sendReminderEmail/sendReminde
 import moment from "moment";
 import getNotificationDetails from "../../../../queries/getNotificationDetails/getNotificationDetails";
 import { REMINDER_MESSAGES } from "../../../../utils/messages/reminderConstants";
-const { REACT_APP_BASE_URL, REACT_APP_SUPPORT_MAIL_ADDRESS } = process.env;
+const { VITE_BASE_URL, REACT_APP_SUPPORT_MAIL_ADDRESS } = process.env;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -164,35 +164,32 @@ function Activity({ activity, className, ...rest }): JSX.Element {
 
             let formattedDifference = "";
             if (differenceDays > 0) {
-              formattedDifference += `${differenceDays} day${
-                differenceDays > 1 ? "s" : ""
-              } `;
+              formattedDifference += `${differenceDays} day${differenceDays > 1 ? "s" : ""
+                } `;
             }
             if (differenceHours > 0) {
               if (differenceHours > 1) {
-                formattedDifference += `${differenceHours} hour${
-                  differenceHours > 1 ? "s" : ""
-                } `;
+                formattedDifference += `${differenceHours} hour${differenceHours > 1 ? "s" : ""
+                  } `;
               } else {
                 formattedDifference += `1 hour `;
               }
             }
             if (differenceMinutes > 0) {
               if (differenceMinutes > 1) {
-                formattedDifference += `${differenceMinutes} minute${
-                  differenceMinutes > 1 ? "s" : ""
-                }`;
+                formattedDifference += `${differenceMinutes} minute${differenceMinutes > 1 ? "s" : ""
+                  }`;
               } else {
                 formattedDifference += `1 minute`;
               }
             }
             setErrorMsg(
               REMINDER_MESSAGES["reminder"].reminderExeedsLimit[0] +
-                lastReminderSentAt +
-                REMINDER_MESSAGES["reminder"].reminderExeedsLimit[1] +
-                formattedDifference.trim() +
-                REMINDER_MESSAGES["reminder"].reminderExeedsLimit[2] +
-                REACT_APP_SUPPORT_MAIL_ADDRESS,
+              lastReminderSentAt +
+              REMINDER_MESSAGES["reminder"].reminderExeedsLimit[1] +
+              formattedDifference.trim() +
+              REMINDER_MESSAGES["reminder"].reminderExeedsLimit[2] +
+              REACT_APP_SUPPORT_MAIL_ADDRESS,
             );
           }
         }
@@ -282,8 +279,8 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                         errorMsg
                           ? errorMsg
                           : activity.subject_type === "hippaAuthDetails"
-                          ? translate("tooltip.formResend.hipaa")
-                          : translate("tooltip.formResend.sud")
+                            ? translate("tooltip.formResend.hipaa")
+                            : translate("tooltip.formResend.sud")
                       }
                     >
                       <IconButton
@@ -326,7 +323,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                       onClick={() => {
                         history.push(
                           "/authorizationForm/hipaa/" +
-                            activity.requestToken.token,
+                          activity.requestToken.token,
                         );
                       }}
                     >
@@ -342,7 +339,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                       onClick={() => {
                         history.push(
                           "/authorizationForm/sud/" +
-                            activity.requestToken.token,
+                          activity.requestToken.token,
                         );
                       }}
                     >
@@ -364,7 +361,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                     {permissions === CO_ROLE_MRA && (
                       <CopyToClipboardButton
                         urlLink={
-                          REACT_APP_BASE_URL +
+                          VITE_BASE_URL +
                           "/authorizationForm/hipaa/" +
                           activity.requestToken.token
                         }
@@ -387,7 +384,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                           }}
                         >
                           Last Reminder Sent: {moment(resendTime).fromNow(true)}{" "}
-                          ago{}
+                          ago{ }
                         </span>
                       </>
                     )}
@@ -428,7 +425,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                     {permissions === CO_ROLE_MRA && (
                       <CopyToClipboardButton
                         urlLink={
-                          REACT_APP_BASE_URL +
+                          VITE_BASE_URL +
                           "/authorizationForm/sud/" +
                           activity.requestToken.token
                         }

@@ -7,7 +7,7 @@ import Menu from "./menu";
 import { darkTheme, lightTheme } from "./themes";
 import { useDataProvider } from "react-admin";
 import { userInfoAction } from "./../configuration/actions/userInfoActions";
-import Feedback from "../components/feedback/index";
+// import Feedback from "../components/feedback/index";
 import { perPageMin } from "../lib/universal/utils/pageConstants";
 import { Helmet } from "react-helmet";
 import { useKeycloak } from "@react-keycloak/web";
@@ -16,11 +16,13 @@ import { useNavigate } from "react-router-dom";
 
 import { isCommentProviderIsCactusComment } from "../lib/universal/utils/comments"
 //import "typeface-roboto";
-import { decodeJwt } from "../lib/universal/utils/parseJwt";
+// import { decodeJwt } from "../lib/universal/utils/parseJwt";
 import { CO_ROLE_MRA } from "../utils/roles";
+import { isExpired, decodeToken } from "react-jwt";
+
 const CustomSidebar = (props: any): JSX.Element => (
   <>
-    <Feedback page="login" />
+    {/* <Feedback page="login" /> */}
     <Sidebar {...props} size={200} />
   </>
 );
@@ -53,7 +55,8 @@ export default (props: LayoutProps): JSX.Element => {
   }, []);
   React.useEffect(() => {
     keycloak.refreshToken = localStorage.getItem("refresh_token");
-    const tokenParsed: any = decodeJwt(localStorage.getItem("access_token") || "");
+
+    const tokenParsed: any = decodeToken(localStorage.getItem("access_token") || "");
     if (!ifAuthForm || tokenParsed?.payload) {
       const queryOption: any = {
         pagination: { page: 1, perPage: perPageMin },

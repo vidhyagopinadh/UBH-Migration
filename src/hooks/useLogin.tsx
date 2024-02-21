@@ -16,9 +16,8 @@ import { userInfoAction } from "../configuration/actions/userInfoActions";
 import { userRoleInfoAction } from "../configuration/actions/userRoleInfoActions";
 import { useNavigate } from "react-router";
 import secureLocalStorage from "react-secure-storage";
-import { decodeJwt } from "../lib/universal/utils/parseJwt";
 import { decodeToken } from "react-jwt";
-const { REACT_APP_BASE_URL } = import.meta.env;
+const { VITE_BASE_URL } = import.meta.env;
 const useDashboard = () => {
   // const { keycloak } = useKeycloak();
   const navigate = useNavigate();
@@ -66,7 +65,7 @@ const useDashboard = () => {
           useRoles.includes(CO_ROLE_ADMIN)
         ) {
           if (useRoles.includes(CO_ROLE_MRA)) {
-            const tokenParsed: any = decodeJwt(localStorage.getItem("access_token") || "");
+            const tokenParsed: any = decodeToken(localStorage.getItem("access_token") || "");
             if (tokenParsed.groups?.length > 0) {
               if (tokenParsed.groups[0].split("/").length !== 3) {
                 setOpenAdminBase(true);
@@ -116,7 +115,7 @@ const useDashboard = () => {
                   let urlstr = localStorage.getItem("url")
                   if (urlstr) {
                     navigate(
-                      urlstr.replace(REACT_APP_BASE_URL, ""),
+                      urlstr.replace(VITE_BASE_URL, ""),
                     );
                   } else {
                     navigate("/");
@@ -180,7 +179,7 @@ const useDashboard = () => {
               if (tokenParsed.email_verified) {
                 let urlstr = localStorage.getItem("url");
                 if (urlstr) {
-                  navigate(urlstr.replace(REACT_APP_BASE_URL, ""),
+                  navigate(urlstr.replace(VITE_BASE_URL, ""),
                   );
                 } else {
                   navigate("/");

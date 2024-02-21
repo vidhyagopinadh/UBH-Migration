@@ -1,6 +1,6 @@
 import { isExpired, decodeToken } from "react-jwt";
 export function decodeJwt(token: string) {
-  console.log(jwt)
+
   try {
     //const decodedToken = jwt.decode(token, { complete: true });
     // console.log(decodedToken)

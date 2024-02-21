@@ -14,8 +14,9 @@ import type {
   SendEmailToUnverifiedUserMutationVariables,
 } from "../__generated__/typescript-operations_all";
 import { perPageMin } from "../lib/universal/utils/pageConstants";
+import keycloak from "../keycloakConfig";
 // const { REACT_APP_KEYCLOAK_SOURCE } = process.env;
-const { REACT_APP_BASE_URL } = import.meta.env;
+const { VITE_BASE_URL } = import.meta.env;
 const KeycloakLogin = (): JSX.Element => {
   //const { keycloak } = useKeycloak();
   const translate = useTranslate();
@@ -54,7 +55,7 @@ const KeycloakLogin = (): JSX.Element => {
   useEffect(() => {
 
     if (code === undefined && authenticated === false) {
-      //alert("keycloaklogin")
+      keycloak.login()
     } else {
       if (access_token) {
         setRoles();
@@ -119,7 +120,7 @@ const KeycloakLogin = (): JSX.Element => {
             let urlstr: any = localStorage.getItem("url");
             if (urlstr) {
               navigate(
-                urlstr.replace(REACT_APP_BASE_URL, ""),
+                urlstr.replace(VITE_BASE_URL, ""),
               );
             } else {
               navigate("/");
@@ -142,7 +143,7 @@ const KeycloakLogin = (): JSX.Element => {
             let urlstr: any = localStorage.getItem("url");
             if (urlstr) {
               navigate(
-                urlstr.replace(REACT_APP_BASE_URL, ""),
+                urlstr.replace(VITE_BASE_URL, ""),
               );
             } else {
               navigate("/");
@@ -169,7 +170,7 @@ const KeycloakLogin = (): JSX.Element => {
             let urlstr: any = localStorage.getItem("url");
             if (urlstr) {
               navigate(
-                urlstr.replace(REACT_APP_BASE_URL, ""),
+                urlstr.replace(VITE_BASE_URL, ""),
               );
             } else {
               navigate("/");

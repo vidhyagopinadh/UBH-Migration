@@ -2,7 +2,8 @@ import { ApolloClient, InMemoryCache, ApolloLink } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { createUploadLink } from "apollo-upload-client";
 import { catchActivity } from "../lib/universal/utils/analytics";
-const catchLoginActivity = (activityContent:any, userDetails:any, eventStatus:any) => {
+console.log("acc token", localStorage.getItem("access_token"))
+const catchLoginActivity = (activityContent: any, userDetails: any, eventStatus: any) => {
   catchActivity({
     eventType: {
       activityName: activityContent,
@@ -32,11 +33,11 @@ const apolloConfig = () => {
   });
 
   const mainLink: ApolloLink = new (createUploadLink as any)({
-    uri:import.meta.env.VITE_POSTGRAPHILE_URL,
+    uri: import.meta.env.VITE_POSTGRAPHILE_URL,
   });
-    
+
   const anonymousLink: ApolloLink = new (createUploadLink as any)({
-    uri:import.meta.env.VITE_POSTGRAPHILE_ANONYMOUS_URL
+    uri: import.meta.env.VITE_POSTGRAPHILE_ANONYMOUS_URL
   });
 
   const client = new ApolloClient({
