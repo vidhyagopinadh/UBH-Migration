@@ -1,131 +1,104 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Admin, Resource, AuthProvider, DataProvider, AdminRouter } from 'react-admin';
-//import simpleRestProvider from 'ra-data-simple-rest';
-import Keycloak, {
-  KeycloakConfig,
-  KeycloakTokenParsed,
-  KeycloakInitOptions,
-} from 'keycloak-js';
-import { keycloakAuthProvider, httpClient } from 'ra-keycloak';
+import { Admin, Resource, AdminRouter } from 'react-admin';
+import type { DataProvider } from "react-admin";
+import keycloak from './keycloakConfig';
+import { ReactKeycloakProvider } from "@react-keycloak/web";
 
-import i18nProvider from './i18nProvider';
-import MainLayout from './layout/MainLayout';
+// import i18nProvider from './i18nProvider';
+// import MainLayout from './layout/MainLayout';
 //import posts from './posts';
 //import users from './users';
-import { CustomRoute } from "./CustomRoute";
+// import { CustomRoute } from "./CustomRoute";
 import {
   CO_ROLE_PPA,
   CO_ROLE_MRA,
   CO_ROLE_GUEST,
   CO_ROLE_PATIENT,
 } from "././roles";
-import myDataProvider, {
-  keyCloakTokenDataProviderBuilder,
-} from './dataProvider';
+
 
 import { CustomRoutes } from "react-admin";
 import { Route } from "react-router-dom";
 import Configuration from "./configuration/configuration";
 import { DataProviderConfig } from "./dataProviderConfig";
-import tags from './tags';
-//import requests from './views/requests';
+import authProvider from "./useAuthProvider"
+import useLogout from "./hooks/useLogout";
 
 import Dashboard from './dashboard/dashboard';
-const config: KeycloakConfig = {
-  url: import.meta.env.VITE_KEYCLOAK_URL,
-  realm: import.meta.env.VITE_KEYCLOAK_REALM,
-  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
-};
+import KeycloakLogin from './layout/keycloakLogin';
+import i18nProvider from './i18nProvider';
+import PageNotFound from './Layouts/PageNotFound';
+import BaseModal from './components/baseModal';
+import { Layout } from './layout';
+// import BaseModal from './components/baseModal';
 
-console.log(config)
+// import LogoutButton from "./components/LogoutButton";
+
 export let ACCESS_TOKEN = "";
-// here you can set options for the keycloak client
-const initOptions: KeycloakInitOptions = {
-  onLoad: "check-sso",
-  silentCheckSsoRedirectUri:
-    window.location.origin + "/silent-check-sso.html",
-  pkceMethod: "S256",
 
-};
 
 // here you can implement the permission mapping logic for react-admin
-const getPermissions = (decoded: KeycloakTokenParsed) => {
-  const roles = decoded?.realm_access?.roles;
-
-  if (!roles) {
-    return false;
-  }
-  if (roles.includes(CO_ROLE_PPA)) return CO_ROLE_PPA;
-  if (roles.includes(CO_ROLE_MRA)) return CO_ROLE_MRA;
-  if (roles.includes(CO_ROLE_GUEST)) return CO_ROLE_GUEST;
-  if (roles.includes(CO_ROLE_PATIENT)) return CO_ROLE_PATIENT;
-  return false;
-};
-
-const raKeycloakOptions = {
-  onPermissions: getPermissions
-};
 
 
 
 const App = () => {
-  const [keycloak, setKeycloak] = useState<Keycloak>();
-  const authProvider = useRef<AuthProvider>();
-  //const dataProvider = useRef<DataProvider>();
+  // const authProvider = useRef<AuthProvider>();
   const [dataProvider, setDataProvider] = useState<DataProvider>();
+  const [openBase, setOpenBase] = useState(false);
 
-  useEffect(() => {
-    const initKeyCloakClient = async () => {
-      // init the keycloak client
-
-      const keycloakClient = new Keycloak(config);
-
-      await keycloakClient.init(initOptions);
-      // use keycloakAuthProvider to create an authProvider
-      authProvider.current = keycloakAuthProvider(
-        keycloakClient,
-        raKeycloakOptions
-      );
-      console.log(authProvider.current)
-
-      // example dataProvider using the httpClient helper
-      // dataProvider.current = simpleRestProvider(
-      //   '$API_URL',
-      //   httpClient(keycloakClient)
-      // );
-      console.log(keycloakClient)
-      setKeycloak(keycloakClient);
-    };
-    if (!keycloak) {
-      initKeyCloakClient();
-    }
-    else { //Keycloak success
-
-      if (keycloak.authenticated) {
-        //ACCESS_TOKEN = keycloak.token;
-        localStorage.setItem("access_token", keycloak.token || "");
-        localStorage.setItem("id_token", keycloak.idToken || "");
-        localStorage.setItem("refresh_token", keycloak.refreshToken || "");
-        localStorage.setItem("authState", "true");
-        if (keycloak.idTokenParsed) {
-          localStorage.setItem("User", keycloak.idTokenParsed.name);
-        }
-      }
-      else {
-        keycloak.login();
-      }
-
-    }
-  }, [keycloak]);
+  const ifAuthForm =
+    window.location.href.includes("authorizationForm") ||
+    window.location.href.includes("patientRequests") ||
+    window.location.href.includes("addendumRequestForm") ||
+    window.location.href.includes("account");
+  const { keycloakLogout } = useLogout();
 
   useEffect(() => {
     const fetchDataProvider = async () => {
+      console.log("fetchdataprovide1111r")
+
       const dataProviderInstance = await DataProviderConfig();
       // @ts-ignore
       setDataProvider(() => dataProviderInstance);
     };
     fetchDataProvider();
+
   }, []);
+
+  const onKeycloakTokens = (tokens: any) => {
+    if (tokens.token !== undefined) {
+      ACCESS_TOKEN = tokens.token;
+      localStorage.setItem("access_token", tokens.token);
+      localStorage.setItem("id_token", tokens.idToken);
+      localStorage.setItem("refresh_token", tokens.refreshToken);
+      localStorage.setItem("authState", "true");
+      localStorage.setItem("User", keycloak?.idTokenParsed?.name);
+    }
+    // keycloak.refreshToken = localStorage.getItem("refresh_token");
+    // keycloak.idToken = localStorage.getItem("id_token");
+  };
+
+  const onKeycloakEvent = (event: string) => {
+    console.log("event", event);
+    console.log(keycloak)
+    if (!ifAuthForm) {
+      if (event === "onTokenExpired") {
+        keycloak.updateToken(60);
+      }
+      if (event === "onAuthLogout") {
+        keycloak.authenticated = true;
+      }
+      if (event === "onReady" && keycloak.token === undefined) {
+        keycloak.updateToken(60);
+      }
+      if (event === "onAuthRefreshError") {
+        keycloakLogout();
+      }
+      if (event === "onAuthError" || event === "onInitError") {
+        setOpenBase(true);
+      }
+    }
+  };
 
   // hide the admin until the keycloak client is ready
   if (!keycloak) return <p>Loading...</p>;
@@ -141,27 +114,65 @@ const App = () => {
       </div>
     );
   }
+
+  if (openBase) {
+    return (
+      <BaseModal
+        open={openBase}
+        confirmAction={keycloakLogout}
+        onClose={() => {
+          setOpenBase(false);
+        }}
+        title={"Session Expired"}
+        content={"Your session has expired."}
+        subContent={[
+          "Sessions are logged out due to inactivity.",
+          "Mouse or keyboard activity must be registered to keep your session active.",
+          "Please log in again.",
+        ]}
+        successButtonName="Log in again"
+        type="logout" />
+    );
+  }
   return (
-    <Admin
-      authProvider={authProvider.current}
-      dataProvider={dataProvider}
-      i18nProvider={i18nProvider}
-      title="Unblock Health"
-      dashboard={Dashboard}
-      layout={MainLayout}
-      basename="/"
-    >
-      {dataProvider &&
+    <ReactKeycloakProvider authClient={keycloak}
+      onEvent={onKeycloakEvent}
+      onTokens={onKeycloakTokens}
+      initOptions={{
+        onLoad: "login-required",
+        pkceMethod: "S256",
+        silentCheckSsoRedirectUri:
+          window.location.origin + "/silent-check-sso.html",
+      }}>
+
+      <Admin
+        title="Unblock Health"
+        basename="/"
+        //customReducers={ReducerHub}
+        //customRoutes={customRoutes}
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+        dashboard={Dashboard}
+        loginPage={KeycloakLogin}
+        layout={Layout}
+        //logoutButton={LogoutButton}
+        i18nProvider={i18nProvider}
+        catchAll={PageNotFound}
+        disableTelemetry
+      >
+
         <>
           {/* <Resource name="requests" {...requests} />, */}
           <CustomRoutes>
-            <Route path="/test" element={<Configuration />} />
+            <Route path="/" element={<Configuration />} />
 
           </CustomRoutes>
         </>
 
-      }
-    </Admin>
+
+      </Admin>
+
+    </ReactKeycloakProvider>
   );
 };
 export default App;

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useKeycloak } from "@react-keycloak/web";
-import useTraces from "./useTraces";
+//import { useKeycloak } from "@react-keycloak/web";
+//import useTraces from "./useTraces";
 import { LoginUserSyncV1 } from "../service/keycloakQueries";
 import {
   CO_GROUP,
@@ -10,19 +10,20 @@ import {
   CO_ROLE_PATIENT,
   CO_ROLE_PPA,
 } from "../utils/roles";
-import { useDispatch } from "react-redux";
-import { catchActivity } from "../utils/analytics";
+//import { useDispatch } from "react-redux";
+import { catchActivity } from "../lib/universal/utils/analytics";
 import { userInfoAction } from "../configuration/actions/userInfoActions";
 import { userRoleInfoAction } from "../configuration/actions/userRoleInfoActions";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import secureLocalStorage from "react-secure-storage";
-import { decodeJwt } from "../utils/parseJwt";
-const { REACT_APP_BASE_URL } = process.env;
+import { decodeJwt } from "../lib/universal/utils/parseJwt";
+import { decodeToken } from "react-jwt";
+const { REACT_APP_BASE_URL } = import.meta.env;
 const useDashboard = () => {
-  const { keycloak } = useKeycloak();
-  const history = useHistory();
-  const { getTrace } = useTraces();
-  const dispatch = useDispatch();
+  // const { keycloak } = useKeycloak();
+  const navigate = useNavigate();
+  //const { getTrace } = useTraces();
+  //const dispatch = useDispatch();
   const [openBase, setOpenBase] = useState(false);
   const [openAdminBase, setOpenAdminBase] = useState(false);
   const [showEmailVerifiedModal, setShowEmailVerifiedModal] = useState(false);
@@ -43,18 +44,19 @@ const useDashboard = () => {
     });
   };
   const setRoles = () => {
-    getTrace("Token is received from keycloak", "ev-004", "Anonymous");
-    const userRoleFromKeycloak = keycloak.tokenParsed.realm_access.roles;
+    // getTrace("Token is received from keycloak", "ev-004", "Anonymous");
+    const tokenParsed: any = decodeToken(localStorage.getItem("access_token") || "");
+    const userRoleFromKeycloak = tokenParsed.realm_access.roles;
     const useRoles: string[] = [];
     let userRole = CO_ROLE_GUEST;
-    userRoleFromKeycloak.map((eachRole) => {
+    userRoleFromKeycloak.map((eachRole: string) => {
       useRoles.push(eachRole);
     });
     if (useRoles.length > 0) {
       const coExists = useRoles.includes(CO_GROUP);
       if (!coExists) {
-        getTrace("Login Failure", "ev-006", "Anonymous");
-        catchLoginActivity("Login Failure", keycloak.tokenParsed.sub, false);
+        // getTrace("Login Failure", "ev-006", "Anonymous");
+        catchLoginActivity("Login Failure", tokenParsed.sub, false);
         setOpenBase(true);
       } else {
         if (
@@ -64,20 +66,20 @@ const useDashboard = () => {
           useRoles.includes(CO_ROLE_ADMIN)
         ) {
           if (useRoles.includes(CO_ROLE_MRA)) {
-            const tokenParsed = decodeJwt(localStorage.getItem("access_token"));
-            if (tokenParsed.payload.groups?.length > 0) {
-              if (tokenParsed.payload.groups[0].split("/").length !== 3) {
+            const tokenParsed: any = decodeJwt(localStorage.getItem("access_token") || "");
+            if (tokenParsed.groups?.length > 0) {
+              if (tokenParsed.groups[0].split("/").length !== 3) {
                 setOpenAdminBase(true);
               } else {
                 userRole = CO_ROLE_MRA;
-                getTrace(
-                  "User Logged In succesfsully",
-                  "ev-005",
-                  keycloak.tokenParsed.email,
-                );
+                // getTrace(
+                //   "User Logged In succesfsully",
+                //   "ev-005",
+                //   tokenParsed.email,
+                // );
                 catchLoginActivity(
                   "Login Success",
-                  keycloak.tokenParsed.email,
+                  tokenParsed.email,
                   true,
                 );
                 localStorage.setItem("Loggedout", "false");
@@ -85,40 +87,39 @@ const useDashboard = () => {
                   //
                 });
                 secureLocalStorage.setItem("role", userRole);
-                dispatch(
-                  userInfoAction({
-                    id: keycloak.tokenParsed.sub,
-                    username: keycloak.tokenParsed.email,
-                    firstName: keycloak.tokenParsed.given_name,
-                    lastName: keycloak.tokenParsed.family_name,
-                    email: keycloak.tokenParsed.email,
-                    name: keycloak.tokenParsed.name,
-                    groups: "",
-                    role: userRole,
-                    emailVerified: keycloak.tokenParsed.email_verified,
-                    profilePicId: "",
-                  }),
-                );
+                // dispatch(
+                //   userInfoAction({
+                //     id: keycloak.tokenParsed.sub,
+                //     username: keycloak.tokenParsed.email,
+                //     firstName: keycloak.tokenParsed.given_name,
+                //     lastName: keycloak.tokenParsed.family_name,
+                //     email: keycloak.tokenParsed.email,
+                //     name: keycloak.tokenParsed.name,
+                //     groups: "",
+                //     role: userRole,
+                //     emailVerified: keycloak.tokenParsed.email_verified,
+                //     profilePicId: "",
+                //   }),
+                // );
 
-                dispatch(
-                  userRoleInfoAction({
-                    role: userRole,
-                  }),
-                );
+                // dispatch(
+                //   userRoleInfoAction({
+                //     role: userRole,
+                //   }),
+                // );
               }
-              if (keycloak.token && !openBase && !openAdminBase) {
-                if (keycloak.tokenParsed.email_verified === false) {
+              if (localStorage.getItem("access_token") && !openBase && !openAdminBase) {
+                if (tokenParsed.email_verified === false) {
                   setShowEmailVerifiedModal(true);
                 }
-                if (keycloak.tokenParsed.email_verified) {
-                  if (localStorage.getItem("url")) {
-                    history.push(
-                      localStorage
-                        .getItem("url")
-                        .replace(REACT_APP_BASE_URL, ""),
+                if (tokenParsed.email_verified) {
+                  let urlstr = localStorage.getItem("url")
+                  if (urlstr) {
+                    navigate(
+                      urlstr.replace(REACT_APP_BASE_URL, ""),
                     );
                   } else {
-                    history.push("/");
+                    navigate("/");
                   }
                   localStorage.removeItem("url");
                 }
@@ -127,14 +128,14 @@ const useDashboard = () => {
               setOpenAdminBase(true);
             }
           } else {
-            getTrace(
-              "User Logged In successfully",
-              "ev-005",
-              keycloak.tokenParsed.email,
-            );
+            // getTrace(
+            //   "User Logged In successfully",
+            //   "ev-005",
+            //   keycloak.tokenParsed.email,
+            // );
             catchLoginActivity(
               "Login Success",
-              keycloak.tokenParsed.email,
+              tokenParsed.email,
               true,
             );
             localStorage.setItem("Loggedout", "false");
@@ -152,45 +153,45 @@ const useDashboard = () => {
             }
             if (!openAdminBase) {
               secureLocalStorage.setItem("role", userRole);
-              dispatch(
-                userInfoAction({
-                  id: keycloak.tokenParsed.sub,
-                  username: keycloak.tokenParsed.email,
-                  firstName: keycloak.tokenParsed.given_name,
-                  lastName: keycloak.tokenParsed.family_name,
-                  email: keycloak.tokenParsed.email,
-                  name: keycloak.tokenParsed.name,
-                  groups: "",
-                  role: userRole,
-                  emailVerified: keycloak.tokenParsed.email_verified,
-                  profilePicId: "",
-                }),
-              );
-              dispatch(
-                userRoleInfoAction({
-                  role: userRole,
-                }),
-              );
+              // dispatch(
+              //   userInfoAction({
+              //     id: keycloak.tokenParsed.sub,
+              //     username: keycloak.tokenParsed.email,
+              //     firstName: keycloak.tokenParsed.given_name,
+              //     lastName: keycloak.tokenParsed.family_name,
+              //     email: keycloak.tokenParsed.email,
+              //     name: keycloak.tokenParsed.name,
+              //     groups: "",
+              //     role: userRole,
+              //     emailVerified: keycloak.tokenParsed.email_verified,
+              //     profilePicId: "",
+              //   }),
+              // );
+              // dispatch(
+              //   userRoleInfoAction({
+              //     role: userRole,
+              //   }),
+              // );
             }
-            if (keycloak.token && !openBase && !openAdminBase) {
-              if (keycloak.tokenParsed.email_verified === false) {
+            if (localStorage.getItem("access_token") && !openBase && !openAdminBase) {
+              if (tokenParsed.email_verified === false) {
                 setShowEmailVerifiedModal(true);
               }
-              if (keycloak.tokenParsed.email_verified) {
-                if (localStorage.getItem("url")) {
-                  history.push(
-                    localStorage.getItem("url").replace(REACT_APP_BASE_URL, ""),
+              if (tokenParsed.email_verified) {
+                let urlstr = localStorage.getItem("url");
+                if (urlstr) {
+                  navigate(urlstr.replace(REACT_APP_BASE_URL, ""),
                   );
                 } else {
-                  history.push("/");
+                  navigate("/");
                 }
                 localStorage.removeItem("url");
               }
             }
           }
         } else {
-          getTrace("Login Failure", "ev-006", "Anonymous");
-          catchLoginActivity("Login Failure", keycloak.tokenParsed.sub, false);
+          //getTrace("Login Failure", "ev-006", "Anonymous");
+          catchLoginActivity("Login Failure", tokenParsed.sub, false);
           setOpenBase(true);
         }
       }

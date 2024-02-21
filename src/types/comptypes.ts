@@ -4,12 +4,12 @@ export interface BaseModalProps {
     title : string,
     confirmAction :(r:boolean) => void;
     content : string,
-    subContent ?: [],
+    subContent ?: any[any],
     successButtonName: string,
     timeRemaining ?:any,
     lastReminderSendAt ?:any,
     type ?:string,
-    closeButtonName:string,
+    closeButtonName ?:string,
     feedbackFailedUploads ?:[],
     feedbackFailedSubTitle ?:string,
 }

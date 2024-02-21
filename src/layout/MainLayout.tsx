@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 // import { isCommentProviderIsCactusComment } from "../utils/comments";
 //import "typeface-roboto";
 // import { decodeJwt } from "../utils/parseJwt";
-import { keycloakAuthProvider } from 'ra-keycloak';
 
 import { CO_ROLE_MRA } from "../utils/roles";
 import { decodeJwt } from "../lib/universal/utils/parseJwt";
@@ -25,13 +24,15 @@ import { perPageMin } from "../lib/universal/utils/pageConstants";
 import emptySideBar from "./EmptySidebar";
 import { createContext } from 'react';
 import { UserProps, TokenProps } from "../types/comptypes";
+import { useKeycloak } from "@react-keycloak/web";
 
 
 const MainLayout = (props: LayoutProps): JSX.Element => {
+
     const navigate = useNavigate();
     const dataProviderBypass = useDataProvider();
     const setLocale = useSetLocale();
-    const keycloak = useAuthProvider();
+    const { keycloak } = useKeycloak();
 
     const [userInfo, setUserInfo] = React.useState<UserProps>({
         username: "",
@@ -84,7 +85,6 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
         }
     }, []);
     React.useEffect(() => {
-        // const value = keycloak.checkAuth()
         keycloak.refreshToken = localStorage.getItem("refresh_token");
         const tokenParsed: any = decodeToken(localStorage.getItem("access_token") || "");
         if (!ifAuthForm || tokenParsed) {
@@ -137,7 +137,8 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
     //     localStorage.getItem("Theme") === "dark" ? darkTheme : lightTheme,
     // );
 
-    const authenticated = localStorage.getItem("authState")
+    console.log("auth", keycloak.authenticated)
+
 
 
     return (
@@ -152,7 +153,7 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
             ) : (
                 ""
             )} */}
-            {(authenticated || ifAuthForm) && !loading && (
+            {(keycloak.authenticated || ifAuthForm) && !loading && (
                 <UserContext.Provider value={userInfo}>
                     <div style={{ fontFamily: "Roboto, sans-serif" }}>
                         <Layout

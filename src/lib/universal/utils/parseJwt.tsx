@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import { isExpired, decodeToken } from "react-jwt";
 export function decodeJwt(token: string) {
   console.log(jwt)
   try {

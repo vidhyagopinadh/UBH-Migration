@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import type { FC } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { Box, InputLabel, makeStyles } from "@material-ui/core";
+// import { useSelector } from "react-redux";
+
 import { BootstrapTooltip as Tooltip } from "../components/Tooltip";
 import type { MenuProps } from "react-admin";
 import {
@@ -11,27 +11,34 @@ import {
   useTranslate,
   usePermissions,
 } from "react-admin";
-import PatientIcon from "@material-ui/icons/Person";
+import PersonIcon from '@mui/icons-material/Person';
 import billing from "../views/billing";
 import requests from "../views/requests";
-import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
-import LibraryAddOutlinedIcon from "@material-ui/icons/LibraryAddOutlined";
+// import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import type { AppState } from "../types";
-import { catchActivity } from "../utils/analytics";
+import { catchActivity } from "../lib/universal/utils/analytics";
 import {
   CO_ROLE_ADMIN,
   CO_ROLE_MRA,
   CO_ROLE_PATIENT,
   CO_ROLE_PPA,
 } from "../utils/roles";
-import useTraces from "../hooks/useTraces";
+//import useTraces from "../hooks/useTraces";
 import { synapseLoginQuery } from "../service/keycloakQueries";
-import { isCommentProviderIsCactusComment } from "../utils/comments";
-import { Group } from "@material-ui/icons";
+import { isCommentProviderIsCactusComment } from "../lib/universal/utils/comments";
+import GroupIcon from '@mui/icons-material/Group';
 import { CorporateFare, GridView } from "@mui/icons-material";
+import { Box, InputLabel } from "@mui/material";
+import styled from "@emotion/styled";
 const { REACT_APP_SYNAPSE_URL, REACT_APP_BASE_URL } = process.env;
-const useStyles = makeStyles({
-  betaLabel: {
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import LibraryAddOutlinedIcon from '@mui/icons-material/LibraryAddOutlined';
+const PREFIX = 'Menu';
+const classes = {
+  betaLabel: `${PREFIX}-betaLabel`
+}
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.betaLabel}`]: {
     float: "right",
     backgroundColor: "#4169E1",
     color: "white",
@@ -42,13 +49,15 @@ const useStyles = makeStyles({
     textAlign: "center",
     fontSize: "10px",
   },
-});
+}))
+
 
 const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
   const translate = useTranslate();
   const { getTrace } = useTraces();
-  const classes = useStyles();
-  const userInfo = useSelector((state: AppState) => state.userInfoReducer);
+  //const classes = useStyles();
+  //const userInfo = useSelector((state: AppState) => state.userInfoReducer);
+  const userInfo: any = {}
   const { permissions } = usePermissions();
   const [cactusUrl, setCactusUrl] = useState("");
   const [emailNotVerified, setEmailNotVerified] = useState(false);
@@ -58,8 +67,8 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
   // const isXSmall = useMediaQuery((theme: Theme) =>
   //   theme.breakpoints.down("xs"),
   // );
-  const open = useSelector((state: AppState) => state.admin.ui.sidebarOpen);
-  useSelector((state: AppState) => state.theme);
+  // const open = useSelector((state: AppState) => state.admin.ui.sidebarOpen);
+  // useSelector((state: AppState) => state.theme);
   useEffect(() => {
     if (isCommentProviderIsCactusComment) {
       const loginToken = cactusUrl.split("=");
@@ -210,8 +219,8 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
             permissions === CO_ROLE_PATIENT
               ? translate("tooltip.feature_in_progress")
               : emailNotVerified
-              ? translate("tooltip.email_unverified")
-              : ""
+                ? translate("tooltip.email_unverified")
+                : ""
           }
         >
           <span>
@@ -246,8 +255,8 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
             permissions === CO_ROLE_PATIENT
               ? translate("tooltip.feature_in_progress")
               : emailNotVerified
-              ? translate("tooltip.email_unverified")
-              : ""
+                ? translate("tooltip.email_unverified")
+                : ""
           }
         >
           <span>
@@ -317,7 +326,7 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           primaryText={translate(`resources.invite.name`, {
             smart_count: 2,
           })}
-          leftIcon={<Group />}
+          leftIcon={<GroupIcon />}
           onClick={(e) => handleClick(e)}
           sidebarIsOpen={open}
           dense={dense}
@@ -350,7 +359,7 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           primaryText={translate(`resources.patients.patientList`, {
             smart_count: 2,
           })}
-          leftIcon={<PatientIcon />}
+          leftIcon={<PersonIcon />}
           onClick={(e) => handleClick(e)}
           sidebarIsOpen={open}
           dense={dense}
@@ -363,7 +372,7 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           primaryText={translate(`resources.patients.dependentList`, {
             smart_count: 2,
           })}
-          leftIcon={<PatientIcon />}
+          leftIcon={<PersonIcon />}
           onClick={(e) => handleClick(e)}
           sidebarIsOpen={open}
           dense={dense}
