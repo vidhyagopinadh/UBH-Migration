@@ -8,7 +8,6 @@ import {
   ListItem,
   Divider,
 } from "@material-ui/core";
-//import { makeStyles } from "@material-ui/core/styles";
 import { PatientContact } from "./patientContact";
 import { tommddyyyy } from "../../../../utils/dateFormator";
 import { useDataProvider } from "react-admin";
@@ -19,23 +18,8 @@ import { Tab, Tabs } from "@mui/material";
 import { titleCase } from "../../../../utils/titleCase";
 import { styled } from '@mui/material/styles';
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     backgroundColor: theme.palette.primary.light,
-//   },
-//   cardBottom: {
-//     marginBottom: "15px",
-//     backgroundColor: theme.palette.primary.light,
-//   },
-//   listItems: {
-//     "&.MuiListItem-gutters": {
-//       paddingLeft: 0,
-//       paddingRight: 0,
-//     },
-//   },
-// }));
 
-const PREFIX = 'OverviewPatient';
+const PREFIX = 'PRRPatient';
 const classes = {
   root: `${PREFIX}-root`,
   cardBottom: `${PREFIX}-cardBottom`,

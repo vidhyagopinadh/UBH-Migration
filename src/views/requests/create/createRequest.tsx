@@ -52,7 +52,7 @@ import { Info } from "@mui/icons-material";
 import "semantic-ui-css/semantic.min.css";
 import BaseModal from "../../../components/baseModal";
 import { REQUEST_MESSAGES } from "../../../utils/messages/requestMessages";
-import { ArrowDownward, ArrowUpward } from "@material-ui/icons";
+import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import moment from "moment";
 import ProviderView from "../../../components/providerView";
 import { useMutation } from "@apollo/react-hooks";

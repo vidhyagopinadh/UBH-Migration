@@ -8,32 +8,8 @@ import { useSelector } from "react-redux";
 import type { AppState, IRequestPayload } from "../../../../types";
 import { styled } from '@mui/material/styles';
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     [theme.breakpoints.down("md")]: {
-//       marginTop: "20px",
-//     },
-//   },
-//   label: {
-//     marginTop: theme.spacing(1),
-//   },
-//   shareButton: {
-//     backgroundColor: theme.palette.common.white,
-//     marginRight: theme.spacing(2),
-//   },
-//   shareIcon: {
-//     marginRight: theme.spacing(1),
-//   },
-//   applyButton: {
-//     color: theme.palette.common.white,
-//     backgroundColor: colors.green[600],
-//     "&:hover": {
-//       backgroundColor: colors.green[900],
-//     },
-//   },
-// }));
 
-const PREFIX = 'PatientRecordRequestHeader';
+const PREFIX = 'PRRHeader';
 
 const classes = {
   root: `${PREFIX}-root`,
@@ -70,7 +46,6 @@ const StyledDiv = styled('div')(({ theme }) => ({
 }))
 
 function Header({ request, ...rest }): JSX.Element {
-  //const classes = useStyles();
   const [requestSet, setRequestSet] = useState<IRequestPayload>({});
   const translate = useTranslate();
   const userInfoReducer = useSelector(

@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { PatientContact } from "./patientContact";
-import ListAltIcon from "@material-ui/icons/ListAlt";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import { tommddyyyy } from "./../../../../utils/dateFormator";
 import { useDataProvider, usePermissions } from "react-admin";
 import Activity from "./Activity";

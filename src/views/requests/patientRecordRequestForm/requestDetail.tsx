@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDataProvider, useLogin } from "react-admin";
 import { colors, Container, Divider, Tab, Tabs } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router";
 import Overview from "./Overview";
 import Header from "./Header";
@@ -19,47 +18,7 @@ import secureLocalStorage from "react-secure-storage";
 const { REACT_APP_GUEST_USERNAME, REACT_APP_GUEST_PASSWORD } = process.env;
 import { styled } from '@mui/material/styles';
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     paddingTop: theme.spacing(3),
-//     paddingBottom: theme.spacing(3),
-//   },
-//   tabs: {
-//     marginTop: theme.spacing(3),
-//   },
-//   divider: {
-//     backgroundColor: colors.grey[300],
-//   },
-//   alert: {
-//     marginTop: theme.spacing(3),
-//   },
-//   content: {
-//     marginTop: theme.spacing(3),
-//   },
-//   contentMain: {
-//     backgroundColor: "transparent",
-//     border: "0px solid #ffffff",
-//   },
-//   h6_title: {
-//     width: "55%",
-//     float: "left",
-//   },
-//   subtitle: {
-//     width: "40%",
-//     float: "left",
-//     marginLeft: "5%",
-//   },
-//   listitemStyle: {
-//     display: "inline-block !important",
-//     borderBottom: "1px solid #eaeaea !important",
-//   },
-//   listitemStyle2: {
-//     display: "inline-block !important",
-//     borderBottom: "unset !important",
-//   },
-// }));
-
-const PREFIX = 'RequestDetails';
+const PREFIX = 'PRRRequestDetails';
 const classes = {
   root: `${PREFIX}-root`,
   tabs: `${PREFIX}-tabs`,
@@ -118,7 +77,6 @@ export const RequestDetailComponent = (props): JSX.Element => {
   const dataProvider = useDataProvider();
   const { id, tab } = props;
   const history = useHistory();
- // const classes = useStyles();
   const login = useLogin();
   const [requestViewList, setRequestViewList] = useState<any>({});
   const [openBase, setOpenBase] = useState(false);

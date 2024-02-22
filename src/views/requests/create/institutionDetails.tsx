@@ -25,7 +25,7 @@ import {
   validateZipCode,
   validateCompanyName,
 } from "../../../utils/validator";
-import { Info } from "@material-ui/icons";
+import { Info } from "@mui/icons-material";
 import CardHeader from "./../../../components/cardHeader";
 import type {
   IInstitution,

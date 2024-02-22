@@ -17,7 +17,7 @@ import {
   validatePhone,
   validateString,
 } from "../../../utils/validator";
-import { AddCircle, Cancel } from "@material-ui/icons";
+import { AddCircle, Cancel } from "@mui/icons-material";
 import CardHeader from "./../../../components/cardHeader";
 import type { IContactDetails, IContactDetailsProps } from "../../../types";
 import { useTranslate } from "react-admin";

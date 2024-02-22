@@ -31,7 +31,7 @@ import {
 import ReviewForm from "../Activities/ReviewForm";
 import DenialForm from "../Activities/DenialForm";
 import { BootstrapTooltip as Tooltip } from "../../../../components/Tooltip";
-import { Info } from "@material-ui/icons";
+import { Info } from "@mui/icons-material";
 import moment from "moment";
 import DenialFormDetail from "../Activities/DenialFormDetail";
 import ContentGenerator from "./contentGenerator";

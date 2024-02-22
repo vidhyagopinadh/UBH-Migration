@@ -1,29 +1,11 @@
 import * as React from "react";
 import { Grid, Button, ButtonGroup } from "@material-ui/core";
-//import { makeStyles } from "@material-ui/core/styles";
-import CallOutlinedIcon from "@material-ui/icons/CallOutlined";
-import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
-import MailOutlinedIcon from "@material-ui/icons/MailOutlined";
+import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
+import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
+import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
 import { styled } from '@mui/material/styles';
 
-// const useStyles = makeStyles(() => ({
-//   root: {},
-//   buttongroup: {
-//     height: 30,
-//     width: "100%",
-//     color: "grey",
-//   },
-//   icon: {
-//     color: "grey",
-//   },
-//   button: {
-//     minWidth: 45,
-//     paddingTop: 10,
-//     width: "100%",
-//   },
-// }));
-
-const PREFIX = 'OverviewPatientContact';
+const PREFIX = 'PRRPatientContact';
 const classes = {
   root: `${PREFIX}-root`,
   buttongroup: `${PREFIX}-buttongroup`,
@@ -51,7 +33,6 @@ const StyledDiv = styled('div')(({ theme }) => ({
 }))
 
 export const PatientContact: React.FC = () => {
- // const classes = useStyles();
   return (
     <StyledDiv>
     <Grid container>

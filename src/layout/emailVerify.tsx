@@ -24,7 +24,7 @@ import {
   CancelRounded,
   ErrorRounded,
   WarningRounded,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,

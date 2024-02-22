@@ -2,51 +2,10 @@ import type { BaseSyntheticEvent } from "react";
 import React, { useState } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-//import { makeStyles } from "@material-ui/core/styles";
 import { Dialog, TextField, Typography, colors } from "@material-ui/core";
 import { styled } from '@mui/material/styles';
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     width: 960,
-//   },
-//   header: {
-//     padding: theme.spacing(3),
-//     maxWidth: 720,
-//     margin: "0 auto",
-//   },
-//   content: {
-//     padding: theme.spacing(0, 2),
-//     maxWidth: 720,
-//     margin: "0 auto",
-//   },
-//   helperText: {
-//     textAlign: "right",
-//     marginRight: 0,
-//   },
-//   author: {
-//     margin: theme.spacing(4, 0),
-//     display: "flex",
-//   },
-//   avatar: {
-//     marginRight: theme.spacing(2),
-//   },
-//   actions: {
-//     backgroundColor: colors.grey[100],
-//     padding: theme.spacing(2),
-//     display: "flex",
-//     justifyContent: "center",
-//   },
-//   applyButton: {
-//     color: theme.palette.common.white,
-//     backgroundColor: colors.green[600],
-//     "&:hover": {
-//       backgroundColor: colors.green[900],
-//     },
-//   },
-// }));
-
-const PREFIX = 'SuccessSnackbar';
+const PREFIX = 'PRRApplication';
 const classes = {
   root: `${PREFIX}-root`,
   header: `${PREFIX}-header`,
@@ -107,7 +66,6 @@ function Application({
   ...rest
 }): JSX.Element {
   const [value, setValue] = useState("");
-  //const classes = useStyles();
 
   const handleChange = (event: BaseSyntheticEvent): void => {
     event.persist();

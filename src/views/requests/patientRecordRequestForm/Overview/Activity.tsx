@@ -3,39 +3,13 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 //import { makeStyles } from "@material-ui/styles";
 import { Avatar, Card, Typography } from "@material-ui/core";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import DashboardIcon from "@material-ui/icons/DashboardOutlined";
-import ListAltIcon from "@material-ui/icons/ListAlt";
+import GetAppIcon from '@mui/icons-material/GetApp';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import DashboardIcon from '@mui/icons-material/DashboardOutlined';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import { styled } from '@mui/material/styles';
 
-// const useStyles = makeStyles(() => ({
-//   root: {
-//     display: "flex",
-//     alignItems: "center",
-//   },
-//   card: {
-//     flexGrow: 1,
-//     display: "flex",
-//     border: 0,
-//     marginLeft: "10px",
-//     alignItems: "center",
-//   },
-
-//   listItems: {
-//     "&.MuiListItem-gutters": {
-//       paddingLeft: 0,
-
-//       paddingRight: 0,
-//     },
-//   },
-//   date: {
-//     marginLeft: "auto",
-//     flexShrink: 0,
-//   },
-// }));
-
-const PREFIX = 'PatientRecordRequestHeader';
+const PREFIX = 'PRRActivity';
 
 const classes = {
   root: `${PREFIX}-root`,
@@ -71,7 +45,6 @@ const StyledDiv = styled('div')(({ theme }) => ({
 }))
 
 function Activity({ activity, className, ...rest }): JSX.Element {
-  const classes = useStyles();
 
   useEffect(() => {
     //

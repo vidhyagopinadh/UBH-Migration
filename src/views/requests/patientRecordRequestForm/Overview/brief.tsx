@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { makeStyles } from "@material-ui/styles";
 import {
   Button,
   Card,
@@ -37,43 +36,7 @@ import { compareObjects } from "../../../../utils/compareObjects";
 import { perPageList } from "../../../../utils/pageConstants";
 import { styled } from '@mui/material/styles';
 
-// const useStyles = makeStyles(() => ({
-//   root: {
-//     backgroundColor: "#FFFFFF",
-//     marginBottom: "15px",
-//   },
-//   h6_title: {
-//     width: "55%",
-//     float: "left",
-//     fontWeight: 600,
-//   },
-//   subtitle: {
-//     width: "40%",
-//     float: "left",
-//     marginLeft: "5%",
-//   },
-//   notes: {
-//     width: "100%",
-//     textAlign: "justify",
-//     fontWeight: 400,
-//     whiteSpace: "pre-line",
-//   },
-//   notesTitle: {
-//     width: "100%",
-//     fontWeight: 600,
-//   },
-//   listitemStyle: {
-//     display: "inline-block !important",
-//     borderBottom: "1px solid #eaeaea !important",
-//   },
-//   listitemStyle2: {
-//     display: "inline-block !important",
-//     borderBottom: "unset !important",
-//   },
-// }));
-
-
-const PREFIX = 'OverviewBrief';
+const PREFIX = 'PRRBrief';
 const classes = {
   root: `${PREFIX}-root`,
   h6_title: `${PREFIX}-h6_title`,
