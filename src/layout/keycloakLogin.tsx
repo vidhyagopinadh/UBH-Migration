@@ -33,7 +33,9 @@ const KeycloakLogin = (): JSX.Element => {
   const navigate = useNavigate();
   const { keycloakLogout } = useLogout();
   const dataProvider = useDataProvider();
-  const code: any = getUrlVars()["code"];
+  const urlVars: any = getUrlVars()
+  const code: any = urlVars["code"];
+  console.log(code)
   // const keycloakOptions = {
   //   loginHint: REACT_APP_KEYCLOAK_SOURCE,
   // };
@@ -58,6 +60,7 @@ const KeycloakLogin = (): JSX.Element => {
       keycloak.login()
     } else {
       if (access_token) {
+        console.log("set roles")
         setRoles();
       }
     }

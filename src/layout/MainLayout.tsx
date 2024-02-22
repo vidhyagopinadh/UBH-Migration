@@ -3,7 +3,7 @@ import * as React from "react";
 import type { LayoutProps } from "react-admin";
 import { Layout, Sidebar, useAuthProvider, useGetList, useSetLocale } from "react-admin";
 import AppBar from "./appBar";
-// import Menu from "./menu";
+import Menu from "./menu";
 // import { darkTheme, lightTheme } from "./themes";
 import { useDataProvider } from "react-admin";
 // import { userInfoAction } from "./../configuration/actions/userInfoActions";
@@ -24,6 +24,7 @@ import emptySideBar from "./EmptySidebar";
 import { createContext } from 'react';
 import { UserProps, TokenProps } from "../types/comptypes";
 import { useKeycloak } from "@react-keycloak/web";
+import { UserContext } from "../contexts";
 
 
 const MainLayout = (props: LayoutProps): JSX.Element => {
@@ -45,20 +46,6 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
         emailVerified: false,
         profilePicId: "",
     });
-
-    const UserContext = createContext<UserProps>({
-        username: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        name: "",
-        groups: "",
-        role: "",
-        id: "",
-        emailVerified: false,
-        profilePicId: "",
-    });
-
 
 
     // const { decodedToken, isExpired } = useJwt(token);
@@ -84,7 +71,7 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
         }
     }, []);
     React.useEffect(() => {
-        keycloak.refreshToken = localStorage.getItem("refresh_token");
+        // keycloak.refreshToken = localStorage.getItem("refresh_token");
         const tokenParsed: any = decodeToken(localStorage.getItem("access_token") || "");
         if (!ifAuthForm || tokenParsed) {
             const queryOption: any = {
@@ -158,8 +145,8 @@ const MainLayout = (props: LayoutProps): JSX.Element => {
                         <Layout
                             {...props}
                             appBar={ifAuthForm ? emptySideBar : AppBar}
-                        //sidebar={ifAuthForm ? emptySideBar : CustomSidebar}
-                        // menu={Menu}
+                            //sidebar={ifAuthForm ? emptySideBar : CustomSidebar}
+                            menu={Menu}
                         // theme={theme}
                         />
                     </div>

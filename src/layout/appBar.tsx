@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { forwardRef } from "react";
 import {
   AppBar,
@@ -15,7 +15,7 @@ import NotificationsPopover from "../components/NotificationsPopover";
 // import { makeStyles } from "@material-ui/core/styles";
 import logo from "../images/logo.png";
 import { perPageMax } from "../lib/universal/utils/pageConstants";
-import { Avatar, Badge, Button, IconButton, Toolbar } from "@mui/material";
+import { Avatar, Badge, Button, IconButton, Toolbar, Typography, useMediaQuery } from "@mui/material";
 import type { Theme } from "@mui/material";
 import {
   CO_NAME_GUEST,
@@ -41,6 +41,7 @@ import { useMutation } from "@apollo/client";
 //import useTraces from "../hooks/useTraces";
 import { styled } from '@mui/material/styles';
 import createNotificationRead from "../queries/createNotificationRead/createNotificationRead";
+import { UserContext } from "../contexts";
 
 
 const PREFIX = 'AppBar';
@@ -97,7 +98,6 @@ const ConfigurationMenu = forwardRef<any, any>((props, ref) => {
       primaryText={translate("pos.configuration")}
       leftIcon={<SettingsIcon />}
       onClick={props.onClick}
-      sidebarIsOpen
     />
   );
 });
@@ -120,7 +120,6 @@ const ProfileMenu = forwardRef<any, any>((props, ref) => {
         // }
         props.onClick();
       }}
-      sidebarIsOpen
     />
   );
 });
@@ -179,6 +178,7 @@ const CustomUserMenu = (props: any): JSX.Element => {
 const MyCustomIcon = () => {
   const dataProvider = useDataProvider();
   // const userInfo = useSelector((state: AppState) => state.userInfoReducer);
+  const userInfo = useContext(UserContext)
   const [fileResult, setFileResult] = useState(null || '');
   // useEffect(() => {
   //   if (userInfo.profilePicId) {
@@ -200,7 +200,7 @@ const MyCustomIcon = () => {
         getImagesByFileUploadId({
           fileName: data[0].fileName,
         }).then((res: Blob) => {
-          setFileResult(URL.createObjectURL(blobToFile(res, data[0].fileName)));
+          //setFileResult(URL.createObjectURL(blobToFile(res, data[0].fileName)));
         });
       }
     });
@@ -235,6 +235,7 @@ const CustomAppBar = (props: any): JSX.Element => {
   const [notificationsCount, setNotificationsCount] = useState(0);
   const dataProvider = useDataProvider();
   //const userInfo = useSelector((state: AppState) => state.userInfoReducer);
+  const userInfo = useContext(UserContext)
   const { permissions } = usePermissions();
   const [subscribeUpdateNotificationMutation] = useMutation(
     createNotificationRead,

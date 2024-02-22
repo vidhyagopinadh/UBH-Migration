@@ -13,6 +13,8 @@ import { Helmet } from "react-helmet";
 import { useKeycloak } from "@react-keycloak/web";
 import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
+import { UserProps, TokenProps } from "../types/comptypes";
+import { UserContext } from "../contexts";
 
 import { isCommentProviderIsCactusComment } from "../lib/universal/utils/comments"
 //import "typeface-roboto";
@@ -32,6 +34,20 @@ export default (props: LayoutProps): JSX.Element => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
   const dataProviderBypass = useDataProvider();
+
+  const [userInfo, setUserInfo] = React.useState<UserProps>({
+    username: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    name: "",
+    groups: "",
+    role: "",
+    id: "",
+    emailVerified: false,
+    profilePicId: "",
+  });
+
   const setLocale = useSetLocale();
   //const dispatch = useDispatch();
   const ifAuthForm =
@@ -65,13 +81,16 @@ export default (props: LayoutProps): JSX.Element => {
       };
       const fetchData = async () => {
         try {
+
           const { data } = await dataProviderBypass.getList(
             "personProfile",
             queryOption,
           );
-          if (data.length > 0) {
 
-            userInfoAction({
+          console.log(data);
+
+          if (data.length > 0) {
+            setUserInfo({
               username: tokenParsed.email,
               firstName: tokenParsed.given_name,
               lastName: tokenParsed.family_name,
@@ -86,6 +105,8 @@ export default (props: LayoutProps): JSX.Element => {
               emailVerified: tokenParsed.email_verified,
               profilePicId: data[0]?.profilePicId,
             })
+
+
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -107,7 +128,7 @@ export default (props: LayoutProps): JSX.Element => {
 
   return (
     <>
-      {isCommentProviderIsCactusComment ? (
+      {/* {isCommentProviderIsCactusComment ? (
         <Helmet>
           <script
             type="text/javascript"
@@ -116,17 +137,20 @@ export default (props: LayoutProps): JSX.Element => {
         </Helmet>
       ) : (
         ""
-      )}
+      )} */}
       {(keycloak.authenticated || ifAuthForm) && !loading && (
-        <div style={{ fontFamily: "Roboto, sans-serif" }}>
-          <Layout
-            {...props}
-            appBar={ifAuthForm ? emptySideBar : AppBar}
-            sidebar={ifAuthForm ? emptySideBar : CustomSidebar}
-            menu={Menu}
-          //theme={theme}
-          />
-        </div>
+        <UserContext.Provider value={userInfo}>
+
+          <div style={{ fontFamily: "Roboto, sans-serif" }}>
+            <Layout
+              {...props}
+              appBar={ifAuthForm ? emptySideBar : AppBar}
+              sidebar={ifAuthForm ? emptySideBar : CustomSidebar}
+              menu={Menu}
+            //theme={theme}
+            />
+          </div>
+        </UserContext.Provider>
       )}
     </>
   );

@@ -45,6 +45,7 @@ const useDashboard = () => {
   const setRoles = () => {
     // getTrace("Token is received from keycloak", "ev-004", "Anonymous");
     const tokenParsed: any = decodeToken(localStorage.getItem("access_token") || "");
+    console.log(tokenParsed)
     const userRoleFromKeycloak = tokenParsed.realm_access.roles;
     const useRoles: string[] = [];
     let userRole = CO_ROLE_GUEST;
@@ -86,6 +87,8 @@ const useDashboard = () => {
                   //
                 });
                 secureLocalStorage.setItem("role", userRole);
+
+
                 // dispatch(
                 //   userInfoAction({
                 //     id: keycloak.tokenParsed.sub,

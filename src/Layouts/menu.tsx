@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+//import React, { useEffect } from "react";
 import type { FC } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { useSelector } from "react-redux";
 
-import { BootstrapTooltip as Tooltip } from "../components/Tooltip";
+// import { BootstrapTooltip as Tooltip } from "../components/Tooltip";
 import type { MenuProps } from "react-admin";
 import {
+  Menu,
   DashboardMenuItem,
   MenuItemLink,
   useTranslate,
@@ -13,9 +14,6 @@ import {
 } from "react-admin";
 import PersonIcon from '@mui/icons-material/Person';
 import billing from "../views/billing";
-import requests from "../views/requests";
-// import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
-import type { AppState } from "../types";
 import { catchActivity } from "../lib/universal/utils/analytics";
 import {
   CO_ROLE_ADMIN,
@@ -23,13 +21,14 @@ import {
   CO_ROLE_PATIENT,
   CO_ROLE_PPA,
 } from "../utils/roles";
-//import useTraces from "../hooks/useTraces";
+import useTraces from "../hooks/useTraces";
 import { synapseLoginQuery } from "../service/keycloakQueries";
 import { isCommentProviderIsCactusComment } from "../lib/universal/utils/comments";
 import GroupIcon from '@mui/icons-material/Group';
 import { CorporateFare, GridView } from "@mui/icons-material";
-import { Box, InputLabel } from "@mui/material";
+import { Box, InputLabel, Tooltip, useMediaQuery } from "@mui/material";
 import styled from "@emotion/styled";
+import requests from "../views/requests";
 const { REACT_APP_SYNAPSE_URL, VITE_BASE_URL } = import.meta.env
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import LibraryAddOutlinedIcon from '@mui/icons-material/LibraryAddOutlined';
@@ -52,7 +51,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
 }))
 
 
-const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
+const MenuList: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
   const translate = useTranslate();
   // const { getTrace } = useTraces();
   //const classes = useStyles();
@@ -64,11 +63,15 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
   const [showIframe, setShowIframe] = useState(
     localStorage.getItem("cactus-token") ? false : true,
   );
+
+
   // const isXSmall = useMediaQuery((theme: Theme) =>
   //   theme.breakpoints.down("xs"),
   // );
-  // const open = useSelector((state: AppState) => state.admin.ui.sidebarOpen);
-  // useSelector((state: AppState) => state.theme);
+  //const open = useSelector((state: AppState) => state.admin.ui.sidebarOpen);
+
+  //useSelector((state: AppState) => state.theme);
+
   useEffect(() => {
     if (isCommentProviderIsCactusComment) {
       const loginToken = cactusUrl.split("=");
@@ -83,7 +86,7 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
       setEmailNotVerified(true);
     }
   }, []);
-  const handleClick = (event): void => {
+  const handleClick = (event: any): void => {
     const menuChange = "Menu Change to " + event.target.innerText;
     if (
       event.target.innerText ===
@@ -91,10 +94,10 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
         smart_count: 2,
       })
     ) {
-      if (permissions === CO_ROLE_PPA)
-        getTrace(" My Requests Clicked", "ev-040", userInfo.email);
-      else if (permissions === CO_ROLE_PATIENT)
-        getTrace(" My Requests Clicked", "ev-124", userInfo.email);
+      // if (permissions === CO_ROLE_PPA)
+      //   getTrace(" My Requests Clicked", "ev-040", userInfo.email);
+      // else if (permissions === CO_ROLE_PATIENT)
+      //   getTrace(" My Requests Clicked", "ev-124", userInfo.email);
     }
     if (
       event.target.innerText ===
@@ -102,42 +105,42 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
         smart_count: 2,
       })
     ) {
-      getTrace(" My Tasks Clicked", "ev-091", userInfo.email);
+      //getTrace(" My Tasks Clicked", "ev-091", userInfo.email);
     } else if (
       event.target.innerText ===
       translate(`resources.requests.createName`, {
         smart_count: 2,
       })
     ) {
-      if (permissions === CO_ROLE_PPA)
-        getTrace(" Medical Record Request Clicked", "ev-053", userInfo.email);
-      else if (permissions === CO_ROLE_PATIENT)
-        getTrace(" Medical Record Request Clicked", "ev-135", userInfo.email);
+      // if (permissions === CO_ROLE_PPA)
+      //   getTrace(" Medical Record Request Clicked", "ev-053", userInfo.email);
+      // else if (permissions === CO_ROLE_PATIENT)
+      //   getTrace(" Medical Record Request Clicked", "ev-135", userInfo.email);
     } else if (
       event.target.innerText ===
       translate(`resources.addendumRequests.createName`, {
         smart_count: 2,
       })
     ) {
-      getTrace(" Click on Create Addendum Request", "ev-064", userInfo.email);
+      // getTrace(" Click on Create Addendum Request", "ev-064", userInfo.email);
     } else if (
       event.target.innerText ===
       translate(`resources.billingRequest.create`, {
         smart_count: 2,
       })
     ) {
-      getTrace(
-        " Click on Create Billing/Insurance question request",
-        "ev-073",
-        userInfo.email,
-      );
+      // getTrace(
+      //   " Click on Create Billing/Insurance question request",
+      //   "ev-073",
+      //   userInfo.email,
+      // );
     } else if (
       event.target.innerText ===
       translate(`resources.patients.name`, {
         smart_count: 2,
       })
     ) {
-      getTrace(" Click on Patients", "ev-080", userInfo.email);
+      //getTrace(" Click on Patients", "ev-080", userInfo.email);
     }
     catchActivity({
       eventType: {
@@ -147,12 +150,13 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
       eventStatus: true,
     });
   };
+  console.log(permissions)
   return (
     <Menu>
 
-      <div id="dashboard-menu">
-        <DashboardMenuItem onClick={onMenuClick} />
-      </div>
+      <DashboardMenuItem onClick={onMenuClick} />
+
+
       {permissions === CO_ROLE_PPA && (
         <MenuItemLink
           to={`/requests`}
@@ -162,7 +166,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           id="requests-menu"
           leftIcon={<requests.icon />}
           onClick={(e) => handleClick(e)}
-          sidebarIsOpen={open}
           dense={dense}
         />
       )}
@@ -188,7 +191,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           id="requests-menu"
           leftIcon={<requests.icon />}
           onClick={(e) => handleClick(e)}
-          sidebarIsOpen={open}
           dense={dense}
         />
       )}
@@ -206,7 +208,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
               leftIcon={<PlaylistAddIcon />}
               disabled={emailNotVerified ? true : false}
               onClick={(e) => handleClick(e)}
-              sidebarIsOpen={open}
               dense={dense}
               id="mrr-menu"
             />
@@ -285,41 +286,7 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           </span>
         </Tooltip>
       )}
-      {/* <SubMenu
-        handleToggle={() => handleToggle("billingRequest")}
-        isOpen={state.billingRequest}
-        sidebarIsOpen={open}
-        name={translate(`resources.billingRequest.mainMenuName`, {
-          smart_count: 2,
-        })}
-        icon={<billing.mainMenuIcon />}
-        dense={dense}
-      >
-        <MenuItemLink
-          to={`/insuranceQuestionRequests`}
-          primaryText={translate(`resources.billingRequest.list`, {
-            smart_count: 2,
-          })}
-          leftIcon={<billing.listIcon />}
-          onClick={onMenuClick}
-          sidebarIsOpen={open}
-          style={{ whiteSpace: "break-spaces" }}
-          dense={dense}
-        />
-        {permissions !== "hospital_admin" && (
-          <MenuItemLink
-            to={`/billingRequestCreate`}
-            primaryText={translate(`resources.billingRequest.create`, {
-              smart_count: 2,
-            })}
-            leftIcon={<billing.createIcon />}
-            onClick={onMenuClick}
-            sidebarIsOpen={open}
-            style={{ whiteSpace: "break-spaces" }}
-            dense={dense}
-          />
-        )}
-      </SubMenu> */}
+
       {permissions !== CO_ROLE_ADMIN && (
         <MenuItemLink
           to={`/userInviteLists`}
@@ -328,7 +295,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           })}
           leftIcon={<GroupIcon />}
           onClick={(e) => handleClick(e)}
-          sidebarIsOpen={open}
           dense={dense}
           id="invite-menu"
         />
@@ -339,7 +305,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           primaryText={"Institution List"}
           leftIcon={<CorporateFare />}
           onClick={(e) => handleClick(e)}
-          sidebarIsOpen={open}
           dense={dense}
         />
       )}
@@ -349,7 +314,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           primaryText={"Integrations"}
           leftIcon={<GridView />}
           onClick={(e) => handleClick(e)}
-          sidebarIsOpen={open}
           dense={dense}
         />
       )}
@@ -361,7 +325,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           })}
           leftIcon={<PersonIcon />}
           onClick={(e) => handleClick(e)}
-          sidebarIsOpen={open}
           dense={dense}
           id="patient-menu"
         />
@@ -374,7 +337,6 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
           })}
           leftIcon={<PersonIcon />}
           onClick={(e) => handleClick(e)}
-          sidebarIsOpen={open}
           dense={dense}
           id="dependent-menu"
         />
@@ -401,19 +363,9 @@ const Menu: FC<MenuProps> = ({ onMenuClick, dense = false }) => {
             }}
           ></iframe>
         )}
-      {/* {isXSmall && (
-        <MenuItemLink
-          to="/configuration"
-          primaryText={translate("pos.configuration")}
-          leftIcon={<SettingsIcon />}
-          onClick={onMenuClick}
-          sidebarIsOpen={open}
-          dense={dense}
-          id="configuration"
-        />
-      )} */}
+
     </Menu>
   );
 };
 
-export default Menu;
+export default MenuList;
