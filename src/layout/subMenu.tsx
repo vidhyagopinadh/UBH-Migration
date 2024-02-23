@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { FC, ReactElement } from "react";
 import { Fragment } from "react";
-import ExpandMore from "@material-ui/icons/ExpandMore";
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import List from "@material-ui/core/List";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";

@@ -31,8 +31,8 @@ import {
 } from "../service/inviteQueries";
 import { AppBar, Autocomplete, Toolbar } from "@mui/material";
 import { InputLabel } from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Info } from "@material-ui/icons";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Info } from "@mui/icons-material";
 import BaseModal from "../components/baseModal";
 import SuccessModal from "../components/successModal";
 import { SIGNUP_CONSTANTS } from "../utils/messages/signupConstants";

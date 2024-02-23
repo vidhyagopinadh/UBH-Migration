@@ -32,9 +32,9 @@ import useLogout from "./hooks/useLogout";
 import Dashboard from './dashboard/dashboard';
 import KeycloakLogin from './layout/keycloakLogin';
 import i18nProvider from './i18nProvider';
-import PageNotFound from './Layouts/PageNotFound';
+import PageNotFound from './layout/PageNotFound';
 import BaseModal from './components/baseModal';
-import { Layout } from './Layouts/index';
+import { Layout } from './layout/index';
 import requests from './views/requests';
 
 const client = apolloConfig();

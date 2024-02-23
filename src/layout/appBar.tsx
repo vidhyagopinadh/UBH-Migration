@@ -1,22 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { forwardRef } from "react";
-import {
-  AppBar,
-  UserMenu,
-  MenuItemLink,
-  useTranslate,
-  useDataProvider,
-  usePermissions,
-  // usePermissions,
-} from "react-admin";
-import SettingsIcon from '@mui/icons-material/Settings';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import NotificationsPopover from "../components/NotificationsPopover";
-// import { makeStyles } from "@material-ui/core/styles";
-import logo from "../images/logo.png";
-import { perPageMax } from "../lib/universal/utils/pageConstants";
-import { Avatar, Badge, Button, IconButton, Toolbar, Typography, useMediaQuery } from "@mui/material";
+import { AppBar, UserMenu, useDataProvider, usePermissions, } from "react-admin";
+import LogoutModal from "../components/logoutModal";
+import { Avatar, Badge, IconButton, Toolbar, Typography, styled, useMediaQuery } from "@mui/material";
 import type { Theme } from "@mui/material";
+import { UserContext } from "../contexts";
+import { getImagesByFileUploadId } from "../service/restConfig";
+import logo from "../images/logo.png";
+import NotificationsPopover from "../components/NotificationsPopover";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import useLogout from "../hooks/useLogout";
+import { useMutation } from "@apollo/client";
 import {
   CO_NAME_GUEST,
   CO_ROLE_ADMIN,
@@ -24,26 +17,16 @@ import {
   CO_ROLE_MRA,
   CO_ROLE_PATIENT,
   CO_ROLE_PPA,
-} from "../utils/roles";
-import { Logout } from "@mui/icons-material";
-import secureLocalStorage from "react-secure-storage";
-import useLogout from "../hooks/useLogout";
-//import createNotificationRead from "../queries/createNotificationRead/createNotificationRead";
-//import type { AppState } from "../types";
-//import { useSelector } from "react-redux";
-import PersonIcon from '@mui/icons-material/Person';
-import { getImagesByFileUploadId } from "../service/restConfig";
-import { blobToFile } from "../lib/universal/utils/images/blobToFile";
-import LogoutModal from "../components/logoutModal";
-import { TOUR_CONSTANTS } from "../lib/universal/utils/tour/tourConstants";
-import Tour from "../components/joyride/tour";
-import { useMutation } from "@apollo/client";
-//import useTraces from "../hooks/useTraces";
-import { styled } from '@mui/material/styles';
+} from "../lib/universal/utils/roles"
 import createNotificationRead from "../queries/createNotificationRead/createNotificationRead";
-import { UserContext } from "../contexts";
+import secureLocalStorage from "react-secure-storage";
+import { perPageMax } from "../lib/universal/utils/pageConstants";
+import { blobToFile } from "../lib/universal/utils/images/blobToFile";
 
-
+const customStyle = {
+  zIndex: 999,
+  visibility: "visible",
+};
 const PREFIX = 'AppBar';
 const classes = {
   title: `${PREFIX}-title`,
@@ -88,92 +71,6 @@ const StyledDiv = styled('div')(({ theme }) => ({
     marginRight: "10px",
   },
 }))
-const ConfigurationMenu = forwardRef<any, any>((props, ref) => {
-  const translate = useTranslate();
-  ConfigurationMenu.displayName = "ConfigurationMenu";
-  return (
-    <MenuItemLink
-      ref={ref}
-      to="/configuration"
-      primaryText={translate("pos.configuration")}
-      leftIcon={<SettingsIcon />}
-      onClick={props.onClick}
-    />
-  );
-});
-const ProfileMenu = forwardRef<any, any>((props, ref) => {
-  const translate = useTranslate();
-  // const { getTrace } = useTraces();
-  // const userInfoReducer = useSelector(
-  //   (state: AppState) => state.userInfoReducer,
-  // );
-  ConfigurationMenu.displayName = "MyProfile";
-  return (
-    <MenuItemLink
-      ref={ref}
-      to="/profile/myAccount"
-      primaryText={translate("pos.profile")}
-      leftIcon={<PersonIcon />}
-      onClick={() => {
-        // if (userInfoReducer.role === CO_ROLE_PATIENT) {
-        //   getTrace("Select Profile", "ev-148", userInfoReducer.email);
-        // }
-        props.onClick();
-      }}
-    />
-  );
-});
-
-const LogoutMenu = forwardRef<any, any>(({ onClick, setOpenLogoutModal }) => {
-  LogoutMenu.displayName = "LogoutMenu";
-  // const classes = useStyles();
-  return (
-    <>
-      <Button
-        variant="text"
-        startIcon={<Logout className={classes.logoutButton} />}
-        onClick={() => {
-          setOpenLogoutModal(true);
-          onClick();
-        }}
-        fullWidth
-        style={{
-          color: "grey",
-          textTransform: "none",
-          fontSize: "14px",
-          fontFamily: "Arial",
-          textAlign: "left",
-        }}
-      >
-        Logout
-      </Button>
-    </>
-  );
-});
-
-const CustomUserMenu = (props: any): JSX.Element => {
-  const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
-  return (
-    <>
-      <UserMenu {...props} icon={<MyCustomIcon />}>
-        <ProfileMenu />
-        {/* <ConfigurationMenu /> */}
-        <LogoutMenu
-          setOpenLogoutModal={setOpenLogoutModal}
-          onClick={() => {
-            props.onClick();
-          }}
-        />
-      </UserMenu>
-      <LogoutModal
-        open={openLogoutModal}
-        onClose={() => {
-          setOpenLogoutModal(false);
-        }}
-      />
-    </>
-  );
-};
 
 const MyCustomIcon = () => {
   const dataProvider = useDataProvider();
@@ -199,8 +96,9 @@ const MyCustomIcon = () => {
       if (data.length > 0) {
         getImagesByFileUploadId({
           fileName: data[0].fileName,
-        }).then((res: Blob) => {
-          //setFileResult(URL.createObjectURL(blobToFile(res, data[0].fileName)));
+        }).then((res: any) => {
+          let fileobj: any = blobToFile(res, data[0].fileName)
+          setFileResult(URL.createObjectURL(fileobj));
         });
       }
     });
@@ -225,22 +123,46 @@ const MyCustomIcon = () => {
     </div>
   );
 };
+
+const CustomUserMenu = (props: any): JSX.Element => {
+  const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
+  return (
+    <>
+      <UserMenu {...props} icon={<MyCustomIcon />}>
+        {/* <ProfileMenu /> */}
+        {/* <ConfigurationMenu /> */}
+        {/* <LogoutMenu
+          setOpenLogoutModal={setOpenLogoutModal}
+          onClick={() => {
+            props.onClick();
+          }}
+        /> */}
+      </UserMenu>
+      <LogoutModal
+        open={openLogoutModal}
+        onClose={() => {
+          setOpenLogoutModal(false);
+        }}
+      />
+    </>
+  );
+};
 const CustomAppBar = (props: any): JSX.Element => {
-  //const classes = useStyles();
+
   const { keycloakLogout } = useLogout();
   const [openNotifications, setOpenNotifications] = useState(false);
   const notificationsRef = useRef(null);
   const [notifications, setNotifications] = useState([]);
-  const [unreadNotifications, setUnreadNotifications] = useState([]);
-  const [notificationsCount, setNotificationsCount] = useState(0);
+  // const [unreadNotifications, setUnreadNotifications] = useState([]);
+  // const [notificationsCount, setNotificationsCount] = useState(0);
   const dataProvider = useDataProvider();
   //const userInfo = useSelector((state: AppState) => state.userInfoReducer);
   const userInfo = useContext(UserContext)
-  const { permissions } = usePermissions();
-  const [subscribeUpdateNotificationMutation] = useMutation(
-    createNotificationRead,
-    {},
-  );
+  // const { permissions } = usePermissions();
+  // const [subscribeUpdateNotificationMutation] = useMutation(
+  //   createNotificationRead,
+  //   {},
+  // );
   const customStyle = {
     zIndex: 999,
     visibility: "visible",
@@ -265,17 +187,17 @@ const CustomAppBar = (props: any): JSX.Element => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  const handleNotificationsOpen = (): void => {
-    setOpenNotifications(true);
-    unreadNotifications.map((notification: any) => {
-      subscribeUpdateNotificationMutation({
-        variables: {
-          input: { requestLogId: notification.id },
-        },
-      });
-    });
-    setNotificationsCount(0);
-  };
+  // const handleNotificationsOpen = (): void => {
+  //   setOpenNotifications(true);
+  //   unreadNotifications.map((notification: any) => {
+  //     subscribeUpdateNotificationMutation({
+  //       variables: {
+  //         input: { requestLogId: notification.id },
+  //       },
+  //     });
+  //   });
+  //   setNotificationsCount(0);
+  // };
   const handleNotificationsClose = (): void => {
     setOpenNotifications(false);
   };
@@ -288,15 +210,19 @@ const CustomAppBar = (props: any): JSX.Element => {
         notificationsUnread.push(value);
       }
     });
-    setNotificationsCount(notificationsUnread.length);
-    setUnreadNotifications(notificationsUnread);
+    // setNotificationsCount(notificationsUnread.length);
+    // setUnreadNotifications(notificationsUnread);
   };
   useEffect(() => {
     if (!mounted) {
+      console.log(1111111111111)
       if (localStorage.getItem("User") === CO_NAME_GUEST) {
         keycloakLogout();
       }
       if (!ROLES.includes(String(secureLocalStorage.getItem("role")))) {
+        console.log(33333333333)
+        console.log(secureLocalStorage.getItem("role"))
+
         keycloakLogout();
       }
     }
@@ -341,65 +267,36 @@ const CustomAppBar = (props: any): JSX.Element => {
         id="scrollable-app-bar"
         userMenu={<CustomUserMenu />}
       >
+
         <div style={{ display: "flex" }}>
           <img className={"appLogo"} alt="Demos" src={logo} />
-          {/* <Typography
-            variant="h6"
-            color="inherit"
-            className={classes.title}
-            id="react-admin-title"
-          /> */}
         </div>
         <span className={classes.spacer} />
-        {userInfo.role === CO_ROLE_PATIENT ? (
-          <Tour
-            tourSteps={TOUR_CONSTANTS.Dashboard["patient"]}
-            type="intro_tour"
+
+        {/* {permissions !== CO_ROLE_ADMIN && ( */}
+        <Toolbar className={classes.denseToolbar}>
+          <NotificationsPopover
+            anchorEl={notificationsRef.current}
+            notifications={notifications}
+            onClose={handleNotificationsClose}
+            open={openNotifications}
           />
-        ) : userInfo.role === CO_ROLE_PPA ? (
-          <Tour tourSteps={TOUR_CONSTANTS.Dashboard["ppa"]} type="intro_tour" />
-        ) : userInfo.role === CO_ROLE_MRA ? (
-          <Tour tourSteps={TOUR_CONSTANTS.Dashboard["mra"]} type="intro_tour" />
-        ) : (
-          ""
-        )}
-
-        {/* {activityUrls.search(REACT_APP_REQUEST_URL) >= 0 && (
-          <Tour tourSteps={TOUR_CONSTANTS["request"]} />
-        )}
-
-        {activityUrls.search(REACT_APP_MRR_URL) >= 0 && (
-          <Tour tourSteps={TOUR_CONSTANTS["mrr"]} />
-        )}
-        {activityUrls.search(REACT_APP_ARR_URL) >= 0 && (
-          <Tour tourSteps={TOUR_CONSTANTS["arr"]} />
-        )}
-        {activityUrls.search(REACT_APP_BRR_URL) >= 0 && (
-          <Tour tourSteps={TOUR_CONSTANTS["brr"]} />
-        )} */}
-        {permissions !== CO_ROLE_ADMIN && (
-          <Toolbar className={classes.denseToolbar}>
-            <NotificationsPopover
-              anchorEl={notificationsRef.current}
-              notifications={notifications}
-              onClose={handleNotificationsClose}
-              open={openNotifications}
-            />
-            <IconButton
-              onClick={handleNotificationsOpen}
-              ref={notificationsRef}
-              size="small"
-              style={{ padding: 0 }}
-              id="notification"
-            >
-              <Badge color="primary" badgeContent={notificationsCount}>
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        )}
+          {/* <IconButton
+            onClick={handleNotificationsOpen}
+            ref={notificationsRef}
+            size="small"
+            style={{ padding: 0 }}
+            id="notification"
+          >
+            <Badge color="primary" badgeContent={notificationsCount}>
+              <NotificationsIcon />
+            </Badge>
+          </IconButton> */}
+        </Toolbar>
+        {/* )} */}
       </AppBar>
     </StyledDiv>
+
   );
 };
 

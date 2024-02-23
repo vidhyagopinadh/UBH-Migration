@@ -1,33 +1,26 @@
 import * as React from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom"
 import type { LayoutProps } from "react-admin";
-import { Layout, Sidebar, useSetLocale } from "react-admin";
+import { Layout, Sidebar, useLocaleState } from "react-admin";
 import AppBar from "./appBar";
+import CustomSidebar from "./CustomSidebar";
 import Menu from "./menu";
-import { darkTheme, lightTheme } from "./themes";
-import { useDataProvider } from "react-admin";
-import { userInfoAction } from "./../configuration/actions/userInfoActions";
-// import Feedback from "../components/feedback/index";
-import { perPageMin } from "../lib/universal/utils/pageConstants";
-import { Helmet } from "react-helmet";
 import { useKeycloak } from "@react-keycloak/web";
+import { useDataProvider } from "react-admin";
+import { decodeToken } from "react-jwt";
+import { perPageMin } from "../lib/universal/utils/pageConstants";
+import { UserProps } from "../types/comptypes";
 import secureLocalStorage from "react-secure-storage";
-import { useNavigate } from "react-router-dom";
-import { UserProps, TokenProps } from "../types/comptypes";
-import { UserContext } from "../contexts";
+import { CO_ROLE_MRA } from "../lib/universal/utils/roles";
 
-import { isCommentProviderIsCactusComment } from "../lib/universal/utils/comments"
-//import "typeface-roboto";
-// import { decodeJwt } from "../lib/universal/utils/parseJwt";
-import { CO_ROLE_MRA } from "../utils/roles";
-import { isExpired, decodeToken } from "react-jwt";
 
-const CustomSidebar = (props: any): JSX.Element => (
-  <>
-    {/* <Feedback page="login" /> */}
-    <Sidebar {...props} size={200} />
-  </>
-);
+// const CustomSidebar = (props: any): JSX.Element => (
+//   <>
+//     {/* <Feedback page="login" /> */}
+//     <Sidebar {...props} size={200} />
+//   </>
+// );
+
 const emptySideBar = (): JSX.Element => <></>;
 
 export default (props: LayoutProps): JSX.Element => {
@@ -48,8 +41,7 @@ export default (props: LayoutProps): JSX.Element => {
     profilePicId: "",
   });
 
-  const setLocale = useSetLocale();
-  //const dispatch = useDispatch();
+  const [locale, setLocale] = useLocaleState();
   const ifAuthForm =
     window.location.href.includes("authorizationForm") ||
     window.location.href.includes("patientRequests") ||
@@ -58,9 +50,11 @@ export default (props: LayoutProps): JSX.Element => {
   const [loading, setLoading] = React.useState(ifAuthForm ? false : true);
   React.useEffect(() => {
     if (!localStorage.getItem("refresh_token") && !ifAuthForm) {
+      localStorage.clear()
       navigate("/login");
     }
   }, []);
+
   React.useEffect(() => {
     if (
       !window.location.href.includes("login") &&
@@ -70,7 +64,7 @@ export default (props: LayoutProps): JSX.Element => {
     }
   }, []);
   React.useEffect(() => {
-    keycloak.refreshToken = localStorage.getItem("refresh_token");
+    // keycloak.refreshToken = localStorage.getItem("refresh_token");
 
     const tokenParsed: any = decodeToken(localStorage.getItem("access_token") || "");
     if (!ifAuthForm || tokenParsed?.payload) {
@@ -120,12 +114,6 @@ export default (props: LayoutProps): JSX.Element => {
         : setLocale("en");
     }
   }, []);
-
-  // const theme = useSelector(() =>
-  //   localStorage.getItem("Theme") === "dark" ? darkTheme : lightTheme,
-  // );
-  const theme = lightTheme
-
   return (
     <>
       {/* {isCommentProviderIsCactusComment ? (
@@ -139,19 +127,17 @@ export default (props: LayoutProps): JSX.Element => {
         ""
       )} */}
       {(keycloak.authenticated || ifAuthForm) && !loading && (
-        <UserContext.Provider value={userInfo}>
-
-          <div style={{ fontFamily: "Roboto, sans-serif" }}>
-            <Layout
-              {...props}
-              appBar={ifAuthForm ? emptySideBar : AppBar}
-              sidebar={ifAuthForm ? emptySideBar : CustomSidebar}
-              menu={Menu}
-            //theme={theme}
-            />
-          </div>
-        </UserContext.Provider>
+        <div style={{ fontFamily: "Roboto, sans-serif" }}>
+          <Layout
+            {...props}
+            appBar={ifAuthForm ? emptySideBar : AppBar}
+            sidebar={ifAuthForm ? emptySideBar : CustomSidebar}
+            menu={Menu}
+          //theme={theme}
+          />
+        </div>
       )}
+
     </>
   );
 };
