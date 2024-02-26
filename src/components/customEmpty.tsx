@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Typography, Container, Button } from "@material-ui/core";
 import emptyDisplayImage from "../images/emptyImage.png";
 import patientDisplayImage from "../images/patient.png";
 import inviteDisplayImage from "../images/invite.png";
@@ -11,6 +10,7 @@ import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
 import type { AppState } from "../types";
 import { CO_ROLE_MRA } from "../utils/roles";
+import { Button, Container, Typography } from "@mui/material";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -45,7 +45,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function CustomEmpty({ type }) {
+function CustomEmpty({ type }: any) {
   const classes = useStyles();
   const history = useHistory();
   const userInfoReducer = useSelector(

@@ -176,7 +176,7 @@ const FilterSidebar = ({ type = null }): JSX.Element => {
   );
 };
 export const RequestList = (props): JSX.Element => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const listStyles = useListStyles();
   const translate = useTranslate();
   const [showBanner, setShowBanner] = React.useState(false);
@@ -221,10 +221,10 @@ export const RequestList = (props): JSX.Element => {
     value: string,
   ): void => {
     if (value === "myself") {
-      history.push("/myRequests");
+      navigate("/myRequests");
       setCurrTab("myself");
     } else {
-      history.push("/requestsOnBehalf");
+      navigate("/requestsOnBehalf");
       setCurrTab("behalf");
     }
   };
