@@ -36,6 +36,8 @@ import PageNotFound from './layout/PageNotFound';
 import BaseModal from './components/baseModal';
 import { Layout } from './layout/index';
 import requests from './views/requests';
+import invite from "./views/invite";
+
 import { CO_ROLE_ADMIN } from './lib/universal/utils/roles';
 
 const client = apolloConfig();
@@ -202,7 +204,7 @@ const App = () => {
                 ? [
                   <Resource name="myRequests" {...requests} />,
                   <Resource name="requestsOnBehalf" {...requests} />,
-                  // <Resource name="userInviteLists" {...invite} />,
+                  <Resource name="userInviteLists" {...invite} />,
                   // <Resource name="dependents" {...dependents} />,
                 ]
                 : null,

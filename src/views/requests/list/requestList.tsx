@@ -29,28 +29,99 @@ import LinearProgressWithLabel from "../../../components/linearProgressWithLabel
 import { Typography, Box, Tabs, Divider, Grid, Card, CardContent, Container } from "@mui/material";
 import useRequestList from "./useRequestList";
 import { styled } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
+import Add from "@mui/icons-material/Add";
+import Assignment from "@mui/icons-material/Assignment";
 
 const PREFIX = 'RequestDetails';
 const classes = {
   root: `${PREFIX}-root`,
-  content: `${PREFIX}-content`,
+  listStyle: `${PREFIX}-listStyle`,
+  addIcon: `${PREFIX}-addIcon`,
+  createButton: `${PREFIX}-createButton`,
+  tab: `${PREFIX}-tab`,
+  icon: `${PREFIX}-icon`,
+  headerVal: `${PREFIX}-headerVal`,
   header: `${PREFIX}-header`,
+  title: `${PREFIX}-title`,
+  actions: `${PREFIX}-actions`,
+  sortButton: `${PREFIX}-sortButton`,
+  paginate: `${PREFIX}-paginate`,
 }
 
 const StyledDiv = styled('div')(({ theme }) => ({
   [`&.${classes.root}`]: {
-    border: "0px solid #ffffff",
   },
-  [`& .${classes.content}`]: {
-    backgroundColor: "transparent",
-    border: "0px solid #ffffff",
+  [`& .${classes.listStyle}`]: {
+    backgroundColor: "unset !important",
+  },
+  [`& .${classes.addIcon}`]: {
+    marginRight: theme.spacing(1),
+  },
+  [`&.${classes.createButton}`]: {
+    "&:hover": {
+      backgroundColor: "#ffffff",
+    },
+    float: "right",
+    marginTop: "15px",
+  },
+  [`& .${classes.tab}`]: {
+    display: "flex",
+    alignItems: "center",
+  },
+  [`& .${classes.icon}`]: {
+    marginRight: "5px",
+  },
+  [`&.${classes.headerVal}`]: {
+    backgroundColor: "#ccc",
   },
   [`& .${classes.header}`]: {
-    backgroundColor: "Lavender",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    marginBottom: theme.spacing(2),
+  },
+  [`& .${classes.title}`]: {
+    position: "relative",
+    "&:after": {
+      position: "absolute",
+      bottom: -8,
+      left: 0,
+      content: '" "',
+      height: 3,
+      width: 48,
+      backgroundColor: theme.palette.primary.main,
+    },
+  },
+  [`&.${classes.actions}`]: {
+    display: "flex",
+    alignItems: "center",
+  },
+  [`& .${classes.sortButton}`]: {
+    textTransform: "none",
+    letterSpacing: 0,
+  },
+  [`& .${classes.paginate}`]: {
+    display: "flex",
+    justifyContent: "center",
   },
 
 }))
 
+
+const useListStyles = makeStyles({
+  content: {
+    backgroundColor: "transparent",
+    border: "0px solid #ffffff",
+  },
+  root: {
+    border: "0px solid #ffffff",
+  },
+  header: {
+    backgroundColor: "Lavender",
+  },
+});
 // const Card = withStyles((theme) => ({
 //   root: {
 //     [theme.breakpoints.up("sm")]: {
@@ -65,16 +136,29 @@ const StyledDiv = styled('div')(({ theme }) => ({
 //   },
 // }))(MuiCard);
 
-export const CommentGrid = ({ ids, data, basePath }): JSX.Element => {
+export const CommentGrid = ({ ids }: any): JSX.Element => {
   const { StyledDiv } = useRequestList();
-
-  const classes = useStyles();
+  const [mode, setMode] = useState("grid");
   const { permissions } = usePermissions();
-  const { getTrace } = useTraces();
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
-
+  // const { getTrace } = useTraces();
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
+  const userInfoReducer: any = {}
+  useEffect(() => {
+    setMode("grid");
+    // if (permissions === CO_ROLE_PPA) {
+    //   getTrace(" All Requests listed.(PPA)", "ev-041", userInfoReducer.email);
+    // } else if (permissions === CO_ROLE_MRA) {
+    //   getTrace(" All Requests listed.(MRA)", "ev-092", userInfoReducer.email);
+    // } else if (permissions === CO_ROLE_PATIENT) {
+    //   getTrace(
+    //     " All Requests listed.(Patient)",
+    //     "ev-125",
+    //     userInfoReducer.email,
+    //   );
+    // }
+  }, [permissions]);
   const [progress, setProgress] = React.useState(10);
 
   useEffect(() => {
@@ -101,7 +185,7 @@ export const CommentGrid = ({ ids, data, basePath }): JSX.Element => {
             Showing {ids.length > 0 ? ids.length : 0} request(s)
           </Typography>
           <Grid container style={{ marginTop: 20 }} id="requests">
-            {ids.map((d) => (
+            {ids.map((d: any) => (
               <Grid
                 item
                 key={d.id}
@@ -150,9 +234,10 @@ const FilterSidebar = ({ type = null }): JSX.Element => {
     },
 
   }));
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
+  const userInfoReducer: any = {};
   //const classes = useStyles();
   return (
     <Root>
@@ -169,7 +254,7 @@ const FilterSidebar = ({ type = null }): JSX.Element => {
     </Root>
   );
 };
-export const RequestList = (props): JSX.Element => {
+export const RequestList = (props: any): JSX.Element => {
   const navigate = useNavigate();
   const listStyles = useListStyles();
   const translate = useTranslate();
@@ -182,9 +267,10 @@ export const RequestList = (props): JSX.Element => {
     { id: "0", value: "myself", label: "My Requests" },
     { id: "1", value: "behalf", label: "Requests on My Behalf" },
   ];
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
+  const userInfoReducer: any = {}
   const [emailNotVerified, setEmailNotVerified] = useState(false);
 
   useEffect(() => {
