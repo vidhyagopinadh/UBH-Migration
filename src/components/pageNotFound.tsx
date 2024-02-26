@@ -1,9 +1,8 @@
 import React from "react";
 import clsx from "clsx";
 
-import { Typography } from "@material-ui/core";
 import placeHolderImage from "../images/access-denied.png";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
