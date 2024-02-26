@@ -30,16 +30,11 @@ import { Typography, Box, Tabs, Divider, Grid, Card, CardContent, Container } fr
 import useRequestList from "./useRequestList";
 import { styled } from '@mui/material/styles';
 
-
-
-
-
 const PREFIX = 'RequestDetails';
 const classes = {
   root: `${PREFIX}-root`,
   content: `${PREFIX}-content`,
   header: `${PREFIX}-header`,
-
 }
 
 const StyledDiv = styled('div')(({ theme }) => ({
@@ -55,7 +50,6 @@ const StyledDiv = styled('div')(({ theme }) => ({
   },
 
 }))
-
 
 // const Card = withStyles((theme) => ({
 //   root: {

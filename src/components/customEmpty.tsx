@@ -1,19 +1,29 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
 import emptyDisplayImage from "../images/emptyImage.png";
 import patientDisplayImage from "../images/patient.png";
 import inviteDisplayImage from "../images/invite.png";
 import integrationImage from "../images/integration.png";
 import noResultsImage from "../images/noResultsFound.png";
-import { Add } from "@material-ui/icons";
-import { useHistory } from "react-router";
-import { useSelector } from "react-redux";
-import type { AppState } from "../types";
-import { CO_ROLE_MRA } from "../utils/roles";
-import { Button, Container, Typography } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from "react-router-dom";
+//import { useSelector } from "react-redux";
+//import type { AppState } from "../types";
+import { CO_ROLE_MRA } from "../lib/universal/utils/roles";
+import { Button, Container, Typography, styled } from "@mui/material";
 
-const useStyles = makeStyles(() => ({
-  root: {
+
+const PREFIX = 'CustomEmpty';
+const classes = {
+  root: `${PREFIX}-root`,
+  title: `${PREFIX}-title`,
+  imageContainer: `${PREFIX}-imageContainer`,
+  image: `${PREFIX}-image`,
+  button: `${PREFIX}-button`,
+}
+
+
+const StyledDiv = styled('div')(() => ({
+  [`&.${classes.root}`]: {
     padding: "5px",
     paddingTop: "40px",
     display: "flex",
@@ -23,35 +33,37 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     alignItems: "center",
   },
-  title: {
+  [`& .${classes.title}`]: {
     fontSize: "38px",
     marginBottom: "15px",
   },
-  imageContainer: {
+  [`& .${classes.imageContainer}`]: {
     marginTop: "10px",
     marginBottom: "10px",
     display: "flex",
     justifyContent: "center",
   },
-  image: {
+  [`& .${classes.image}`]: {
     marginTop: 10,
   },
-  button: {
+  [`& .${classes.button}`]: {
     flex: "1",
     minWidth: "30%",
     textTransform: "none",
     fontSize: "16px",
     marginTop: "10px",
   },
-}));
+
+}))
 
 function CustomEmpty({ type }: any) {
-  const classes = useStyles();
-  const history = useHistory();
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
-  const emptyContent = {
+
+  const navigate = useNavigate();
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
+  const userInfoReducer = {}
+  const emptyContent: any = {
     myself: {
       title: "No requests have been submitted yet!",
       image: emptyDisplayImage,
@@ -86,28 +98,31 @@ function CustomEmpty({ type }: any) {
     },
   };
   return (
-    <Container className={classes.root}>
-      <div className={classes.imageContainer}>
-        <img alt="" className={classes.image} src={emptyContent[type].image} />
-      </div>
-      <Typography align="center" variant="h5">
-        {emptyContent[type].title}
-      </Typography>
-      {(type === "myself" || type === "behalf") &&
-        userInfoReducer.role !== CO_ROLE_MRA && (
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => {
-              history.push("/requestCreate");
-            }}
-            startIcon={<Add />}
-          >
-            Create your first request
-          </Button>
-        )}
-    </Container>
+    <StyledDiv>
+      <Container className={classes.root}>
+        <div className={classes.imageContainer}>
+          <img alt="" className={classes.image} src={emptyContent[type].image} />
+        </div>
+        <Typography align="center" variant="h5">
+          {emptyContent[type].title}
+        </Typography>
+        {(type === "myself" || type === "behalf") &&
+          userInfoReducer.role !== CO_ROLE_MRA && (
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={() => {
+                navigate("/requestCreate");
+              }}
+              startIcon={<AddIcon />}
+            >
+              Create your first request
+            </Button>
+          )}
+      </Container>
+    </StyledDiv>
+
   );
 }
 

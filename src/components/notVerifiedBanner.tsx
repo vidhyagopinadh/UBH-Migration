@@ -1,10 +1,19 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import { IconButton, Typography } from "@material-ui/core";
-import { Close, Error } from "@material-ui/icons";
+import CloseIcon from '@mui/icons-material/Close';
+import ErrorIcon from '@mui/icons-material/Error';
+import { IconButton, Typography, styled } from "@mui/material";
 
-const useStyles = makeStyles(() => ({
-  root: {
+
+const PREFIX = 'NotVerifiedBanner';
+const classes = {
+  root: `${PREFIX}-root`,
+  close: `${PREFIX}-close`,
+  icon: `${PREFIX}-icon`,
+  text: `${PREFIX}-text`,
+}
+
+const StyledDiv = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
     position: "relative",
     borderLeft: "5px solid  #FF5733 ",
     backgroundColor: "#FFFFE0",
@@ -12,37 +21,37 @@ const useStyles = makeStyles(() => ({
     padding: "10px",
     color: "#585858",
   },
-  close: {
+  [`& .${classes.close}`]: {
     position: "absolute",
     top: "0px",
     right: "0px",
     color: "black",
     padding: "10px",
   },
-  icon: {
+  [`& .${classes.icon}`]: {
     color: "#FF5733",
-    marginRight: "10px",
+    marginRight: "10px"
   },
-  text: {
+  [`& .${classes.text}`]: {
     color: "#FF5733",
     fontSize: "14px",
   },
-}));
 
-function NotVerifiedBanner({ setShowBanner }) {
-  const classes = useStyles();
+}))
+
+function NotVerifiedBanner({ setShowBanner }: any) {
   return (
-    <div className={classes.root}>
+    <StyledDiv className={classes.root}>
       <IconButton
         onClick={() => {
           setShowBanner(false);
         }}
         className={classes.close}
       >
-        <Close style={{ fontSize: "18px" }} />
+        <CloseIcon style={{ fontSize: "18px" }} />
       </IconButton>
       <div style={{ display: "flex" }}>
-        <Error className={classes.icon} />
+        <ErrorIcon className={classes.icon} />
         <Typography variant="h6" className={classes.text}>
           Your email is not verified yet! Please verify your email to access the
           full features. <br></br>
@@ -56,7 +65,7 @@ function NotVerifiedBanner({ setShowBanner }) {
           </ol>
         </Typography>
       </div>
-    </div>
+    </StyledDiv>
   );
 }
 

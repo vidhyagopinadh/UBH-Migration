@@ -1,6 +1,6 @@
 import React from "react";
-import { Box, LinearProgress } from "@material-ui/core";
-import type { LinearProgressProps } from "@material-ui/core";
+import type { LinearProgressProps } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
 export default function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number },
 ): JSX.Element {
