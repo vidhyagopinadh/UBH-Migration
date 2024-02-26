@@ -1,9 +1,12 @@
-import { InputAdornment, TextField } from "@material-ui/core";
-import { Close } from "@material-ui/icons";
+//import { InputAdornment, TextField } from "@material-ui/core";
+import { Close } from "@mui/icons-material";
+import { InputAdornment,TextField } from "@mui/material";
 import { GridSearchIcon } from "@mui/x-data-grid";
+//import { DataGrid } from '@mui/x-data-grid';
+
 import React, { useState } from "react";
 import type { BaseSyntheticEvent } from "react";
-const CustomFilter = ({ setFilterValue, fieldName }) => {
+const CustomFilter = ({ setFilterValue, fieldName }: { setFilterValue: (value: string) => void, fieldName: string }) => {
   const [searchText, setSearchText] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const handleSearch = () => {
@@ -30,7 +33,7 @@ const CustomFilter = ({ setFilterValue, fieldName }) => {
       <TextField
         variant="filled"
         onChange={handleChange}
-        onKeyPress={handleKeyPress}
+        onKeyDown={handleKeyPress}
         placeholder={"Search by " + fieldName}
         value={searchText}
         data-testid="customFilter"
