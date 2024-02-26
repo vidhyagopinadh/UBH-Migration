@@ -9,22 +9,64 @@ import {
 } from "@material-ui/core";
 import { BootstrapTooltip as Tooltip } from "../../../components/Tooltip";
 import MuiPhoneNumber from "material-ui-phone-number";
-import { AccessTimeOutlined, Info } from "@mui/icons-material";
+import { AccessTimeOutlined, Info } from "@material-ui/icons";
 import CardHeader from "./../../../components/cardHeader";
 import { useTranslate } from "react-admin";
 import moment from "moment";
 import { Base64 } from "js-base64";
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     width: "100%",
+//     "& label": {
+//       marginTop: -3,
+//     },
+//   },
+//   cardContent: {
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   icon: {
+//     cursor: "auto",
+//     marginTop: "0px",
+//     marginLeft: "5px",
+//     width: "20px",
+//     height: "20px",
+//     marginBottom: "5px",
+//   },
+//   subtitle: {
+//     width: "40%",
+//     float: "left",
+//     marginLeft: "5%",
+//   },
+
+//   info: {
+//     cursor: "auto",
+//     width: "18px",
+//     height: "18px",
+//     marginLeft: "3px",
+//     marginBottom: "0px",
+//     paddingBottom: "0px",
+//     color: "grey",
+//   },
+// }));
+const PREFIX = "ProviderData";
+const classes = {
+  root: `${PREFIX}-root`,
+  cardContent: `${PREFIX}-cardContent`,
+  icon: `${PREFIX}-icon`,
+  subtitle: `${PREFIX}-subtitle`,
+  info: `${PREFIX}-info`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     width: "100%",
     "& label": {
       marginTop: -3,
     },
   },
-  cardContent: {
+  [`& .${classes.cardContent}`]: {
     backgroundColor: theme.palette.primary.light,
   },
-  icon: {
+  [`& .${classes.icon}`]: {
     cursor: "auto",
     marginTop: "0px",
     marginLeft: "5px",
@@ -32,13 +74,12 @@ const useStyles = makeStyles((theme) => ({
     height: "20px",
     marginBottom: "5px",
   },
-  subtitle: {
+  [`& .${classes.subtitle}`]: {
     width: "40%",
     float: "left",
     marginLeft: "5%",
   },
-
-  info: {
+  [`& .${classes.info}`]: {
     cursor: "auto",
     width: "18px",
     height: "18px",
@@ -48,9 +89,8 @@ const useStyles = makeStyles((theme) => ({
     color: "grey",
   },
 }));
-
 function ProviderData({ submittedProviderData }): JSX.Element {
-  const classes = useStyles();
+  // const classes = useStyles();
   const translate = useTranslate();
   return (
     <>

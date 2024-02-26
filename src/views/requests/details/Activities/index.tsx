@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/styles";
+
 import { Card, CardContent, Grid, List, Typography } from "@material-ui/core";
 import SuccessSnackbar from "./SuccessSnackbar";
 import Replies from "../../../../components/repliesComponent/replies";
@@ -14,10 +14,24 @@ import {
 } from "react-admin";
 import moment from "moment";
 import type { RecordInterface } from "../../../../types";
+import { styled } from "@mui/material/styles";
 
-const useStyles = makeStyles(() => ({
-  root: {},
-  table: {
+// const useStyles = makeStyles(() => ({
+//   root: {},
+//   table: {
+//     padding: 0,
+//   },
+//   "& .RaDatagrid-headerCell-401935": {
+//     display: "none",
+//   },
+// }));
+const PREFIX = "Activities";
+const classes = {
+  root: `${PREFIX}-root`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {},
+  [`&.${classes.table}`]: {
     padding: 0,
   },
   "& .RaDatagrid-headerCell-401935": {
@@ -25,7 +39,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 function Activities(props): JSX.Element {
-  const classes = useStyles();
+  // const classes = useStyles();
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const handleSnackbarClose = (): void => {
     setOpenSnackbar(false);
@@ -79,7 +93,7 @@ function Activities(props): JSX.Element {
                       render={(record) => (
                         <span>
                           {moment(record.createdAt).format(
-                            "DD MMM YYYY hh:mm a",
+                            "DD MMM YYYY hh:mm a"
                           )}
                         </span>
                       )}

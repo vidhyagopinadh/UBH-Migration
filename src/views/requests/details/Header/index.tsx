@@ -7,22 +7,53 @@ import { useTranslate } from "react-admin";
 import Label from "./../../../../components/label";
 import { useSelector } from "react-redux";
 import type { AppState, IRequestPayload } from "../../../../types";
-const useStyles = makeStyles((theme) => ({
-  root: {},
+// const useStyles = makeStyles((theme) => ({
+//   root: {},
+//   requestStatus: {
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   label: {
+//     marginTop: theme.spacing(1),
+//   },
+//   shareButton: {
+//     backgroundColor: theme.palette.common.white,
+//     marginRight: theme.spacing(2),
+//   },
+//   shareIcon: {
+//     marginRight: theme.spacing(1),
+//   },
+//   applyButton: {
+//     color: theme.palette.common.white,
+//     backgroundColor: colors.green[600],
+//     "&:hover": {
+//       backgroundColor: colors.green[900],
+//     },
+//   },
+// }));
+const PREFIX = "Header";
+const classes = {
+  root: `${PREFIX}-root`,
+  label: `${PREFIX}- label`,
+  shareButton: `${PREFIX}-shareButton`,
+  shareIcon: `${PREFIX}-shareIcon`,
+  applyButton: `${PREFIX}-applyButton`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {},
   requestStatus: {
     backgroundColor: theme.palette.primary.light,
   },
-  label: {
+  [`& .${classes.label}`]: {
     marginTop: theme.spacing(1),
   },
-  shareButton: {
+  [`& .${classes.shareButton}`]: {
     backgroundColor: theme.palette.common.white,
     marginRight: theme.spacing(2),
   },
-  shareIcon: {
+  [`& .${classes.shareIcon}`]: {
     marginRight: theme.spacing(1),
   },
-  applyButton: {
+  [`& .${classes.applyButton}`]: {
     color: theme.palette.common.white,
     backgroundColor: colors.green[600],
     "&:hover": {
@@ -30,13 +61,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
 function Header({ request, ...rest }): JSX.Element {
   const classes = useStyles();
   const [requestSet, setRequestSet] = useState<IRequestPayload>({});
   const translate = useTranslate();
   const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
+    (state: AppState) => state.userInfoReducer
   );
   useEffect(() => {
     let mounted = true;

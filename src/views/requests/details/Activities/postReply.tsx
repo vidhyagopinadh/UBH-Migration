@@ -1,20 +1,46 @@
 import * as React from "react";
 import { Grid, TextField, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import PersonIcon from '@mui/icons-material/Person';
-import SendIcon from '@mui/icons-material/Send';
+import PersonIcon from "@material-ui/icons/Person";
+import SendIcon from "@material-ui/icons/Send";
+import { styled } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     backgroundColor: theme.palette.primary.light,
+//     marginTop: 20,
+//     marginBottom: 20,
+//   },
+//   iconClass: {
+//     height: "100%",
+//     alignItems: "center",
+//   },
+//   iconPerson: {
+//     backgroundColor: "#bdbdbd",
+//     height: "100%",
+//     alignItems: "center",
+//     padding: "0px 15px",
+//     borderRadius: 50,
+//   },
+// }));
+
+const PREFIX = "PostReply";
+const classes = {
+  root: `${PREFIX}-root`,
+  iconClass: `${PREFIX}-iconClass`,
+  iconPerson: `${PREFIX}-iconPerson`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: theme.palette.primary.light,
     marginTop: 20,
     marginBottom: 20,
   },
-  iconClass: {
+  [`& .${classes.iconClass}`]: {
     height: "100%",
     alignItems: "center",
   },
-  iconPerson: {
+  [`& .${classes.iconPerson}`]: {
     backgroundColor: "#bdbdbd",
     height: "100%",
     alignItems: "center",

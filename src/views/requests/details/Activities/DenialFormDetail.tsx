@@ -22,28 +22,63 @@ import {
 import * as ReactAdmin from "react-admin";
 import { perPageMax } from "../../../../utils/pageConstants";
 import { getImagesByFileUploadId } from "../../../../service/restConfig";
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: "flex",
+//     alignItems: "center",
+//   },
+//   h6_title: {
+//     width: "55%",
+//     float: "left",
+//     fontWeight: 600,
+//   },
+//   notesArea: {
+//     backgroundColor: theme.palette.primary.light,
+//     color: theme.palette.primary.dark,
+//   },
+//   card: {
+//     marginLeft: theme.spacing(2),
+//     flexGrow: 1,
+//     display: "flex",
+//     padding: theme.spacing(2),
+//     alignItems: "center",
+//   },
+//   date: {
+//     marginLeft: "auto",
+//     flexShrink: 0,
+//   },
+// }));
+
+const PREFIX = "DenialFormDetail";
+const classes = {
+  root: `${PREFIX}-root`,
+  h6_title: `${PREFIX}-h6_title`,
+  notesArea: `${PREFIX}-notesArea`,
+  card: `${PREFIX}-card`,
+  date: `${PREFIX}-date`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     display: "flex",
     alignItems: "center",
   },
-  h6_title: {
+  [`& .${classes.h6_title}`]: {
     width: "55%",
     float: "left",
     fontWeight: 600,
   },
-  notesArea: {
+  [`& .${classes.notesArea}`]: {
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.primary.dark,
   },
-  card: {
+  [`& .${classes.card}`]: {
     marginLeft: theme.spacing(2),
     flexGrow: 1,
     display: "flex",
     padding: theme.spacing(2),
     alignItems: "center",
   },
-  date: {
+  [`& .${classes.date}`]: {
     marginLeft: "auto",
     flexShrink: 0,
   },
@@ -261,7 +296,7 @@ function DenialFormDetail({
                       </>
                     ) : (
                       ""
-                    ),
+                    )
                   )}
                 </>
               )}

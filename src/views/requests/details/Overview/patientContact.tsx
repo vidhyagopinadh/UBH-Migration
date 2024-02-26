@@ -1,30 +1,54 @@
 import * as React from "react";
 import { Grid, Button, ButtonGroup } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
-import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
-import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
+import CallOutlinedIcon from "@material-ui/icons/CallOutlined";
+import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
+import MailOutlinedIcon from "@material-ui/icons/MailOutlined";
 import { useNotify } from "react-admin";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   buttongroup: {
+//     height: 30,
+//     width: "100%",
+//     color: "grey",
+//   },
+//   icon: {
+//     color: "grey",
+//   },
+//   button: {
+//     minWidth: 45,
+//     paddingTop: 10,
+//     width: "100%",
+//   },
+// }));
+const PREFIX = "PatientContact";
+const classes = {
+  root: `${PREFIX}-root`,
+  buttongroup: `${PREFIX}-buttongroup`,
+  icon: `${PREFIX}-icon`,
+  button: `${PREFIX}-button`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: theme.palette.primary.light,
   },
-  buttongroup: {
+  [`& .${classes.buttongroup}`]: {
     height: 30,
     width: "100%",
     color: "grey",
   },
-  icon: {
+  [`& .${classes.icon}`]: {
     color: "grey",
   },
-  button: {
+  [`& .${classes.button}`]: {
     minWidth: 45,
     paddingTop: 10,
     width: "100%",
   },
 }));
-
 interface IPatientContact {
   phoneNumber: string;
   email: string;
@@ -45,7 +69,7 @@ export const PatientContact = ({
             onClick={() => {
               notify(
                 "We're sorry, but that feature is not currently available.",
-                "success",
+                "success"
               );
             }}
           >
@@ -58,7 +82,7 @@ export const PatientContact = ({
             onClick={() => {
               notify(
                 "We're sorry, but that feature is not currently available.",
-                "success",
+                "success"
               );
             }}
           >
@@ -71,7 +95,7 @@ export const PatientContact = ({
             onClick={() => {
               notify(
                 "We're sorry, but that feature is not currently available.",
-                "success",
+                "success"
               );
             }}
           >

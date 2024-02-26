@@ -1,7 +1,19 @@
 import * as React from "react";
 import { Typography, makeStyles } from "@material-ui/core";
-const useStyles = makeStyles(() => ({
-  subtitle1: {
+// const useStyles = makeStyles(() => ({
+//   subtitle1: {
+//     width: "100%",
+//     float: "left",
+//     marginLeft: "5%",
+//   },
+// }));
+
+const PREFIX = "InstitutionDetails";
+const classes = {
+  subtitle1: `${PREFIX}-subtitle1`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.subtitle1}`]: {
     width: "100%",
     float: "left",
     marginLeft: "5%",

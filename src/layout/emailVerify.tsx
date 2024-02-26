@@ -12,7 +12,7 @@ import {
   CircularProgress,
   Modal,
 } from "@material-ui/core";
-import { Button } from "@mui/material";
+import { Button, styled } from "@mui/material";
 import logo from "../images/logo.png";
 import { VerifyUserEmailQuery } from "../service/inviteQueries";
 import { useTranslate } from "react-admin";
@@ -24,9 +24,24 @@ import {
   CancelRounded,
   ErrorRounded,
   WarningRounded,
-} from "@mui/icons-material";
-const useStyles = makeStyles((theme) => ({
-  root: {
+} from "@material-ui/icons";
+
+const PREFIX = "EmailVerify";
+const classes = {
+  root: `${PREFIX}-root`,
+  background: `${PREFIX}-background`,
+  heading: `${PREFIX}-heading`,
+  button: `${PREFIX}-button`,
+  subheading: `${PREFIX}-subheading`,
+  media: `${PREFIX}-media`,
+  container: `${PREFIX}-container`,
+  rightGridItems: `${PREFIX}-rightGridItems`,
+  rightGridItemsImage: `${PREFIX}-rightGridItemsImage`,
+  gridItemsText: `${PREFIX}-gridItemsText`,
+  gridItem: `${PREFIX}-gridItem`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     flexGrow: 1,
     margin: 0,
     padding: 0,
@@ -35,19 +50,19 @@ const useStyles = makeStyles((theme) => ({
       fontFamily: "'Poppins', sans-serif!important",
     },
   },
-  background: {
+  [`& .${classes.background}`]: {
     backgroundColor: "dark grey",
   },
-  heading: {
+  [`& .${classes.heading}`]: {
     color: "#09143C",
     fontStyle: "bold",
     textAlign: "center",
     fontFamily: "'Poppins', sans-serif!important",
   },
-  button: {
+  [`& .${classes.button}`]: {
     paddingBottom: "10%",
   },
-  subheading: {
+  [`& .${classes.subheading}`]: {
     fontFamily: "'Poppins', sans-serif!important",
     "& .MuiInputLabel-root": {
       fontFamily: "Poppins, sans-serif",
@@ -60,14 +75,14 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "normal",
     },
   },
-  media: {
+  [`& .${classes.media}`]: {
     height: "870px",
     width: "100%",
     backgroundSize: "cover",
     backgroundPosition: "center",
     position: "absolute",
   },
-  container: {
+  [`& .${classes.container}`]: {
     backgroundColor: "white",
     borderRadius: theme.spacing(2),
     position: "absolute",
@@ -78,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     width: "31%",
     boxShadow: "0 0 10px rgba(0,0,0,0.2)",
   },
-  rightGridItems: {
+  [`& .${classes.rightGridItems}`]: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -87,16 +102,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "5%",
     fontFamily: "'Poppins', sans-serif!important",
   },
-  rightGridItemsImage: {
+  [`& .${classes.rightGridItemsImage}`]: {
     width: "85px",
     height: "75px",
   },
-  gridItemsText: {
+  [`& .${classes.gridItemsText}`]: {
     padding: "5%",
     textAlign: "center",
     fontFamily: "'Poppins', sans-serif!important",
   },
-  gridItem: {
+  [`& .${classes.gridItem}`]: {
     alignItems: "center",
     justifyContent: "center",
     fontWeight: "bold",
@@ -302,7 +317,7 @@ export default function EmailVerify({
                         : responseType === "used"
                         ? "orange"
                         : ["expired", "error", "invalid_token"].includes(
-                            responseType,
+                            responseType
                           )
                         ? "red"
                         : "",

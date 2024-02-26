@@ -8,36 +8,84 @@ import type { AppState } from "../../../../types";
 import { useSelector } from "react-redux";
 import { compareObjects } from "../../../../utils/compareObjects";
 import ProviderView from "../../../../components/providerView";
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     backgroundColor: theme.palette.primary.light,
+//     marginBottom: "15px",
+//   },
+//   h6_title: {
+//     width: "55%",
+//     float: "left",
+//     fontWeight: 600,
+//   },
+//   subtitle: {
+//     width: "40%",
+//     float: "left",
+//     marginLeft: "5%",
+//   },
+//   subtitle1: {
+//     width: "100%",
+//     float: "left",
+//     marginLeft: "5%",
+//   },
+//   listitemStyle: {
+//     display: "inline-block !important",
+//     borderBottom: "1px solid #eaeaea !important",
+//   },
+//   tab: {
+//     textTransform: "none",
+//     fontSize: "14px",
+//     fontWeight: 500,
+//   },
+//   icon: {
+//     cursor: "auto",
+//     marginTop: "0px",
+//     width: "23px",
+//     height: "20px",
+//   },
+// }));
+
+const PREFIX = "MyCard";
+const classes = {
+  root: `${PREFIX}-root`,
+  h6_title: `${PREFIX}-h6_title`,
+  subtitle: `${PREFIX}-subtitle`,
+  subtitle1: `${PREFIX}-subtitle1`,
+  listitemStyle: `${PREFIX}-listitemStyle`,
+  tab: `${PREFIX}-tab`,
+  icon: `${PREFIX}-icon`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: theme.palette.primary.light,
     marginBottom: "15px",
   },
-  h6_title: {
+  [`& .${classes.h6_title}`]: {
     width: "55%",
     float: "left",
     fontWeight: 600,
   },
-  subtitle: {
+  [`& .${classes.subtitle}`]: {
     width: "40%",
     float: "left",
     marginLeft: "5%",
   },
-  subtitle1: {
+  [`& .${classes.subtitle1}`]: {
     width: "100%",
     float: "left",
     marginLeft: "5%",
   },
-  listitemStyle: {
+
+  [`& .${classes.listitemStyle}`]: {
     display: "inline-block !important",
     borderBottom: "1px solid #eaeaea !important",
   },
-  tab: {
+  [`& .${classes.tab}`]: {
     textTransform: "none",
     fontSize: "14px",
     fontWeight: 500,
   },
-  icon: {
+  [`& .${classes.icon}`]: {
     cursor: "auto",
     marginTop: "0px",
     width: "23px",
@@ -51,7 +99,7 @@ const ContentGenerator = ({ request }): JSX.Element => {
   const dataProvider = useDataProvider();
   const listClass = classNames(classes.listitemStyle);
   const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
+    (state: AppState) => state.userInfoReducer
   );
   const [submittedInstitution, setSubmittedInstitution] = useState([]);
   const [approvedInstitution, setApprovedInstitution] = useState([]);
@@ -83,7 +131,7 @@ const ContentGenerator = ({ request }): JSX.Element => {
         ? JSON.parse(request.requestType)?.other_value
         : JSON.parse(request.requestType)?.value,
       "Records requested from": `${tommddyyyy(
-        request.recordsRequestedFrom,
+        request.recordsRequestedFrom
       )}    to    ${tommddyyyy(request.recordsRequestedTo)}`,
       "How does this impact your care or access to information?":
         request.issueImpactMasterValue,
@@ -143,12 +191,12 @@ const ContentGenerator = ({ request }): JSX.Element => {
         })
         .then(({ data }) => {
           setSubmittedInstitution(
-            JSON.parse(data[0].communicationMetaValue).metaData,
+            JSON.parse(data[0].communicationMetaValue).metaData
           );
           setApprovedInstitution(
             data[0].approvedMetaValue
               ? JSON.parse(data[0].approvedMetaValue).metaData
-              : null,
+              : null
           );
 
           if (data[0].approvedMetaValue) {
@@ -156,7 +204,7 @@ const ContentGenerator = ({ request }): JSX.Element => {
               submittedInstitution,
               approvedInstitution,
               StatusToIgnore,
-              SourceToIgnore,
+              SourceToIgnore
             );
             setSameInstitutionData(isInstitutionEqual);
           }
@@ -183,12 +231,12 @@ const ContentGenerator = ({ request }): JSX.Element => {
                   {`${eachContent[1]}`}
                 </Typography>
               </ListItem>
-            ),
+            )
           )}
           {!request.communicationRequestId && (
             <>
               {Object.entries(
-                requestContent["medicalRequestInstitutionSection"],
+                requestContent["medicalRequestInstitutionSection"]
               ).map(
                 (eachContent) =>
                   eachContent[1] !== "" && (
@@ -206,7 +254,7 @@ const ContentGenerator = ({ request }): JSX.Element => {
                         {`${eachContent[1]}`}
                       </Typography>
                     </ListItem>
-                  ),
+                  )
               )}
             </>
           )}
@@ -228,7 +276,7 @@ const ContentGenerator = ({ request }): JSX.Element => {
                   {`${eachContent[1]}`}
                 </Typography>
               </ListItem>
-            ),
+            )
           )}
           {request.isObtainCopy && (
             <>
@@ -279,7 +327,7 @@ const ContentGenerator = ({ request }): JSX.Element => {
                   {`${eachContent[1]}`}
                 </Typography>
               </ListItem>
-            ),
+            )
           )}
         </>
       )}

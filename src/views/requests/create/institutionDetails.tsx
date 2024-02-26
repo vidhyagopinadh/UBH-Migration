@@ -1,7 +1,7 @@
 import type { BaseSyntheticEvent } from "react";
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
+
 import {
   TextField,
   Typography,
@@ -25,7 +25,7 @@ import {
   validateZipCode,
   validateCompanyName,
 } from "../../../utils/validator";
-import { Info } from "@mui/icons-material";
+import { Info } from "@material-ui/icons";
 import CardHeader from "./../../../components/cardHeader";
 import type {
   IInstitution,
@@ -50,61 +50,138 @@ import { correlationConstants } from "../../../utils/OT/correlationConstants";
 import InstitutionModal from "../../../components/institutionModal";
 import moment from "moment";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     width: "100%",
+//     "& label": {
+//       marginTop: -3,
+//     },
+//   },
+//   cardContent: {
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   notesArea: {
+//     backgroundColor: theme.palette.primary.light,
+//     color: theme.palette.primary.dark,
+//   },
+//   label: {
+//     display: "inline-flex",
+//     alignItems: "center",
+//   },
+//   header: {
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//     flexWrap: "wrap",
+//     marginBottom: theme.spacing(2),
+//   },
+//   content: {
+//     padding: theme.spacing(0, 2),
+//     maxWidth: 720,
+//     margin: "0 auto",
+//   },
+//   helperText: {
+//     textAlign: "right",
+//     marginRight: 0,
+//   },
+//   author: {
+//     margin: theme.spacing(4, 0),
+//     display: "flex",
+//   },
+//   avatar: {
+//     marginRight: theme.spacing(2),
+//   },
+//   actions: {
+//     backgroundColor: colors.grey[100],
+//     padding: theme.spacing(2),
+//     display: "flex",
+//     justifyContent: "center",
+//   },
+//   applyButton: {
+//     color: theme.palette.common.white,
+//     backgroundColor: colors.green[600],
+//     "&:hover": {
+//       backgroundColor: colors.green[900],
+//     },
+//   },
+//   info: {
+//     cursor: "auto",
+//     width: "18px",
+//     height: "18px",
+//     color: "grey",
+//   },
+// }));
+const PREFIX = "InstitutionDetails";
+const classes = {
+  root: `${PREFIX}-root`,
+  cardContent: `${PREFIX}-cardContent`,
+
+  notesArea: `${PREFIX}-notesArea`,
+  label: `${PREFIX}- label`,
+  content: `${PREFIX}-content`,
+  header: `${PREFIX}-header`,
+  helperText: `${PREFIX}-helperText`,
+  author: `${PREFIX}-author`,
+  avatar: `${PREFIX}-avatar`,
+  actions: `${PREFIX}-actions`,
+  applyButton: `${PREFIX}-applyButton`,
+  info: `${PREFIX}-info`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     width: "100%",
     "& label": {
       marginTop: -3,
     },
   },
-  cardContent: {
+  [`& .${classes.cardContent}`]: {
     backgroundColor: theme.palette.primary.light,
   },
-  notesArea: {
+  [`& .${classes.notesArea}`]: {
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.primary.dark,
   },
-  label: {
+  [`& .${classes.label}`]: {
     display: "inline-flex",
     alignItems: "center",
   },
-  header: {
+  [`& .${classes.content}`]: {
+    padding: theme.spacing(0, 2),
+    maxWidth: 720,
+    margin: "0 auto",
+  },
+  [`& .${classes.header}`]: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     flexWrap: "wrap",
     marginBottom: theme.spacing(2),
   },
-  content: {
-    padding: theme.spacing(0, 2),
-    maxWidth: 720,
-    margin: "0 auto",
-  },
-  helperText: {
+  [`& .${classes.helperText}`]: {
     textAlign: "right",
     marginRight: 0,
   },
-  author: {
+  [`& .${classes.author}`]: {
     margin: theme.spacing(4, 0),
     display: "flex",
   },
-  avatar: {
+  [`& .${classes.avatar}`]: {
     marginRight: theme.spacing(2),
   },
-  actions: {
+  [`& .${classes.actions}`]: {
     backgroundColor: colors.grey[100],
     padding: theme.spacing(2),
     display: "flex",
     justifyContent: "center",
   },
-  applyButton: {
+  [`& .${classes.applyButton}`]: {
     color: theme.palette.common.white,
     backgroundColor: colors.green[600],
     "&:hover": {
       backgroundColor: colors.green[900],
     },
   },
-  info: {
+  [`& .${classes.info}`]: {
     cursor: "auto",
     width: "18px",
     height: "18px",
@@ -229,7 +306,7 @@ function InstitutionDetails({
     appArea: "MRR",
   });
   const [sourcesNatureList, setSourcesNatureList] = useState<IGenericType[]>(
-    [],
+    []
   );
   useEffect(() => {
     const queryOption = {
@@ -303,7 +380,7 @@ function InstitutionDetails({
           setError(
             event.target.name,
             "Please enter a valid phone number",
-            !valid,
+            !valid
           );
           break;
         }
@@ -317,7 +394,7 @@ function InstitutionDetails({
           setError(
             event.target.name,
             "Please enter a valid direct address",
-            !valid,
+            !valid
           );
           break;
         }
@@ -326,7 +403,7 @@ function InstitutionDetails({
           setError(
             event.target.name,
             "Please enter a valid institution name",
-            !valid,
+            !valid
           );
           break;
         }
@@ -335,7 +412,7 @@ function InstitutionDetails({
           setError(
             event.target.name,
             "Please enter a valid website address",
-            !valid,
+            !valid
           );
           break;
         }
@@ -357,7 +434,7 @@ function InstitutionDetails({
           setError(
             event.target.name,
             "Please enter a valid fax number",
-            !valid,
+            !valid
           );
           break;
         }
@@ -366,7 +443,7 @@ function InstitutionDetails({
           setError(
             event.target.name,
             "Please enter a valid Information",
-            !valid,
+            !valid
           );
           break;
         }
@@ -387,7 +464,7 @@ function InstitutionDetails({
   const setError = (
     fieldName: string,
     type: string,
-    setError: boolean,
+    setError: boolean
   ): void => {
     setInstitutionError((prevFormState) => ({
       ...prevFormState,
@@ -444,7 +521,7 @@ function InstitutionDetails({
           if (
             JSON.parse(
               institutionAddResponse.data.createNewGroupEntry.institutionResult
-                .status,
+                .status
             ).code === 200
           ) {
             if (
@@ -453,7 +530,7 @@ function InstitutionDetails({
             ) {
               setInstitutionInCo(
                 institutionAddResponse.data.createNewGroupEntry
-                  .institutionResult.data,
+                  .institutionResult.data
               );
               setProviderDetails({
                 Name: institutionAddResponse.data.createNewGroupEntry
@@ -509,12 +586,12 @@ function InstitutionDetails({
           } else if (
             JSON.parse(
               institutionAddResponse.data.createNewGroupEntry.institutionResult
-                .status,
+                .status
             ).success === false
           ) {
             if (
               institutionAddResponse.data.createNewGroupEntry.institutionResult.error.includes(
-                "has already been taken",
+                "has already been taken"
               )
             ) {
               setOpenAlreadyExistsErrorBase(true);
@@ -528,7 +605,7 @@ function InstitutionDetails({
             setShowLoader(false);
           }
         });
-      },
+      }
     );
     setSubmitDisable(true);
   };
@@ -614,11 +691,11 @@ function InstitutionDetails({
           }}
           title={translate("resources.requests.institution.alreadyInCoTitle")}
           subTitle1={translate(
-            "resources.requests.institution.alreadyInCoSubTitle1",
+            "resources.requests.institution.alreadyInCoSubTitle1"
           )}
           content={providerDetails}
           subTitle2={translate(
-            "resources.requests.institution.alreadyInCoSubTitle2",
+            "resources.requests.institution.alreadyInCoSubTitle2"
           )}
         />
       )}

@@ -3,34 +3,57 @@ import { Link as RouterLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import moment from "moment";
-import { makeStyles } from "@material-ui/core/styles";
+
 import { Avatar, Card, Typography, Link } from "@material-ui/core";
-import GetAppIcon from '@mui/icons-material/GetApp';
-import PersonAddIcon from '@mui/icons-material/PersonAddOutlined';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import DashboardIcon from '@mui/icons-material/DashboardOutlined';
+import GetAppIcon from "@material-ui/icons/GetApp";
+import PersonAddIcon from "@material-ui/icons/PersonAddOutlined";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import DashboardIcon from "@material-ui/icons/DashboardOutlined";
+import { styled } from "@mui/material/styles";
 // import gradients from 'src/utils/gradients';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: "flex",
+//     alignItems: "center",
+//   },
+//   card: {
+//     marginLeft: theme.spacing(2),
+//     flexGrow: 1,
+//     display: "flex",
+//     padding: theme.spacing(2),
+//     alignItems: "center",
+//   },
+//   date: {
+//     marginLeft: "auto",
+//     flexShrink: 0,
+//   },
+// }));
+const PREFIX = "Activity";
+const classes = {
+  root: `${PREFIX}-root`,
+  card: `${PREFIX}-card`,
+  date: `${PREFIX}- date`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     display: "flex",
     alignItems: "center",
   },
-  card: {
+  [`& .${classes.card}`]: {
     marginLeft: theme.spacing(2),
     flexGrow: 1,
     display: "flex",
     padding: theme.spacing(2),
     alignItems: "center",
   },
-  date: {
+  [`& .${classes.date}`]: {
     marginLeft: "auto",
     flexShrink: 0,
   },
 }));
-
 function Activity({ activity, className, ...rest }): JSX.Element {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   const avatars = {
     upload_file: (

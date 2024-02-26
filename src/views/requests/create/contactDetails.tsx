@@ -1,7 +1,8 @@
 import type { BaseSyntheticEvent } from "react";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/system";
+// import { makeStyles } from "@material-ui/core/styles";
 import {
   TextField,
   Typography,
@@ -17,58 +18,87 @@ import {
   validatePhone,
   validateString,
 } from "../../../utils/validator";
-import { AddCircle, Cancel } from "@mui/icons-material";
+import { AddCircle, Cancel } from "@material-ui/icons";
 import CardHeader from "./../../../components/cardHeader";
 import type { IContactDetails, IContactDetailsProps } from "../../../types";
+import { styled } from "@mui/material/styles";
 import { useTranslate } from "react-admin";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  header: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {},
+//   header: {
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//     flexWrap: "wrap",
+//     marginBottom: theme.spacing(2),
+//   },
+//   content: {
+//     padding: theme.spacing(0, 2),
+//     maxWidth: 720,
+//     margin: "0 auto",
+//   },
+//   helperText: {
+//     textAlign: "right",
+//     marginRight: 0,
+//   },
+//   author: {
+//     margin: theme.spacing(4, 0),
+//     display: "flex",
+//   },
+//   avatar: {
+//     marginRight: theme.spacing(2),
+//   },
+//   actions: {
+//     backgroundColor: colors.grey[100],
+//     padding: theme.spacing(2),
+//     display: "flex",
+//     justifyContent: "center",
+//   },
+//   applyButton: {
+//     color: theme.palette.common.white,
+//     backgroundColor: colors.green[600],
+//     "&:hover": {
+//       backgroundColor: colors.green[900],
+//     },
+//   },
+//   addButton: {
+//     borderRadius: "unset",
+//     float: "right",
+//     padding: "0px",
+//     textTransform: "none",
+//     backgroundColor: theme.palette.primary.light,
+//     "&:hover": {
+//       backgroundColor: theme.palette.primary.light,
+//     },
+//   },
+// }));
+
+const PREFIX = "ContactDetails";
+const classes = {
+  root: `${PREFIX}-root`,
+  header: `${PREFIX}-header`,
+  content: `${PREFIX}-content`,
+  helperText: `${PREFIX}-helperText`,
+  author: `${PREFIX}-author`,
+  avatar: `${PREFIX}-avatar`,
+  actions: `${PREFIX}-actions`,
+  applyButton: `${PREFIX}-applyButton`,
+  addButton: `${PREFIX}-addButton`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    marginBottom: theme.spacing(2),
+    backgroundColor: theme.palette.primary.main,
   },
-  content: {
-    padding: theme.spacing(0, 2),
-    maxWidth: 720,
-    margin: "0 auto",
+  [`& .${classes.cta}`]: {
+    borderRadius: theme.shape.radius,
   },
-  helperText: {
-    textAlign: "right",
-    marginRight: 0,
-  },
-  author: {
-    margin: theme.spacing(4, 0),
-    display: "flex",
-  },
-  avatar: {
-    marginRight: theme.spacing(2),
-  },
-  actions: {
-    backgroundColor: colors.grey[100],
-    padding: theme.spacing(2),
-    display: "flex",
-    justifyContent: "center",
-  },
-  applyButton: {
+  [`& .${classes.content}`]: {
     color: theme.palette.common.white,
-    backgroundColor: colors.green[600],
-    "&:hover": {
-      backgroundColor: colors.green[900],
-    },
-  },
-  addButton: {
-    borderRadius: "unset",
-    float: "right",
-    padding: "0px",
-    textTransform: "none",
-    backgroundColor: theme.palette.primary.light,
-    "&:hover": {
-      backgroundColor: theme.palette.primary.light,
-    },
+    fontSize: 16,
+    lineHeight: 1.7,
   },
 }));
 function ContactDetails({
@@ -138,7 +168,7 @@ function ContactDetails({
 
   const handleValidateOnBlur = (
     event: BaseSyntheticEvent,
-    id: number,
+    id: number
   ): void => {
     event.persist();
     let validationStatus: boolean;
@@ -160,7 +190,7 @@ function ContactDetails({
             event.target.name,
             !valid && "Invalid phone number",
             !valid,
-            id,
+            id
           );
           break;
         }
@@ -186,7 +216,7 @@ function ContactDetails({
     fieldName: string,
     type: string,
     setError: boolean,
-    id: number,
+    id: number
   ): void => {
     const values = [...contactCount];
 
@@ -254,22 +284,24 @@ function ContactDetails({
 
   return (
     <CardContent>
-      <CardHeader>
-        <Typography variant="h5" style={{ fontSize: 16, fontWeight: 400 }}>
-          {translate("resources.requests.label.contact")}
-        </Typography>
-        {!requestView && (
-          <Button
-            aria-label="directions"
-            color="primary"
-            className={classes.addButton}
-            onClick={handleAdd}
-            startIcon={<AddCircle />}
-          >
-            Add More Contacts
-          </Button>
-        )}
-      </CardHeader>
+      <Root>
+        <CardHeader>
+          <Typography variant="h5" style={{ fontSize: 16, fontWeight: 400 }}>
+            {translate("resources.requests.label.contact")}
+          </Typography>
+          {!requestView && (
+            <Button
+              aria-label="directions"
+              color="primary"
+              className={classes.addButton}
+              onClick={handleAdd}
+              startIcon={<AddCircle />}
+            >
+              Add More Contacts
+            </Button>
+          )}
+        </CardHeader>
+      </Root>
       {addError && (
         <Grid item md={12} xs={12}>
           <Typography style={{ color: "red" }}>
