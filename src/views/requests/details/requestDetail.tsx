@@ -18,47 +18,99 @@ import type { AppState } from "../../../types";
 import NotVerifiedBanner from "../../../components/notVerifiedBanner";
 // import PageNotFound from "../../../components/pageNotFound";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     paddingTop: theme.spacing(3),
+//     paddingBottom: theme.spacing(3),
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   tabs: {
+//     marginTop: theme.spacing(3),
+//   },
+//   divider: {
+//     backgroundColor: colors.grey[300],
+//   },
+//   alert: {
+//     marginTop: theme.spacing(3),
+//   },
+//   content: {
+//     marginTop: theme.spacing(3),
+//   },
+//   contentMain: {
+//     backgroundColor: "transparent",
+//     border: "0px solid #ffffff",
+//   },
+//   h6_title: {
+//     width: "55%",
+//     float: "left",
+//   },
+//   subtitle: {
+//     width: "40%",
+//     float: "left",
+//     marginLeft: "5%",
+//   },
+//   listitemStyle: {
+//     display: "inline-block !important",
+//     borderBottom: "1px solid #eaeaea !important",
+//   },
+//   listitemStyle2: {
+//     display: "inline-block !important",
+//     borderBottom: "unset !important",
+//   },
+// }));
+const PREFIX = "RequestDetailComponent";
+const classes = {
+  root: `${PREFIX}-root`,
+  tabs: `${PREFIX}-tabs`,
+  divider: `${PREFIX}-divider`,
+  alert: `${PREFIX}-alert`,
+  content: `${PREFIX}-content`,
+  contentMain: `${PREFIX}-contentMain`,
+  h6_title: `${PREFIX}-h6_title`,
+  subtitle: `${PREFIX}-subtitle`,
+  listitemStyle: `${PREFIX}-listitemStyle`,
+  listitemStyle2: `${PREFIX}-listitemStyle2`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
     backgroundColor: theme.palette.primary.light,
   },
-  tabs: {
+  [`& .${classes.tabs}`]: {
     marginTop: theme.spacing(3),
   },
-  divider: {
+  [`& .${classes.divider}`]: {
     backgroundColor: colors.grey[300],
   },
-  alert: {
+  [`& .${classes.alert}`]: {
     marginTop: theme.spacing(3),
   },
-  content: {
+  [`& .${classes.content}`]: {
     marginTop: theme.spacing(3),
   },
-  contentMain: {
+  [`& .${classes.contentMain}`]: {
     backgroundColor: "transparent",
     border: "0px solid #ffffff",
   },
-  h6_title: {
+  [`& .${classes.h6_title}`]: {
     width: "55%",
     float: "left",
   },
-  subtitle: {
+  [`& .${classes.subtitle}`]: {
     width: "40%",
     float: "left",
     marginLeft: "5%",
   },
-  listitemStyle: {
+  [`& .${classes.listitemStyle}`]: {
     display: "inline-block !important",
     borderBottom: "1px solid #eaeaea !important",
   },
-  listitemStyle2: {
+  [`& .${classes.listitemStyle2}`]: {
     display: "inline-block !important",
     borderBottom: "unset !important",
   },
 }));
-
 const RequestDetailComponent = (props): JSX.Element => {
   const { id, tab } = props;
   const history = useHistory();
@@ -68,7 +120,7 @@ const RequestDetailComponent = (props): JSX.Element => {
   const { getTrace } = useTraces();
   const { permissions } = usePermissions();
   const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
+    (state: AppState) => state.userInfoReducer
   );
   const classes = useStyles();
   const tabs = [
@@ -93,7 +145,7 @@ const RequestDetailComponent = (props): JSX.Element => {
       getTrace(
         "Each Requests loaded for PPA.",
         "ev-044",
-        userInfoReducer.email,
+        userInfoReducer.email
       );
     } else if (
       mount === true &&
@@ -103,7 +155,7 @@ const RequestDetailComponent = (props): JSX.Element => {
       getTrace(
         "Each Requests loaded for MRA.",
         "ev-095",
-        userInfoReducer.email,
+        userInfoReducer.email
       );
     } else if (
       mount === true &&
@@ -113,7 +165,7 @@ const RequestDetailComponent = (props): JSX.Element => {
       getTrace(
         "Each Requests loaded for Patient.",
         "ev-128",
-        userInfoReducer.email,
+        userInfoReducer.email
       );
     }
   }, [mount]);
@@ -124,7 +176,7 @@ const RequestDetailComponent = (props): JSX.Element => {
       changeStatusAction({
         from: "",
         to: "",
-      }),
+      })
     );
 
     history.push(value);
@@ -147,7 +199,7 @@ const RequestDetailComponent = (props): JSX.Element => {
         changeStatusAction({
           from: String(props.data[id].requestStatusId),
           to: val,
-        }),
+        })
       );
     } else {
       history.push({
@@ -157,7 +209,7 @@ const RequestDetailComponent = (props): JSX.Element => {
         changeStatusAction({
           from: "",
           to: "",
-        }),
+        })
       );
     }
   };
@@ -209,7 +261,7 @@ export const RequestShow = (props): JSX.Element => {
   const classes = useStyles();
   const translate = useTranslate();
   const permissions = useSelector(
-    (state: AppState) => state.userRoleInfoReducer,
+    (state: AppState) => state.userRoleInfoReducer
   ).role;
   return (
     <Container maxWidth="lg">

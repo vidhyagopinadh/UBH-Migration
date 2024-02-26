@@ -2,17 +2,35 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Snackbar, SnackbarContent, colors } from "@material-ui/core";
-import CheckCircleIcon from '@mui/icons-material/CheckCircleOutline';
+import CheckCircleIcon from "@material-ui/icons/CheckCircleOutlined";
 
-const useStyles = makeStyles((theme) => ({
-  content: {
+// const useStyles = makeStyles((theme) => ({
+//   content: {
+//     backgroundColor: colors.green[600],
+//   },
+//   message: {
+//     display: "flex",
+//     alignItems: "center",
+//   },
+//   icon: {
+//     marginRight: theme.spacing(2),
+//   },
+// }));
+const PREFIX = "SuccessSnackbar";
+const classes = {
+  content: `${PREFIX}-content`,
+  message: `${PREFIX}- message`,
+  icon: `${PREFIX}-icon`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.content}`]: {
     backgroundColor: colors.green[600],
   },
-  message: {
+  [`& .${classes.message}`]: {
     display: "flex",
     alignItems: "center",
   },
-  icon: {
+  [`& .${classes.icon}`]: {
     marginRight: theme.spacing(2),
   },
 }));

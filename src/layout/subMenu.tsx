@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { FC, ReactElement } from "react";
 import { Fragment } from "react";
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import List from "@material-ui/core/List";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -11,15 +11,39 @@ import { BootstrapTooltip as Tooltip } from "../components/Tooltip";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTranslate } from "react-admin";
 
-const useStyles = makeStyles((theme) => ({
-  icon: { minWidth: theme.spacing(5) },
-  sidebarIsOpen: {
+// const useStyles = makeStyles((theme) => ({
+//   icon: { minWidth: theme.spacing(5) },
+//   sidebarIsOpen: {
+//     "& a": {
+//       paddingLeft: theme.spacing(4),
+//       transition: "padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms",
+//     },
+//   },
+//   sidebarIsClosed: {
+//     "& a": {
+//       paddingLeft: theme.spacing(2),
+//       transition: "padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms",
+//     },
+//   },
+// }));
+
+const PREFIX = "MyCard";
+const classes = {
+  icon: `${PREFIX}-icon`,
+  sidebarIsOpen: `${PREFIX}-sidebarIsOpen`,
+  sidebarIsClosed: `${PREFIX}-sidebarIsClosed`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.icon}`]: {
+    minWidth: theme.spacing(5),
+  },
+  [`& .${classes.sidebarIsOpen}`]: {
     "& a": {
       paddingLeft: theme.spacing(4),
       transition: "padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms",
     },
   },
-  sidebarIsClosed: {
+  [`& .${classes.sidebarIsClosed}`]: {
     "& a": {
       paddingLeft: theme.spacing(2),
       transition: "padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms",
@@ -64,7 +88,7 @@ const SubMenu: FC<Props> = ({
     </MenuItem>
   );
   return (
-    <Fragment>
+    <Root>
       {sidebarIsOpen || isOpen ? (
         header
       ) : (
@@ -84,7 +108,7 @@ const SubMenu: FC<Props> = ({
           {children}
         </List>
       </Collapse>
-    </Fragment>
+    </Root>
   );
 };
 

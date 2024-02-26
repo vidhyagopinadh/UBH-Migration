@@ -15,7 +15,7 @@ import {
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import type { Theme } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
@@ -51,18 +51,44 @@ import { REQUEST_MESSAGES } from "../../../utils/messages/requestMessages";
 import PageNotFound from "../../../components/pageNotFound";
 import { CO_ROLE_PATIENT, CO_ROLE_PPA } from "../../../utils/roles";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
+// const useStyles = makeStyles((theme: Theme) => ({
+//   root: {
+//     backgroundColor: theme.palette.primary.light,
+//     marginTop: 20,
+//   },
+//   select: {
+//     minWidth: "40%",
+//   },
+//   button: {
+//     margin: theme.spacing(1),
+//   },
+//   header: {
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//     flexWrap: "wrap",
+//     marginBottom: theme.spacing(2),
+//   },
+// }));
+const PREFIX = "BillingRequest";
+const classes = {
+  root: `${PREFIX}-root`,
+  select: `${PREFIX}-select`,
+  button: `${PREFIX}-button`,
+  header: `${PREFIX}-header`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: theme.palette.primary.light,
     marginTop: 20,
   },
-  select: {
+  [`& .${classes.select}`]: {
     minWidth: "40%",
   },
-  button: {
+  [`& .${classes.button}`]: {
     margin: theme.spacing(1),
   },
-  header: {
+  [`& .${classes.header}`]: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -81,7 +107,7 @@ export default function BillingRequest(): JSX.Element {
   const translate = useTranslate();
   const [doSubmit, setDoSubmit] = useState(true);
   const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
+    (state: AppState) => state.userInfoReducer
   );
   const [errorMsg, setErrorMsg] = useState(CREATE_MEDICAL_RECORD_ERROR_INIT);
   const [alertAddPatient, setAlertAddPatient] = useState(false);
@@ -176,7 +202,7 @@ export default function BillingRequest(): JSX.Element {
     IOrganization[]
   >([]);
   const [attachmentResponse, setAttachmentResponse] = useState<IFileResponse>(
-    {},
+    {}
   );
   const [billingOrganizationList, setBillingOrganizationList] = useState<
     IBillingOrganization[]
@@ -204,12 +230,12 @@ export default function BillingRequest(): JSX.Element {
   const setSecondaryList = (currentName, currentValue): void => {
     const sampleSetindiv =
       billingRequestTypeContent.secondaryRequestTypeListData.filter(
-        (individuals) => currentValue === individuals.parentId,
+        (individuals) => currentValue === individuals.parentId
       );
 
     const currentIndiv =
       billingRequestTypeContent.primaryRequestTypeList.filter(
-        (individuals) => currentValue === individuals.billingRequestTypeId,
+        (individuals) => currentValue === individuals.billingRequestTypeId
       );
 
     if (currentName === "primaryRequestType") {
@@ -235,7 +261,7 @@ export default function BillingRequest(): JSX.Element {
           }));
           setSecondaryList(
             "secondaryRequestType",
-            sampleSetindiv[0].billingRequestTypeId,
+            sampleSetindiv[0].billingRequestTypeId
           );
         } else {
           setBillingRequestTypeContent((prevFormState) => ({
@@ -289,7 +315,7 @@ export default function BillingRequest(): JSX.Element {
       if (primaryRequestTypeList.length > 0) {
         setSecondaryList(
           "primaryRequestType",
-          primaryRequestTypeList[0].billingRequestTypeId,
+          primaryRequestTypeList[0].billingRequestTypeId
         );
       }
     }
@@ -323,7 +349,7 @@ export default function BillingRequest(): JSX.Element {
   const setError = (
     fieldName: string,
     type: string,
-    setError: boolean,
+    setError: boolean
   ): void => {
     setErrorMsg((prevFormState) => ({
       ...prevFormState,
@@ -442,7 +468,7 @@ export default function BillingRequest(): JSX.Element {
       }));
       getRequestType(Number(event.target.value));
       setBillingionsurance(
-        event.target.value === "1" ? "billing" : "insurance",
+        event.target.value === "1" ? "billing" : "insurance"
       );
       resetRequestType(Number(event.target.value));
     } else if (event.target.name === "organizationGroupId") {
@@ -526,7 +552,7 @@ export default function BillingRequest(): JSX.Element {
         getTrace(
           "Billing/Insurance Question Request Form loaded",
           "ev-074",
-          userInfoReducer.email,
+          userInfoReducer.email
         );
       }
     }
@@ -624,7 +650,7 @@ export default function BillingRequest(): JSX.Element {
           if (primaryRequestTypeList.length > 0) {
             setSecondaryList(
               "primaryRequestType",
-              primaryRequestTypeList[0].billingRequestTypeId,
+              primaryRequestTypeList[0].billingRequestTypeId
             );
           }
         }
@@ -730,7 +756,7 @@ export default function BillingRequest(): JSX.Element {
     getTrace(
       "Data filled by the user in Billing Request",
       "ev-076",
-      userInfoReducer.email,
+      userInfoReducer.email
     );
 
     const eventObj = correlationConstants["ev-078"];
@@ -772,7 +798,7 @@ export default function BillingRequest(): JSX.Element {
               getTrace(
                 "Billing request created and success message is displayed",
                 "ev-079",
-                userInfoReducer.email,
+                userInfoReducer.email
               );
             }
           });
@@ -786,11 +812,11 @@ export default function BillingRequest(): JSX.Element {
             getTrace(
               "Billing request created and success message is displayed",
               "ev-079",
-              userInfoReducer.email,
+              userInfoReducer.email
             );
           });
         }
-      },
+      }
     );
   };
 
@@ -998,7 +1024,7 @@ export default function BillingRequest(): JSX.Element {
               >
                 <AddPatient
                   checkPatientValidator={(
-                    checkPatientValidatorProps: ICheckPatientValidatorProps,
+                    checkPatientValidatorProps: ICheckPatientValidatorProps
                   ) => checkPatientValidator(checkPatientValidatorProps)}
                   getpatient={getpatient}
                   alertAddPatient={alertAddPatient}
@@ -1056,7 +1082,7 @@ export default function BillingRequest(): JSX.Element {
                             <option key={option.id} value={option.id}>
                               {option.value}
                             </option>
-                          ),
+                          )
                         )}
                       </TextField>
                     </Grid>
@@ -1104,7 +1130,7 @@ export default function BillingRequest(): JSX.Element {
                             <option key={option.id} value={option.id}>
                               {option.organization}
                             </option>
-                          ),
+                          )
                         )}
                       </TextField>
                     </Grid>
@@ -1168,7 +1194,7 @@ export default function BillingRequest(): JSX.Element {
                             >
                               {option.value}
                             </option>
-                          ),
+                          )
                         )}
                       </TextField>
                       {billingRequestTypeContent.showSecondaryList &&
@@ -1197,7 +1223,7 @@ export default function BillingRequest(): JSX.Element {
                                 >
                                   {option.value}
                                 </option>
-                              ),
+                              )
                             )}
                           </TextField>
                         )}
@@ -1227,7 +1253,7 @@ export default function BillingRequest(): JSX.Element {
                                 >
                                   {option.value}
                                 </option>
-                              ),
+                              )
                             )}
                           </TextField>
                         )}

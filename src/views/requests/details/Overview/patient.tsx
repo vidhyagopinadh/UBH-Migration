@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { PatientContact } from "./patientContact";
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import ListAltIcon from "@material-ui/icons/ListAlt";
 import { tommddyyyy } from "./../../../../utils/dateFormator";
 import { useDataProvider, usePermissions } from "react-admin";
 import Activity from "./Activity";
@@ -25,37 +25,77 @@ import { CO_ROLE_PATIENT } from "../../../../utils/roles";
 import { useHistory } from "react-router";
 import { titleCase } from "../../../../utils/titleCase";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   cardRoot: {
+//     display: "flex",
+//     alignItems: "center",
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   cardBottom: {
+//     marginBottom: "15px",
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   card: {
+//     flexGrow: 1,
+//     display: "flex",
+//     border: 0,
+//     marginLeft: "10px",
+//     alignItems: "center",
+//   },
+//   listItems: {
+//     "&.MuiListItem-gutters": {
+//       paddingLeft: 0,
+//       paddingRight: 0,
+//     },
+//   },
+//   subTitle2: {
+//     textTransform: "capitalize",
+//   },
+// }));
+const PREFIX = "Patient";
+const classes = {
+  root: `${PREFIX}-root`,
+  cardRoot: `${PREFIX}-cardRoot`,
+  cardBottom: `${PREFIX}-cardBottom`,
+  card: `${PREFIX}-card`,
+  listItems: `${PREFIX}-listItems`,
+  subTitle2: `${PREFIX}- subTitle2`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: theme.palette.primary.light,
   },
-  cardRoot: {
+  [`& .${classes.cardRoot}`]: {
     display: "flex",
     alignItems: "center",
     backgroundColor: theme.palette.primary.light,
   },
-  cardBottom: {
+  [`& .${classes.cardBottom}`]: {
     marginBottom: "15px",
     backgroundColor: theme.palette.primary.light,
   },
-  card: {
+  [`& .${classes.card}`]: {
     flexGrow: 1,
     display: "flex",
     border: 0,
     marginLeft: "10px",
     alignItems: "center",
   },
-  listItems: {
+  [`& .${classes.listItems}`]: {
     "&.MuiListItem-gutters": {
       paddingLeft: 0,
       paddingRight: 0,
     },
   },
-  subTitle2: {
-    textTransform: "capitalize",
+  [`& .${classes.subTitle2}`]: {
+    subTitle2: {
+      textTransform: "capitalize",
+    },
   },
 }));
-
 export function Patient({ request }): JSX.Element {
   const dataProvider = useDataProvider();
   const [requestTokenList, setRequestTokenTist] = useState<IRequestToken[]>([]);
@@ -82,7 +122,7 @@ export function Patient({ request }): JSX.Element {
   const history = useHistory();
   const handleTabsChange = (
     event: React.ChangeEvent<{}>,
-    value: string,
+    value: string
   ): void => {
     setCurrTab(value);
   };
@@ -667,7 +707,7 @@ export function Patient({ request }): JSX.Element {
                       }}
                       onClick={() => {
                         history.push(
-                          "/patientRequests/" + request.id + "/overview",
+                          "/patientRequests/" + request.id + "/overview"
                         );
                       }}
                     >
@@ -705,7 +745,7 @@ export function Patient({ request }): JSX.Element {
                       }}
                       onClick={() => {
                         history.push(
-                          "/patientRequests/" + request.id + "/overview",
+                          "/patientRequests/" + request.id + "/overview"
                         );
                       }}
                     >

@@ -6,10 +6,10 @@ import { useHistory } from "react-router";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMutation } from "@apollo/react-hooks";
 import { Avatar, Card, IconButton, Typography } from "@material-ui/core";
-import GetAppIcon from '@mui/icons-material/GetApp';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import DashboardIcon from '@mui/icons-material/DashboardOutlined';
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import GetAppIcon from "@material-ui/icons/GetApp";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import DashboardIcon from "@material-ui/icons/DashboardOutlined";
+import ListAltIcon from "@material-ui/icons/ListAlt";
 import { CO_ROLE_MRA, CO_ROLE_PATIENT } from "../../../../utils/roles";
 import {
   useNotify,
@@ -19,7 +19,7 @@ import {
 } from "react-admin";
 import { Button } from "@mui/material";
 import CopyToClipboardButton from "../../../../components/CopyToClipboardButton";
-import { AccessTime, Schedule } from "@mui/icons-material/";
+import { AccessTime, Schedule } from "@material-ui/icons";
 import { BootstrapTooltip as Tooltip } from "../../../../components/Tooltip";
 import type {
   GetNotificationDetailsInput,
@@ -29,39 +29,45 @@ import sendReminderEmail from "../../../../queries/sendReminderEmail/sendReminde
 import moment from "moment";
 import getNotificationDetails from "../../../../queries/getNotificationDetails/getNotificationDetails";
 import { REMINDER_MESSAGES } from "../../../../utils/messages/reminderConstants";
-const { VITE_BASE_URL, REACT_APP_SUPPORT_MAIL_ADDRESS } = process.env;
-const useStyles = makeStyles((theme) => ({
-  root: {
+
+const PREFIX = "Activity";
+const classes = {
+  root: `${PREFIX}-root`,
+  card: `${PREFIX}-card`,
+  listItems: `${PREFIX}-content`,
+  reminder: `${PREFIX}-  reminder`,
+  date: `${PREFIX}-date`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     display: "flex",
     alignItems: "center",
     backgroundColor: theme.palette.primary.light,
   },
-  card: {
+  [`& .${classes.card}`]: {
     flexGrow: 1,
     display: "flex",
     border: 0,
     marginLeft: "10px",
     alignItems: "center",
   },
-
-  listItems: {
+  [`& .${classes.listItems}`]: {
     "&.MuiListItem-gutters": {
       paddingLeft: 0,
 
       paddingRight: 0,
     },
   },
-  reminder: {
+  [`& .${classes.reminder}`]: {
     color: "blue",
     padding: "0px",
     marginLeft: "5px",
   },
-  date: {
+  [`& .${classes.date}`]: {
     marginLeft: "auto",
     flexShrink: 0,
   },
 }));
-
 function Activity({ activity, className, ...rest }): JSX.Element {
   const classes = useStyles();
   const translate = useTranslate();
@@ -73,7 +79,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
   const history = useHistory();
   const [subscribeGetNotificationDetailsMutation] = useMutation(
     getNotificationDetails,
-    {},
+    {}
   );
   const [resendTime, setResendTime] = React.useState(null);
   const [lastReminderSentAt, setLastReminderSendAt] = useState(null);
@@ -117,7 +123,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
         variables: { input: getNotificationDetailsInput },
       }).then((response) => {
         const responseDetails = JSON.parse(
-          response.data.getNotificationDetails.json,
+          response.data.getNotificationDetails.json
         );
         const notificationLimit = responseDetails.notification_limit;
         const attempt = responseDetails.no_reminder_sent;
@@ -127,12 +133,12 @@ function Activity({ activity, className, ...rest }): JSX.Element {
             lastDay: "[yesterday at] h:mm A",
             lastWeek: " 'at' MMM DD, YYYY h:mm A",
             sameElse: " 'at' MMM DD, YYYY h:mm A",
-          }),
+          })
         );
         setResendTime(
           responseDetails.last_reminder_sent_at
             ? responseDetails.last_reminder_sent_at
-            : null,
+            : null
         );
         const interval = responseDetails.notification_interval;
         const timeDiff = responseDetails.time_difference;
@@ -147,49 +153,52 @@ function Activity({ activity, className, ...rest }): JSX.Element {
           if (intervalTotalMilliseconds <= timeDiffTotalMilliseconds) {
             if (attempt >= notificationLimit) {
               setErrorMsg(
-                translate("resources.request.notificationLimitExceeded"),
+                translate("resources.request.notificationLimitExceeded")
               );
             }
           } else {
             const differenceMilliseconds = Math.abs(
-              intervalTotalMilliseconds - timeDiffTotalMilliseconds,
+              intervalTotalMilliseconds - timeDiffTotalMilliseconds
             );
             const differenceMinutes =
               Math.floor(differenceMilliseconds / (1000 * 60)) % 60;
             const differenceHours =
               Math.floor(differenceMilliseconds / (1000 * 60 * 60)) % 24;
             const differenceDays = Math.floor(
-              differenceMilliseconds / (1000 * 60 * 60 * 24),
+              differenceMilliseconds / (1000 * 60 * 60 * 24)
             );
 
             let formattedDifference = "";
             if (differenceDays > 0) {
-              formattedDifference += `${differenceDays} day${differenceDays > 1 ? "s" : ""
-                } `;
+              formattedDifference += `${differenceDays} day${
+                differenceDays > 1 ? "s" : ""
+              } `;
             }
             if (differenceHours > 0) {
               if (differenceHours > 1) {
-                formattedDifference += `${differenceHours} hour${differenceHours > 1 ? "s" : ""
-                  } `;
+                formattedDifference += `${differenceHours} hour${
+                  differenceHours > 1 ? "s" : ""
+                } `;
               } else {
                 formattedDifference += `1 hour `;
               }
             }
             if (differenceMinutes > 0) {
               if (differenceMinutes > 1) {
-                formattedDifference += `${differenceMinutes} minute${differenceMinutes > 1 ? "s" : ""
-                  }`;
+                formattedDifference += `${differenceMinutes} minute${
+                  differenceMinutes > 1 ? "s" : ""
+                }`;
               } else {
                 formattedDifference += `1 minute`;
               }
             }
             setErrorMsg(
               REMINDER_MESSAGES["reminder"].reminderExeedsLimit[0] +
-              lastReminderSentAt +
-              REMINDER_MESSAGES["reminder"].reminderExeedsLimit[1] +
-              formattedDifference.trim() +
-              REMINDER_MESSAGES["reminder"].reminderExeedsLimit[2] +
-              REACT_APP_SUPPORT_MAIL_ADDRESS,
+                lastReminderSentAt +
+                REMINDER_MESSAGES["reminder"].reminderExeedsLimit[1] +
+                formattedDifference.trim() +
+                REMINDER_MESSAGES["reminder"].reminderExeedsLimit[2] +
+                REACT_APP_SUPPORT_MAIL_ADDRESS
             );
           }
         }
@@ -235,7 +244,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
             : translate("resources.requests.sud_success"),
           {
             type: "success",
-          },
+          }
         );
         refresh();
       } else {
@@ -245,7 +254,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
             : translate("resources.requests.sud_error"),
           {
             type: "warning",
-          },
+          }
         );
       }
     });
@@ -279,8 +288,8 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                         errorMsg
                           ? errorMsg
                           : activity.subject_type === "hippaAuthDetails"
-                            ? translate("tooltip.formResend.hipaa")
-                            : translate("tooltip.formResend.sud")
+                          ? translate("tooltip.formResend.hipaa")
+                          : translate("tooltip.formResend.sud")
                       }
                     >
                       <IconButton
@@ -288,7 +297,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                           resendMail(
                             activity.subject_type === "hippaAuthDetails"
                               ? "HIPAA"
-                              : "SUD",
+                              : "SUD"
                           );
                         }}
                         className={classes.reminder}
@@ -323,7 +332,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                       onClick={() => {
                         history.push(
                           "/authorizationForm/hipaa/" +
-                          activity.requestToken.token,
+                            activity.requestToken.token
                         );
                       }}
                     >
@@ -339,7 +348,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                       onClick={() => {
                         history.push(
                           "/authorizationForm/sud/" +
-                          activity.requestToken.token,
+                            activity.requestToken.token
                         );
                       }}
                     >
@@ -384,7 +393,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                           }}
                         >
                           Last Reminder Sent: {moment(resendTime).fromNow(true)}{" "}
-                          ago{ }
+                          ago{}
                         </span>
                       </>
                     )}

@@ -6,24 +6,47 @@ import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button, Grid } from "@material-ui/core";
 import { validateSentance } from "../../../../utils/validator";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: "flex",
+//     alignItems: "center",
+//   },
+//   card: {
+//     marginLeft: theme.spacing(2),
+//     flexGrow: 1,
+//     display: "flex",
+//     padding: theme.spacing(2),
+//     alignItems: "center",
+//   },
+//   date: {
+//     marginLeft: "auto",
+//     flexShrink: 0,
+//   },
+// }));
+const PREFIX = "ReviewForm";
+const classes = {
+  root: `${PREFIX}-root`,
+  card: `${PREFIX}-card`,
+  date: `${PREFIX}-date`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     display: "flex",
     alignItems: "center",
+    backgroundColor: theme.palette.primary.main,
   },
-  card: {
+  [`& .${classes.card}`]: {
     marginLeft: theme.spacing(2),
     flexGrow: 1,
     display: "flex",
     padding: theme.spacing(2),
     alignItems: "center",
   },
-  date: {
+  [`& .${classes.date}`]: {
     marginLeft: "auto",
     flexShrink: 0,
   },
 }));
-
 function ReviewForm({ submitStatusChange }): JSX.Element {
   const classes = useStyles();
   const [reason, setReason] = useState("");

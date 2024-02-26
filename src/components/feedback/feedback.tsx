@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDataProvider, usePermissions, useTranslate } from "react-admin";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
+import { styled } from "@mui/material/styles";
 import {
   Button,
   Dialog,
@@ -17,6 +17,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import CloseIcon from "@mui/icons-material/Close";
+
 import type {
   CreateFeedbackV1Input,
   FileUploadInput,
@@ -31,8 +32,8 @@ import {
   validateEmail,
   validateString,
   validateSubjectLine,
-  validateDescription
-} from "../../lib/universal/utils/validator"
+  validateDescription,
+} from "../../lib/universal/utils/validator";
 import { perPageMax } from "../../lib/universal/utils/pageConstants";
 // import { useSelector } from "react-redux";
 import MuiPhoneNumber from "material-ui-phone-number";
@@ -40,74 +41,158 @@ import { CO_ROLE_ADMIN, CO_ROLE_MRA, CO_ROLE_PPA } from "../../utils/roles";
 // import useTraces from "../../hooks/useTraces";
 import BaseModal from "../baseModal";
 import UploadFileDrop from "./fileDropzone";
-const useStyles = makeStyles(() => ({
-  root: {
-    padding: "30px",
-  },
-  dialogContainer: {
-    overflow: "hidden",
-  },
-  modal: {
+// const useStyles = makeStyles(() => ({
+//   root: {
+//     padding: "30px",
+//   },
+//   dialogContainer: {
+//     overflow: "hidden",
+//   },
+//   modal: {
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//   header: {
+//     maxWidth: 600,
+//     margin: "0 auto",
+//   },
+//   closeIcon: {
+//     position: "absolute",
+//     top: "8px",
+//     right: "8px",
+//   },
+//   content: {
+//     maxWidth: 720,
+//     margin: "0 auto",
+//   },
+//   product: {
+//     overflow: "visible",
+//     position: "relative",
+//     cursor: "pointer",
+//     "&:hover": {
+//       transform: "scale(1.1)",
+//     },
+//   },
+//   image: {
+//     position: "absolute",
+//     top: -24,
+//     height: 48,
+//     width: 48,
+//     fontSize: 24,
+//   },
+//   divider: {},
+//   options: {
+//     lineHeight: "26px",
+//   },
+//   recommended: {},
+//   contact: {
+//     margin: "20px 0px",
+//   },
+//   actions: {
+//     backgroundColor: colors.grey[100],
+//     display: "flex",
+//     justifyContent: "center",
+//   },
+//   startButton: {
+//     backgroundColor: "#93C572",
+//     color: "#ffffff",
+//     "&:hover": {},
+//   },
+//   subtitle: {
+//     width: "100%",
+//   },
+// }));
+
+const PREFIX = "FeedBackForm";
+const classes = {
+  root: `${PREFIX}-root`,
+  dialogContainer: `${PREFIX}-dialogContainer`,
+  modal: `${PREFIX}-modal`,
+  header: `${PREFIX}-header`,
+  closeIcon: `${PREFIX}-closeIcon`,
+  content: `${PREFIX}-content`,
+  product: `${PREFIX}-product`,
+  image: `${PREFIX}-image`,
+  divider: `${PREFIX}-divider`,
+  options: `${PREFIX}-options`,
+  recommended: `${PREFIX}-recommended`,
+
+  contact: `${PREFIX}- contact`,
+  actions: `${PREFIX}-actions`,
+  startButton: `${PREFIX}-startButton`,
+  subtitle: `${PREFIX}-subtitle`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: theme.palette.primary.main,
   },
-  header: {
-    maxWidth: 600,
-    margin: "0 auto",
+  [`& .${classes.dialogContainer}`]: {
+    borderRadius: theme.shape.radius,
   },
-  closeIcon: {
-    position: "absolute",
-    top: "8px",
-    right: "8px",
+  [`& .${classes.modal}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
   },
-  content: {
-    maxWidth: 720,
-    margin: "0 auto",
+  [`& .${classes.header}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
   },
-  product: {
-    overflow: "visible",
-    position: "relative",
-    cursor: "pointer",
-    "&:hover": {
-      transform: "scale(1.1)",
-    },
+  [`& .${classes.closeIcon}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
   },
-  image: {
+  [`& .${classes.content}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
+  },
+  [`& .${classes.product}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
+  },
+  [`& .${classes.image}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
+  },
+  [`& .${classes.divider}`]: {},
+  [`& .${classes.options}`]: {
     position: "absolute",
     top: -24,
     height: 48,
     width: 48,
     fontSize: 24,
   },
-  divider: {},
-  options: {
-    lineHeight: "26px",
-  },
-  recommended: {},
-  contact: {
+  [`& .${classes.recommended}`]: {},
+  [`& .${classes.contact}`]: {
     margin: "20px 0px",
   },
-  actions: {
+  [`& .${classes.actions}`]: {
     backgroundColor: colors.grey[100],
     display: "flex",
     justifyContent: "center",
   },
-  startButton: {
+  [`& .${classes.startButton}`]: {
     backgroundColor: "#93C572",
     color: "#ffffff",
     "&:hover": {},
   },
-  subtitle: {
+  [`& .${classes.subtitle}`]: {
     width: "100%",
   },
 }));
-
 interface FailedFileResponse {
   failedResponse: IFileResponse;
 }
 function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
-  const userInfo = useSelector((state: AppState) => state.userInfoReducer);
+  // const userInfo = useSelector((state: AppState) => state.userInfoReducer);
   const [userDetails, setUserDetails] = useState<IPersonDemographic[]>([]);
   const [formFilled, setFormFilled] = useState(false);
   const [isFailed, setIsFailed] = useState(false);
@@ -128,7 +213,7 @@ function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
     useState(false);
   const [failedUploadFileNames, setFailedUploadFileNames] = useState([]);
   const [finalFailedUploadFileNames, setFinalFailedUploadFileNames] = useState(
-    [],
+    []
   );
   const [finalAttachmentIds, setFinalAttachmentIds] = useState([]);
   let failedUploadNames = [];
@@ -450,7 +535,7 @@ function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
 
     if (response.fileStatus === "removed") {
       setFileUploadResponses((prevResponses) =>
-        prevResponses.filter((_, index) => index !== response.index),
+        prevResponses.filter((_, index) => index !== response.index)
       );
     } else {
       setFileUploadResponses((prevResponses) => [...prevResponses, response]);
@@ -459,7 +544,7 @@ function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
 
   const checkValidation = (): void => {
     const hasErrors = Object.values(errorSet).some(
-      (fieldErrors) => fieldErrors[0] === true,
+      (fieldErrors) => fieldErrors[0] === true
     );
     if (feedback.subject === "" || feedback.description === "") {
       if (feedback.subject === "") {
@@ -558,13 +643,13 @@ function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
                       getTrace(
                         "Submitted feedback form by PPA",
                         "ev-119",
-                        userInfo.email,
+                        userInfo.email
                       );
                     } else if (permissions === CO_ROLE_MRA) {
                       getTrace(
                         "Submitted feedback form by MRA",
                         "ev-120",
-                        userInfo.email,
+                        userInfo.email
                       );
                     }
                     if (isFailed) {
@@ -603,7 +688,7 @@ function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
                   clearErrors();
                   onClose();
                 }
-              },
+              }
             );
           } else if (res.errors) {
             setIsLoading(false);
@@ -676,14 +761,14 @@ function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
           }
           clearErrors();
           onClose();
-        },
+        }
       );
     }
   };
 
   const retryFileUploads = (
     failedUploads: FailedFileResponse[],
-    finalAttachmentIds,
+    finalAttachmentIds
   ) => {
     const flattenedFailedUploads = failedUploads.flat();
     const retryPromises = flattenedFailedUploads.map((failedResponse) => {
@@ -714,14 +799,14 @@ function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
 
     Promise.all(retryPromises).then((retryResults) => {
       const successfulRetryUploads = retryResults.filter(
-        (retryResults) => retryResults !== null && !retryResults.error,
+        (retryResults) => retryResults !== null && !retryResults.error
       );
       const failedRetryUploads = retryResults.filter(
-        (retryResult) => retryResult !== null && !retryResult.error,
+        (retryResult) => retryResult !== null && !retryResult.error
       );
       finalFailedUploadNames = failedRetryUploads.map(
         (failedRetryUploads) =>
-          failedRetryUploads.failedResponse.failedResponse.response.meta.name,
+          failedRetryUploads.failedResponse.failedResponse.response.meta.name
       );
 
       setFinalFailedUploadFileNames(finalFailedUploadNames);
@@ -774,21 +859,21 @@ function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
     if (fileUploadResponses.length > 0) {
       Promise.all(uploadPromises).then((uploadResults) => {
         const successfulUploads = uploadResults.filter(
-          (uploadResult) => uploadResult !== null && !uploadResult.error,
+          (uploadResult) => uploadResult !== null && !uploadResult.error
         );
         const finalAttachmentIds = uploadResults.filter(
-          (uploadResult) => uploadResult !== null && !uploadResult.error,
+          (uploadResult) => uploadResult !== null && !uploadResult.error
         );
         setFinalAttachmentIds(finalAttachmentIds);
         const failedUploads: FailedFileResponse[] = uploadResults.filter(
-          (uploadResult) => uploadResult !== null && uploadResult.error,
+          (uploadResult) => uploadResult !== null && uploadResult.error
         );
         setFailedUploadResponses((prevResponses) => [
           ...prevResponses,
           ...failedUploads, //UC-1: check if logic is correct
         ]);
         failedUploadNames = failedUploads.map(
-          (failedUpload) => failedUpload.failedResponse.response.meta.name,
+          (failedUpload) => failedUpload.failedResponse.response.meta.name
         );
         setFailedUploadFileNames(failedUploadNames);
         if (failedUploads.length > 0) {
@@ -921,7 +1006,7 @@ function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
           closeButtonName="Cancel"
           feedbackFailedUploads={failedUploadFileNames}
           feedbackFailedSubTitle={translate(
-            "resources.feedback.fileUploadFailedSubTitle",
+            "resources.feedback.fileUploadFailedSubTitle"
           )}
         />
       )}
@@ -1025,7 +1110,7 @@ function FeedBackForm({ open, onClose, canvased, ...rest }): JSX.Element {
           closeButtonName="Ok"
           feedbackFailedUploads={finalFailedUploadFileNames}
           feedbackFailedSubTitle={translate(
-            "resources.feedback.fileUploadFinallyFailedSubTitle",
+            "resources.feedback.fileUploadFinallyFailedSubTitle"
           )}
         />
       )}

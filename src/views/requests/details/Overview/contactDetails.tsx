@@ -16,25 +16,49 @@ import {
 } from "react-admin";
 import { perPageMax } from "../../../../utils/pageConstants";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   cardBottom: {
+//     marginBottom: "15px",
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   listItems: {
+//     "&.MuiListItem-gutters": {
+//       paddingLeft: 0,
+//       paddingRight: 0,
+//     },
+//   },
+//   table: {
+//     padding: 0,
+//   },
+// }));
+const PREFIX = "Contact";
+const classes = {
+  root: `${PREFIX}-root`,
+  cardBottom: `${PREFIX}-cardBottom`,
+  listItems: `${PREFIX}-listItems`,
+  table: `${PREFIX}-table`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: theme.palette.primary.light,
   },
-  cardBottom: {
+  [`& .${classes.cardBottom}`]: {
     marginBottom: "15px",
     backgroundColor: theme.palette.primary.light,
   },
-  listItems: {
+  [`& .${classes.listItems}`]: {
     "&.MuiListItem-gutters": {
       paddingLeft: 0,
       paddingRight: 0,
     },
   },
-  table: {
+  [`& .${classes.table}`]: {
     padding: 0,
   },
 }));
-
 export function Contact({ request }): JSX.Element {
   const dataProvider = useDataProvider();
   const [contactList, setContactList] = useState(false);

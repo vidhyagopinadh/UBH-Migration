@@ -11,19 +11,38 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { styled } from "@mui/material/styles";
 import FileViewer from "../fileViewer";
 import MuiPhoneNumber from "material-ui-phone-number";
 import CreatePageHeader from "../createPageHeader";
 
-const useStyles = makeStyles(() => ({
-  root: {
+// const useStyles = makeStyles(() => ({
+//   root: {
+//     width: "100%",
+//     "& label": {
+//       marginTop: -3,
+//     },
+//   },
+//   listItems: {
+//     "&.MuiListItem-gutters": {
+//       paddingLeft: 0,
+//       paddingRight: 0,
+//     },
+//   },
+// }));
+const PREFIX = "FeedBackView";
+const classes = {
+  root: `${PREFIX}-root`,
+  listItems: `${PREFIX}-listItems`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     width: "100%",
     "& label": {
       marginTop: -3,
     },
   },
-  listItems: {
+  [`& .${classes.listItems}`]: {
     "&.MuiListItem-gutters": {
       paddingLeft: 0,
       paddingRight: 0,
@@ -32,7 +51,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 function FeedBackView({ ticket }): JSX.Element {
-  const classes = useStyles();
   const dataProvider = useDataProvider();
   const [fileUploadData, setFileUploadData] = useState([]);
   const [attachment, setAttachment] = useState<File>();
