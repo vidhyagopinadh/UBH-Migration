@@ -1,39 +1,48 @@
 import React from "react";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/styles";
+
 import { Typography } from "@material-ui/core";
 import placeHolderImage from "../images/access-denied.png";
 import { Button } from "@mui/material";
-import { useHistory } from "react-router";
 
-const useStyles = makeStyles(() => ({
-  root: {
+import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+
+const PREFIX = "MyCard";
+const classes = {
+  root: `${PREFIX}-root`,
+  image: `${PREFIX}-image`,
+  centeredText: `${PREFIX}-centeredText`,
+  narrowWidth: `${PREFIX}-narrowWidth`,
+  newLine: `${PREFIX}-newLine`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     textAlign: "center",
     padding: 20,
     alignItems: "center",
     marginTop: "10%",
   },
-  image: {
+  [`& .${classes.image}`]: {
     height: "140px",
     width: "150px",
   },
-  centeredText: {
+  [`& .${classes.centeredText}`]: {
     display: "flex",
     justifyContent: "center",
   },
-  narrowWidth: {
+  [`& .${classes.narrowWidth}`]: {
     width: "40%",
     fontSize: "20px",
     paddingTop: "20px",
   },
-  newLine: {
+  [`& .${classes.newLine}`]: {
     whiteSpace: "pre-line",
   },
 }));
 
 function PageNotFound({ ...rest }) {
-  const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <div {...rest} className={clsx(classes.root)}>
       <img src={placeHolderImage} className={classes.image} />
@@ -59,7 +68,7 @@ function PageNotFound({ ...rest }) {
       <Button
         type="submit"
         onClick={() => {
-          history.push("/");
+          navigate("/");
         }}
         variant="contained"
         sx={{ mt: 3, mb: 2 }}
