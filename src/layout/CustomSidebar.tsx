@@ -6,3 +6,5 @@ const CustomSidebar = (props: any): JSX.Element => (
         <Sidebar {...props} size={200} />
     </>
 );
+
+export default CustomSidebar

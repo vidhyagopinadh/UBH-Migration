@@ -7,6 +7,7 @@ import apolloConfig from "./service/apolloConfig";
 import type { DataProvider } from "react-admin";
 import keycloak from './keycloakConfig';
 import { ReactKeycloakProvider } from "@react-keycloak/web";
+import { BrowserRouter } from "react-router-dom";
 
 // import i18nProvider from './i18nProvider';
 // import MainLayout from './layout/MainLayout';
@@ -31,12 +32,11 @@ import useLogout from "./hooks/useLogout";
 import Dashboard from './dashboard/dashboard';
 import KeycloakLogin from './layout/keycloakLogin';
 import i18nProvider from './i18nProvider';
-import PageNotFound from './Layouts/PageNotFound';
+import PageNotFound from './layout/PageNotFound';
 import BaseModal from './components/baseModal';
-import { Layout } from './layout';
-// import BaseModal from './components/baseModal';
+import { Layout } from './layout/index';
+import requests from './views/requests';
 
-// import LogoutButton from "./components/LogoutButton";
 const client = apolloConfig();
 console.log(client)
 export let ACCESS_TOKEN = "";
@@ -107,7 +107,7 @@ const App = () => {
       }
     }
   };
-
+  console.log(dataProvider)
   // hide the admin until the keycloak client is ready
   if (!keycloak) return <p>Loading...</p>;
   if (!dataProvider) {
@@ -148,15 +148,14 @@ const App = () => {
       onEvent={onKeycloakEvent}
       onTokens={onKeycloakTokens}
       initOptions={{
-        onLoad: "check-sso",
+        // onLoad: "login-required",
         pkceMethod: "S256",
         silentCheckSsoRedirectUri:
           window.location.origin + "/silent-check-sso.html",
       }}>
-      <ApolloProvider client={client}>
+      <BrowserRouter>
         <Admin
           title="Unblock Health"
-          basename="/"
           //customReducers={ReducerHub}
           //customRoutes={customRoutes}
           authProvider={authProvider}
@@ -170,17 +169,15 @@ const App = () => {
           disableTelemetry
         >
 
-          <>
-            {/* <Resource name="requests" {...requests} />, */}
-            <CustomRoutes>
-              <Route path="/" element={<Configuration />} />
-
-            </CustomRoutes>
-          </>
+          <Resource name="requests" {...requests} />
+          <CustomRoutes>
+            <Route path="/" element={<Dashboard />} />
+          </CustomRoutes>
 
 
         </Admin>
-      </ApolloProvider>
+      </BrowserRouter>
+
 
 
     </ReactKeycloakProvider>

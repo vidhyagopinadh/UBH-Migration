@@ -1,39 +1,47 @@
 import * as React from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom"
 import type { LayoutProps } from "react-admin";
-import { Layout, Sidebar, useSetLocale } from "react-admin";
+import { Layout, Sidebar, useLocaleState } from "react-admin";
 import AppBar from "./appBar";
+import CustomSidebar from "./CustomSidebar";
 import Menu from "./menu";
-import { darkTheme, lightTheme } from "./themes";
-import { useDataProvider } from "react-admin";
-import { userInfoAction } from "./../configuration/actions/userInfoActions";
-// import Feedback from "../components/feedback/index";
-import { perPageMin } from "../lib/universal/utils/pageConstants";
-import { Helmet } from "react-helmet";
 import { useKeycloak } from "@react-keycloak/web";
+import { useDataProvider } from "react-admin";
+import { decodeToken } from "react-jwt";
+import { perPageMin } from "../lib/universal/utils/pageConstants";
+import { UserProps } from "../types/comptypes";
 import secureLocalStorage from "react-secure-storage";
-import { useNavigate } from "react-router-dom";
+import { CO_ROLE_MRA } from "../lib/universal/utils/roles";
 
-import { isCommentProviderIsCactusComment } from "../lib/universal/utils/comments"
-//import "typeface-roboto";
-// import { decodeJwt } from "../lib/universal/utils/parseJwt";
-import { CO_ROLE_MRA } from "../utils/roles";
-import { isExpired, decodeToken } from "react-jwt";
 
-const CustomSidebar = (props: any): JSX.Element => (
-  <>
-    {/* <Feedback page="login" /> */}
-    <Sidebar {...props} size={200} />
-  </>
-);
+// const CustomSidebar = (props: any): JSX.Element => (
+//   <>
+//     {/* <Feedback page="login" /> */}
+//     <Sidebar {...props} size={200} />
+//   </>
+// );
+
 const emptySideBar = (): JSX.Element => <></>;
 
 export default (props: LayoutProps): JSX.Element => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
   const dataProviderBypass = useDataProvider();
-  const setLocale = useSetLocale();
-  //const dispatch = useDispatch();
+
+  const [userInfo, setUserInfo] = React.useState<UserProps>({
+    username: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    name: "",
+    groups: "",
+    role: "",
+    id: "",
+    emailVerified: false,
+    profilePicId: "",
+  });
+
+  const [locale, setLocale] = useLocaleState();
   const ifAuthForm =
     window.location.href.includes("authorizationForm") ||
     window.location.href.includes("patientRequests") ||
@@ -42,9 +50,11 @@ export default (props: LayoutProps): JSX.Element => {
   const [loading, setLoading] = React.useState(ifAuthForm ? false : true);
   React.useEffect(() => {
     if (!localStorage.getItem("refresh_token") && !ifAuthForm) {
+      localStorage.clear()
       navigate("/login");
     }
   }, []);
+
   React.useEffect(() => {
     if (
       !window.location.href.includes("login") &&
@@ -54,7 +64,7 @@ export default (props: LayoutProps): JSX.Element => {
     }
   }, []);
   React.useEffect(() => {
-    keycloak.refreshToken = localStorage.getItem("refresh_token");
+    // keycloak.refreshToken = localStorage.getItem("refresh_token");
 
     const tokenParsed: any = decodeToken(localStorage.getItem("access_token") || "");
     if (!ifAuthForm || tokenParsed?.payload) {
@@ -65,13 +75,16 @@ export default (props: LayoutProps): JSX.Element => {
       };
       const fetchData = async () => {
         try {
+
           const { data } = await dataProviderBypass.getList(
             "personProfile",
             queryOption,
           );
-          if (data.length > 0) {
 
-            userInfoAction({
+          console.log(data);
+
+          if (data.length > 0) {
+            setUserInfo({
               username: tokenParsed.email,
               firstName: tokenParsed.given_name,
               lastName: tokenParsed.family_name,
@@ -86,6 +99,8 @@ export default (props: LayoutProps): JSX.Element => {
               emailVerified: tokenParsed.email_verified,
               profilePicId: data[0]?.profilePicId,
             })
+
+
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -99,15 +114,9 @@ export default (props: LayoutProps): JSX.Element => {
         : setLocale("en");
     }
   }, []);
-
-  // const theme = useSelector(() =>
-  //   localStorage.getItem("Theme") === "dark" ? darkTheme : lightTheme,
-  // );
-  const theme = lightTheme
-
   return (
     <>
-      {isCommentProviderIsCactusComment ? (
+      {/* {isCommentProviderIsCactusComment ? (
         <Helmet>
           <script
             type="text/javascript"
@@ -116,7 +125,7 @@ export default (props: LayoutProps): JSX.Element => {
         </Helmet>
       ) : (
         ""
-      )}
+      )} */}
       {(keycloak.authenticated || ifAuthForm) && !loading && (
         <div style={{ fontFamily: "Roboto, sans-serif" }}>
           <Layout
@@ -128,6 +137,7 @@ export default (props: LayoutProps): JSX.Element => {
           />
         </div>
       )}
+
     </>
   );
 };

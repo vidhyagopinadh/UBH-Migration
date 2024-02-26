@@ -98,6 +98,7 @@ const Dashboard: FC = () => {
   const dashboardData = document.getElementById("dashboardData");
 
   React.useEffect(() => {
+
     setMounted(true);
     if (permissions === CO_ROLE_PPA && mounted === true) {
       // getTrace(" Dashboard Loaded(PPA)", "ev-038", userInfo.email);
@@ -120,7 +121,7 @@ const Dashboard: FC = () => {
       // getTrace("Data loaded in dashboard(MRA)", "ev-090", userInfo.email);
     }
   }, [mounted, dashboardData, permissions]);
-
+  console.log("in dashboard")
   return (
     // isXSmall ? (
     //   <div id="dashboardData">

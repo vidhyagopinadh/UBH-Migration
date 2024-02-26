@@ -1,7 +1,7 @@
 import { RequestList } from "./list/requestList";
-//import RequestsIcon from "@material-ui/icons/List";
+import ListIcon from '@mui/icons-material/List';
 
 export default {
   list: RequestList,
-  //  icon: RequestsIcon,
+  icon: ListIcon,
 };
