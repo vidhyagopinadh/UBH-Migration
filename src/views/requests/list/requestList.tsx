@@ -16,15 +16,16 @@ import {
 // import useTraces from "../../../hooks/useTraces";
 // import { useSelector } from "react-redux";
 //import type { AppState } from "../../../types";
-// import { MedicalInformation } from "@mui/icons-material";
-// import { Add, Assignment } from "@material-ui/icons";
-//import { useHistory } from "react-router";
-// import CustomEmpty from "../../../components/customEmpty";
-// import PageNotFound from "../../../components/pageNotFound";
-// import CustomFilter from "../../../components/customFilter";
+import { MedicalInformation } from "@mui/icons-material";
+import AddIcon from '@mui/icons-material/Add';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { useNavigate } from "react-router-dom";
+import CustomEmpty from "../../../components/customEmpty";
+import PageNotFound from "../../../components/pageNotFound";
+import CustomFilter from "../../../components/customFilter";
 import { Link } from "react-router-dom";
-// import NotVerifiedBanner from "../../../components/notVerifiedBanner";
-// import LinearProgressWithLabel from "../../../components/linearProgressWithLabel";
+import NotVerifiedBanner from "../../../components/notVerifiedBanner";
+import LinearProgressWithLabel from "../../../components/linearProgressWithLabel";
 import { Typography, Box, Tabs, Divider, Grid, Card, CardContent, Container } from "@mui/material";
 import useRequestList from "./useRequestList";
 import { styled } from '@mui/material/styles';
@@ -38,7 +39,7 @@ const classes = {
   root: `${PREFIX}-root`,
   content: `${PREFIX}-content`,
   header: `${PREFIX}-header`,
- 
+
 }
 
 const StyledDiv = styled('div')(({ theme }) => ({
@@ -52,7 +53,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
   [`& .${classes.header}`]: {
     backgroundColor: "Lavender",
   },
-  
+
 }))
 
 
@@ -147,30 +148,30 @@ const FilterSidebar = ({ type = null }): JSX.Element => {
 
   const classes = {
     filter: `${PREFIX}-filter`,
-    }
-    
+  }
+
   const Root = styled('div')(({ theme }) => ({
-      [`&.${classes.filter}`]: {
-        backgroundColor: theme.palette.primary.light,
-      },
-   
-    }));
+    [`&.${classes.filter}`]: {
+      backgroundColor: theme.palette.primary.light,
+    },
+
+  }));
   const userInfoReducer = useSelector(
     (state: AppState) => state.userInfoReducer,
   );
   //const classes = useStyles();
   return (
     <Root>
-    <Card className={classes.filter} id="filter-sidebar" sx={{ display: { sm: "none" } }}>
-      <CardContent>
-        <PriorityFilter />
-        <StatusFilter />
-        <RequestTypeFilter />
-        {userInfoReducer.role === CO_ROLE_PATIENT && type === "myself" && (
-          <PatientDependentFilter />
-        )}
-      </CardContent>
-    </Card>
+      <Card className={classes.filter} id="filter-sidebar" sx={{ display: { sm: "none" } }}>
+        <CardContent>
+          <PriorityFilter />
+          <StatusFilter />
+          <RequestTypeFilter />
+          {userInfoReducer.role === CO_ROLE_PATIENT && type === "myself" && (
+            <PatientDependentFilter />
+          )}
+        </CardContent>
+      </Card>
     </Root>
   );
 };
@@ -229,90 +230,119 @@ export const RequestList = (props): JSX.Element => {
   };
   return (
     <>
-    <StyledDiv>
-      {userInfoReducer.role !== CO_ROLE_ADMIN ? (
-        <Container style={{ maxWidth: "unset" }}>
-          <div style={{ display: "column" }}>
-            {showBanner && (
+      <StyledDiv>
+        {userInfoReducer.role !== CO_ROLE_ADMIN ? (
+          <Container style={{ maxWidth: "unset" }}>
+            <div style={{ display: "column" }}>
+              {showBanner && (
+                <div
+                  style={{
+                    marginTop: "10px",
+                  }}
+                >
+                  <NotVerifiedBanner setShowBanner={setShowBanner} />
+                </div>
+              )}
+
               <div
                 style={{
-                  marginTop: "10px",
+                  float: "left",
+                  paddingBottom: "20px",
                 }}
               >
-                <NotVerifiedBanner setShowBanner={setShowBanner} />
-              </div>
-            )}
-
-            <div
-              style={{
-                float: "left",
-                paddingBottom: "20px",
-              }}
-            >
-              <Typography
-                component="h2"
-                gutterBottom
-                variant="overline"
-                style={{ marginTop: "10px" }}
-              >
-                {translate(`resources.requests.browse`)}
-              </Typography>
-              <Typography component="h1" variant="h5">
-                {translate(`resources.requests.see`)}
-              </Typography>
-            </div>
-            <div
-              style={{
-                float: "right",
-                paddingBottom: "20px",
-                marginRight: "6%",
-              }}
-            >
-              <CustomFilter
-                setFilterValue={setFilterValue}
-                fieldName="patient first name"
-              />
-              {userInfoReducer.role !== CO_ROLE_MRA && !emailNotVerified && (
-                <Button
-                  color="primary"
-                  component={Link}
-                  to="/requestCreate"
-                  variant="contained"
-                  className={classes.createButton}
+                <Typography
+                  component="h2"
+                  gutterBottom
+                  variant="overline"
+                  style={{ marginTop: "10px" }}
                 >
-                  <Add className={classes.addIcon} />
-                  {translate(`resources.requests.create`)}
-                </Button>
-              )}
-            </div>
-            <div style={{ float: "left", width: "100%" }}>
-              {userInfoReducer.role === CO_ROLE_PATIENT ? (
-                <>
-                  <Tabs
-                    onChange={handleTabsChange}
-                    scrollButtons="auto"
-                    variant="scrollable"
-                    value={currTab}
-                    textColor="primary"
-                    indicatorColor="primary"
+                  {translate(`resources.requests.browse`)}
+                </Typography>
+                <Typography component="h1" variant="h5">
+                  {translate(`resources.requests.see`)}
+                </Typography>
+              </div>
+              <div
+                style={{
+                  float: "right",
+                  paddingBottom: "20px",
+                  marginRight: "6%",
+                }}
+              >
+                <CustomFilter
+                  setFilterValue={setFilterValue}
+                  fieldName="patient first name"
+                />
+                {userInfoReducer.role !== CO_ROLE_MRA && !emailNotVerified && (
+                  <Button
+                    color="primary"
+                    component={Link}
+                    to="/requestCreate"
+                    variant="contained"
+                    className={classes.createButton}
                   >
-                    {tabs.map((tab) => (
-                      <Tab
-                        style={{ textTransform: "none" }}
-                        key={tab.value}
-                        icon={
-                          tab.value === "myself" ? (
-                            <MedicalInformation className={classes.icon} />
-                          ) : (
-                            <Assignment className={classes.icon} />
-                          )
-                        }
-                        label={tab.label}
-                        value={tab.value}
-                      />
-                    ))}
-                  </Tabs>
-                  <Divider style={{ marginBottom: "20px" }} />
+                    <Add className={classes.addIcon} />
+                    {translate(`resources.requests.create`)}
+                  </Button>
+                )}
+              </div>
+              <div style={{ float: "left", width: "100%" }}>
+                {userInfoReducer.role === CO_ROLE_PATIENT ? (
+                  <>
+                    <Tabs
+                      onChange={handleTabsChange}
+                      scrollButtons="auto"
+                      variant="scrollable"
+                      value={currTab}
+                      textColor="primary"
+                      indicatorColor="primary"
+                    >
+                      {tabs.map((tab) => (
+                        <Tab
+                          style={{ textTransform: "none" }}
+                          key={tab.value}
+                          icon={
+                            tab.value === "myself" ? (
+                              <MedicalInformation className={classes.icon} />
+                            ) : (
+                              <Assignment className={classes.icon} />
+                            )
+                          }
+                          label={tab.label}
+                          value={tab.value}
+                        />
+                      ))}
+                    </Tabs>
+                    <Divider style={{ marginBottom: "20px" }} />
+                    <List
+                      title={" "}
+                      {...props}
+                      perPage={9}
+                      sort={{ field: "createdat", order: "DESC" }}
+                      classes={{
+                        content: listStyles.content,
+                        root: listStyles.root,
+                      }}
+                      exporter={false}
+                      empty={
+                        !filterValue ? (
+                          <CustomEmpty type={currTab} />
+                        ) : (
+                          <CustomEmpty type="noResults" />
+                        )
+                      }
+                      filter={{
+                        firstName: filterValue,
+                      }}
+                      actions={null}
+                      aside={<FilterSidebar type={currTab} />}
+                    // filters={<UserFilter />}
+                    // filterDefaultValues={{ categoryType: "request" }}
+                    >
+                      <CommentGrid {...props} />
+                    </List>
+                  </>
+                ) : (
                   <List
                     title={" "}
                     {...props}
@@ -325,7 +355,7 @@ export const RequestList = (props): JSX.Element => {
                     exporter={false}
                     empty={
                       !filterValue ? (
-                        <CustomEmpty type={currTab} />
+                        <CustomEmpty type="myself" />
                       ) : (
                         <CustomEmpty type="noResults" />
                       )
@@ -334,49 +364,20 @@ export const RequestList = (props): JSX.Element => {
                       firstName: filterValue,
                     }}
                     actions={null}
-                    aside={<FilterSidebar type={currTab} />}
+                    aside={<FilterSidebar />}
+
                   // filters={<UserFilter />}
                   // filterDefaultValues={{ categoryType: "request" }}
                   >
                     <CommentGrid {...props} />
                   </List>
-                </>
-              ) : (
-                <List
-                  title={" "}
-                  {...props}
-                  perPage={9}
-                  sort={{ field: "createdat", order: "DESC" }}
-                  classes={{
-                    content: listStyles.content,
-                    root: listStyles.root,
-                  }}
-                  exporter={false}
-                  empty={
-                    !filterValue ? (
-                      <CustomEmpty type="myself" />
-                    ) : (
-                      <CustomEmpty type="noResults" />
-                    )
-                  }
-                  filter={{
-                    firstName: filterValue,
-                  }}
-                  actions={null}
-                  aside={<FilterSidebar />}
-
-                // filters={<UserFilter />}
-                // filterDefaultValues={{ categoryType: "request" }}
-                >
-                  <CommentGrid {...props} />
-                </List>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-        </Container>
-      ) : (
-        <PageNotFound />
-      )}
+          </Container>
+        ) : (
+          <PageNotFound />
+        )}
       </StyledDiv>
     </>
   );

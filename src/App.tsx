@@ -36,6 +36,7 @@ import PageNotFound from './layout/PageNotFound';
 import BaseModal from './components/baseModal';
 import { Layout } from './layout/index';
 import requests from './views/requests';
+import { CO_ROLE_ADMIN } from './lib/universal/utils/roles';
 
 const client = apolloConfig();
 console.log(client)
@@ -168,8 +169,73 @@ const App = () => {
           catchAll={PageNotFound}
           disableTelemetry
         >
-
-          <Resource name="requests" {...requests} />
+          {(permissions: any) => {
+            return [
+              // permissions === CO_ROLE_PPA
+              //   ? [
+              //     <Resource name="requests" {...requests} />,
+              //     <Resource name="insuranceQuestionRequests" {...billing} />,
+              //     <Resource name="userInviteLists" {...invite} />,
+              //     <Resource name="patientDemographics" {...patientDetails} />,
+              //   ]
+              //   : null,
+              // permissions === CO_ROLE_ADMIN
+              //   ? [
+              //     <Resource name="institutions" {...institutionDetails} />,
+              //     <Resource name="integrations" {...integrations} />,
+              //   ]
+              //   : null,
+              // permissions === CO_ROLE_MRA
+              //   ? [
+              //     <Resource name="requests" {...requests} />,
+              //     <Resource name="userInviteLists" {...invite} />,
+              //   ]
+              //   : null,
+              // permissions === CO_ROLE_GUEST
+              //   ? [
+              //     <Resource name="requests" {...requests} />,
+              //     <Resource name="insuranceQuestionRequests" {...billing} />,
+              //     <Resource name="userInviteLists" {...invite} />,
+              //   ]
+              //   : null,
+              permissions === CO_ROLE_PATIENT
+                ? [
+                  <Resource name="myRequests" {...requests} />,
+                  <Resource name="requestsOnBehalf" {...requests} />,
+                  // <Resource name="userInviteLists" {...invite} />,
+                  // <Resource name="dependents" {...dependents} />,
+                ]
+                : null,
+              <Resource name="personDemographicsDetailsV1" />,
+              <Resource name="personProfile" />,
+              <Resource name="personDemographicsDetailsV2" />,
+              <Resource name="communicationRequestMasterV1" />,
+              <Resource name="requestResponses" />,
+              <Resource name="requestLogMasters" />,
+              <Resource name="notificationListV1s" />,
+              <Resource name="personGenders" />,
+              <Resource name="person" />,
+              <Resource name="personTypes" />,
+              <Resource name="recordStatuses" />,
+              <Resource name="requestTypeMasters" />,
+              <Resource name="patients" />,
+              <Resource name="requestPriorityMasters" />,
+              <Resource name="requestStatusMasters" />,
+              <Resource name="issueImpactMasters" />,
+              <Resource name="impactSeverityMasters" />,
+              <Resource name="issueDescriptionMastersMedical" />,
+              <Resource name="sourceNatureDetails" />,
+              <Resource name="sourceInstitutions" />,
+              <Resource name="organizationMaster" />,
+              <Resource name="departments" />,
+              <Resource name="assignToPeople" />,
+              <Resource name="recordStatuses" />,
+              <Resource name="requestContactDetails" />,
+              <Resource name="requestObtainRecordTypes" />,
+              <Resource name="addendumDoctorsDetails" />,
+              <Resource name="userMedicalRecordsData" />,
+            ];
+          }}
           <CustomRoutes>
             <Route path="/" element={<Dashboard />} />
           </CustomRoutes>
