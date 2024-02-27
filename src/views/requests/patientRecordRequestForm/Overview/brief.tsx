@@ -34,9 +34,9 @@ import { useHistory } from "react-router";
 import ProviderView from "../../../../components/providerView";
 import { compareObjects } from "../../../../utils/compareObjects";
 import { perPageList } from "../../../../utils/pageConstants";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
-const PREFIX = 'PRRBrief';
+const PREFIX = "PRRBrief";
 const classes = {
   root: `${PREFIX}-root`,
   h6_title: `${PREFIX}-h6_title`,
@@ -46,9 +46,9 @@ const classes = {
   notesTitle: `${PREFIX}-notesTitle`,
   listitemStyle: `${PREFIX}-listitemStyle`,
   listitemStyle2: `${PREFIX}-listitemStyle2`,
-}
+};
 
-const StyledDiv = styled('div')(({ theme }) => ({
+const StyledDiv = styled("div")(({ theme }) => ({
   [`&.${classes.root}`]: {
     backgroundColor: "#FFFFFF",
     marginBottom: "15px",
@@ -85,8 +85,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
     display: "inline-block !important",
     borderBottom: "unset !important",
   },
-  
-}))
+}));
 
 function Brief({ request, onSuccess, ...rest }): JSX.Element {
   const StatusToIgnore = "status";
@@ -116,12 +115,12 @@ function Brief({ request, onSuccess, ...rest }): JSX.Element {
         })
         .then(({ data }) => {
           setSubmittedInstitution(
-            JSON.parse(data[0].communicationMetaValue).metaData,
+            JSON.parse(data[0].communicationMetaValue).metaData
           );
           setApprovedInstitution(
             data[0].approvedMetaValue
               ? JSON.parse(data[0].approvedMetaValue).metaData
-              : null,
+              : null
           );
 
           if (data[0].approvedMetaValue) {
@@ -129,7 +128,7 @@ function Brief({ request, onSuccess, ...rest }): JSX.Element {
               submittedInstitution,
               approvedInstitution,
               StatusToIgnore,
-              SourceToIgnore,
+              SourceToIgnore
             );
             setSameInstitutionData(isInstitutionEqual);
           }
@@ -168,7 +167,7 @@ function Brief({ request, onSuccess, ...rest }): JSX.Element {
           getTrace(
             "Upload signature in Patient Request Form",
             "ev-113",
-            userInfo.email,
+            userInfo.email
           );
           updateRequest(res.data?.createFileUpload.fileUpload.id);
         }
@@ -210,300 +209,319 @@ function Brief({ request, onSuccess, ...rest }): JSX.Element {
   const listClass2 = classNames(classes.listitemStyle2);
   return (
     <StyledDiv>
-    <Card {...rest} className={classes.root}>
-      <CardContent style={{ wordBreak: "break-word" }}>
-        {Object.entries(request).length > 0 && (
-          <>
-            <Typography
-              variant="subtitle1"
-              style={{
-                width: "98%",
-                padding: "8px 9px",
-                color: "rgb(135, 135, 135)",
-                border: "1px solid #718cc7",
-                borderRadius: "5px",
-                background: "aliceblue",
-                fontWeight: 600,
-              }}
-            >
-              {request.categoryType === "request"
-                ? "Medical Record Requested By: "
-                : request.categoryType === "addendum"
-                ? "Correction/Amendment Requested By: "
-                : "Billing/Insurance Question Requested By: "}
-              <b
+      <Card {...rest} className={classes.root}>
+        <CardContent style={{ wordBreak: "break-word" }}>
+          {Object.entries(request).length > 0 && (
+            <>
+              <Typography
+                variant="subtitle1"
                 style={{
-                  color: "#718cc7",
+                  width: "98%",
+                  padding: "8px 9px",
+                  color: "rgb(135, 135, 135)",
+                  border: "1px solid #718cc7",
+                  borderRadius: "5px",
+                  background: "aliceblue",
+                  fontWeight: 600,
                 }}
               >
-                {` ${request.createdfname} ${request.createdlastname}`}
-              </b>
-            </Typography>
-          </>
-        )}
-        <List>
-          {request.categoryType !== "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Request Type: &nbsp;
+                {request.categoryType === "request"
+                  ? "Medical Record Requested By: "
+                  : request.categoryType === "addendum"
+                  ? "Correction/Amendment Requested By: "
+                  : "Billing/Insurance Question Requested By: "}
+                <b
+                  style={{
+                    color: "#718cc7",
+                  }}
+                >
+                  {` ${request.createdfname} ${request.createdlastname}`}
+                </b>
               </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>
-                    {JSON.parse(request.requestType).other
-                      ? JSON.parse(request.requestType).other_value
-                      : JSON.parse(request.requestType).value}
-                  </>
+            </>
+          )}
+          <List>
+            {request.categoryType !== "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Request Type: &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>
+                      {JSON.parse(request.requestType).other
+                        ? JSON.parse(request.requestType).other_value
+                        : JSON.parse(request.requestType).value}
+                    </>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType !== "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Records requested from: &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>
+                      {tommddyyyy(request.recordsRequestedFrom)}{" "}
+                      &nbsp;&nbsp;to&nbsp;&nbsp;{" "}
+                      {tommddyyyy(request.recordsRequestedTo)}
+                    </>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType !== "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  How does this impact your care or access to information?
+                  &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>{request.issueImpactMasterValue}</>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.communicationRequestId && (
+              <ProviderView
+                commRequestId={null}
+                approvedInstitution={approvedInstitution}
+                sameInstitutionData={sameInstitutionData}
+                submittedInstitution={submittedInstitution}
+              />
+            )}
+            {!request.communicationRequestId && (
+              <>
+                {request.categoryType !== "addendum" && (
+                  <ListItem className={listClass} disableGutters>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.h6_title}
+                    >
+                      Nature of source: &nbsp;
+                    </Typography>
+                    <Typography
+                      variant="subtitle2"
+                      className={classes.subtitle}
+                    >
+                      {Object.entries(request).length > 0 && (
+                        <>{request.sourceNature}</>
+                      )}
+                    </Typography>
+                  </ListItem>
                 )}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType !== "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Records requested from: &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>
-                    {tommddyyyy(request.recordsRequestedFrom)}{" "}
-                    &nbsp;&nbsp;to&nbsp;&nbsp;{" "}
-                    {tommddyyyy(request.recordsRequestedTo)}
-                  </>
-                )}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType !== "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                How does this impact your care or access to information? &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>{request.issueImpactMasterValue}</>
-                )}
-              </Typography>
-            </ListItem>
-          )}
-          {request.communicationRequestId && (
-            <ProviderView
-              commRequestId={null}
-              approvedInstitution={approvedInstitution}
-              sameInstitutionData={sameInstitutionData}
-              submittedInstitution={submittedInstitution}
-            />
-          )}
-          {!request.communicationRequestId && (
-            <>
-              {request.categoryType !== "addendum" && (
+
                 <ListItem className={listClass} disableGutters>
                   <Typography variant="subtitle1" className={classes.h6_title}>
-                    Nature of source: &nbsp;
+                    Source Institution: &nbsp;
                   </Typography>
                   <Typography variant="subtitle2" className={classes.subtitle}>
                     {Object.entries(request).length > 0 && (
-                      <>{request.sourceNature}</>
+                      <>{request.sourceinstitutionname}</>
                     )}
                   </Typography>
                 </ListItem>
-              )}
-
-              <ListItem className={listClass} disableGutters>
-                <Typography variant="subtitle1" className={classes.h6_title}>
-                  Source Institution: &nbsp;
-                </Typography>
-                <Typography variant="subtitle2" className={classes.subtitle}>
-                  {Object.entries(request).length > 0 && (
-                    <>{request.sourceinstitutionname}</>
-                  )}
-                </Typography>
-              </ListItem>
-              <ListItem className={listClass} disableGutters>
-                <Typography variant="subtitle1" className={classes.h6_title}>
-                  Department: &nbsp;
-                </Typography>
-                <Typography variant="subtitle2" className={classes.subtitle}>
-                  {Object.entries(request).length > 0 && (
-                    <>{request.departmentname}</>
-                  )}
-                </Typography>
-              </ListItem>
-              {request.categoryType !== "addendum" && (
                 <ListItem className={listClass} disableGutters>
                   <Typography variant="subtitle1" className={classes.h6_title}>
-                    Assign To: &nbsp;
+                    Department: &nbsp;
                   </Typography>
                   <Typography variant="subtitle2" className={classes.subtitle}>
-                    {Object.entries(request).length > 0 &&
-                      (request.assignedfname ? (
-                        <>
-                          {request.assignedfname} {request.assignedmname}{" "}
-                          {request.assignedlastname}
-                        </>
-                      ) : (
-                        "Not Assigned"
-                      ))}
+                    {Object.entries(request).length > 0 && (
+                      <>{request.departmentname}</>
+                    )}
                   </Typography>
                 </ListItem>
-              )}
-            </>
-          )}
-          {request.categoryType === "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Physician Name: &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && <>{request.provider}</>}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType === "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Date of service: &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>{request.servicedDate}</>
+                {request.categoryType !== "addendum" && (
+                  <ListItem className={listClass} disableGutters>
+                    <Typography
+                      variant="subtitle1"
+                      className={classes.h6_title}
+                    >
+                      Assign To: &nbsp;
+                    </Typography>
+                    <Typography
+                      variant="subtitle2"
+                      className={classes.subtitle}
+                    >
+                      {Object.entries(request).length > 0 &&
+                        (request.assignedfname ? (
+                          <>
+                            {request.assignedfname} {request.assignedmname}{" "}
+                            {request.assignedlastname}
+                          </>
+                        ) : (
+                          "Not Assigned"
+                        ))}
+                    </Typography>
+                  </ListItem>
                 )}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType === "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Change to be made: &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>{request.changeRequest}</>
-                )}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType === "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Reason for request change: &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && <>{request.reason}</>}
-              </Typography>
-            </ListItem>
-          )}
+              </>
+            )}
+            {request.categoryType === "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Physician Name: &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>{request.provider}</>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType === "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Date of service: &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>{request.servicedDate}</>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType === "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Change to be made: &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>{request.changeRequest}</>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType === "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Reason for request change: &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && <>{request.reason}</>}
+                </Typography>
+              </ListItem>
+            )}
 
-          {request.categoryType !== "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Requested support from the corresponding facility: &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>{request.is_requested_support ? "Yes" : "No"}</>
-                )}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType !== "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Submitted a signed medical records request: &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>{request.hasSignedRequest ? "Yes" : "No"}</>
-                )}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType !== "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                {" "}
-                Like to be contacted personally regarding this request? &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>
-                    {request.contactPersonally ? "Yes:" : "No"}
-                    {request.contactByMail ? "  By Mail  " : ""}
-                    {request.contactByPhone ? " By Call  " : ""}
-                    {request.contactBySms ? " By SMS  " : ""}
-                  </>
-                )}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType !== "addendum" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Email or send secure message to the email address: &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>{request.electronicDetails}</>
-                )}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType === "request" && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Do you have a signed HIPAA authorization form? &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>{request.hipaaAuthorizationFile ? "Yes" : "No"}</>
-                )}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType === "request" && request.additionalNotes && (
-            <ListItem className={listClass} disableGutters>
-              <Typography variant="subtitle1" className={classes.notesTitle}>
-                Additional Notes: &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.notes}>
-                {request.additionalNotes}
-              </Typography>
-            </ListItem>
-          )}
-          {request.categoryType !== "addendum" && (
-            <ListItem className={listClass2} disableGutters>
-              <Typography variant="subtitle1" className={classes.h6_title}>
-                Do these records contain sensitive information such as substance
-                use disorder or mental health condition? &nbsp;
-              </Typography>
-              <Typography variant="subtitle2" className={classes.subtitle}>
-                {Object.entries(request).length > 0 && (
-                  <>{request.disorder_request_auth ? "Yes" : "No"}</>
-                )}
-              </Typography>
-            </ListItem>
-          )}
-          <ListItem className={listClass2} disableGutters></ListItem>
-        </List>
+            {request.categoryType !== "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Requested support from the corresponding facility: &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>{request.is_requested_support ? "Yes" : "No"}</>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType !== "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Submitted a signed medical records request: &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>{request.hasSignedRequest ? "Yes" : "No"}</>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType !== "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  {" "}
+                  Like to be contacted personally regarding this request? &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>
+                      {request.contactPersonally ? "Yes:" : "No"}
+                      {request.contactByMail ? "  By Mail  " : ""}
+                      {request.contactByPhone ? " By Call  " : ""}
+                      {request.contactBySms ? " By SMS  " : ""}
+                    </>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType !== "addendum" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Email or send secure message to the email address: &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>{request.electronicDetails}</>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType === "request" && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Do you have a signed HIPAA authorization form? &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>{request.hipaaAuthorizationFile ? "Yes" : "No"}</>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType === "request" && request.additionalNotes && (
+              <ListItem className={listClass} disableGutters>
+                <Typography variant="subtitle1" className={classes.notesTitle}>
+                  Additional Notes: &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.notes}>
+                  {request.additionalNotes}
+                </Typography>
+              </ListItem>
+            )}
+            {request.categoryType !== "addendum" && (
+              <ListItem className={listClass2} disableGutters>
+                <Typography variant="subtitle1" className={classes.h6_title}>
+                  Do these records contain sensitive information such as
+                  substance use disorder or mental health condition? &nbsp;
+                </Typography>
+                <Typography variant="subtitle2" className={classes.subtitle}>
+                  {Object.entries(request).length > 0 && (
+                    <>{request.disorder_request_auth ? "Yes" : "No"}</>
+                  )}
+                </Typography>
+              </ListItem>
+            )}
+            <ListItem className={listClass2} disableGutters></ListItem>
+          </List>
 
-        <Grid item md={12} xs={12}>
-          <Grid item md={8} style={{ marginTop: "35px" }} xs={12}>
-            <SignatureBox getSign={getSign} />
+          <Grid item md={12} xs={12}>
+            <Grid item md={8} style={{ marginTop: "35px" }} xs={12}>
+              <SignatureBox getSign={getSign} />
+            </Grid>
           </Grid>
-        </Grid>
-      </CardContent>
-      <Divider />
-      <CardActions>
-        <Button onClick={() => onSubmit()} color="primary" variant="contained">
-          Submit Form
-        </Button>
-        {error.status && (
-          <Typography style={{ color: "red", textTransform: "capitalize" }}>
-            {error.message}
-          </Typography>
-        )}
-      </CardActions>
-    </Card>
+        </CardContent>
+        <Divider />
+        <CardActions>
+          <Button
+            onClick={() => onSubmit()}
+            color="primary"
+            variant="contained"
+          >
+            Submit Form
+          </Button>
+          {error.status && (
+            <Typography style={{ color: "red", textTransform: "capitalize" }}>
+              {error.message}
+            </Typography>
+          )}
+        </CardActions>
+      </Card>
     </StyledDiv>
   );
 }

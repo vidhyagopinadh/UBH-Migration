@@ -3,22 +3,22 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 //import { makeStyles } from "@material-ui/styles";
 import { Avatar, Card, Typography } from "@material-ui/core";
-import GetAppIcon from '@mui/icons-material/GetApp';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import DashboardIcon from '@mui/icons-material/DashboardOutlined';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import { styled } from '@mui/material/styles';
+import GetAppIcon from "@mui/icons-material/GetApp";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import DashboardIcon from "@mui/icons-material/DashboardOutlined";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import { styled } from "@mui/material/styles";
 
-const PREFIX = 'PRRActivity';
+const PREFIX = "PRRActivity";
 
 const classes = {
   root: `${PREFIX}-root`,
   card: `${PREFIX}-card`,
   listItems: `${PREFIX}-listItems`,
   date: `${PREFIX}-date`,
-}
+};
 
-const StyledDiv = styled('div')(({ theme }) => ({
+const StyledDiv = styled("div")(({ theme }) => ({
   [`&.${classes.root}`]: {
     display: "flex",
     alignItems: "center",
@@ -41,11 +41,9 @@ const StyledDiv = styled('div')(({ theme }) => ({
     marginLeft: "auto",
     flexShrink: 0,
   },
-  
-}))
+}));
 
 function Activity({ activity, className, ...rest }): JSX.Element {
-
   useEffect(() => {
     //
   }, [activity]);

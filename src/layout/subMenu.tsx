@@ -8,7 +8,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Typography from "@material-ui/core/Typography";
 import Collapse from "@material-ui/core/Collapse";
 import { BootstrapTooltip as Tooltip } from "../components/Tooltip";
-import { makeStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { useTranslate } from "react-admin";
 
 // const useStyles = makeStyles((theme) => ({

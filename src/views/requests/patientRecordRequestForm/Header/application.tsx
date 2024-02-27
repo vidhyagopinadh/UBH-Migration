@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { Dialog, TextField, Typography, colors } from "@material-ui/core";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
-const PREFIX = 'PRRApplication';
+const PREFIX = "PRRApplication";
 const classes = {
   root: `${PREFIX}-root`,
   header: `${PREFIX}-header`,
@@ -15,9 +15,9 @@ const classes = {
   avatar: `${PREFIX}-avatar`,
   actions: `${PREFIX}-actions`,
   applyButton: `${PREFIX}-applyButton`,
-}
+};
 
-const StyledDiv = styled('div')(({ theme }) => ({
+const StyledDiv = styled("div")(({ theme }) => ({
   [`&.${classes.root}`]: {
     width: 960,
   },
@@ -55,8 +55,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
       backgroundColor: colors.green[900],
     },
   },
-  
-}))
+}));
 
 function Application({
   owner,

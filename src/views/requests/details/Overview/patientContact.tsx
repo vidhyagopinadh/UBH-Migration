@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Grid, Button, ButtonGroup } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import CallOutlinedIcon from "@material-ui/icons/CallOutlined";
-import SmsOutlinedIcon from "@material-ui/icons/SmsOutlined";
-import MailOutlinedIcon from "@material-ui/icons/MailOutlined";
+import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
+import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
+import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import { useNotify } from "react-admin";
 
 // const useStyles = makeStyles((theme) => ({

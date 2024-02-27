@@ -2,7 +2,7 @@ import type { BaseSyntheticEvent } from "react";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { TextField, Button, Grid } from "@material-ui/core";
 import { validateSentance } from "../../../../utils/validator";
 

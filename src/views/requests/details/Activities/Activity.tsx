@@ -3,13 +3,12 @@ import { Link as RouterLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import moment from "moment";
-
-import { Avatar, Card, Typography, Link } from "@material-ui/core";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import PersonAddIcon from "@material-ui/icons/PersonAddOutlined";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import DashboardIcon from "@material-ui/icons/DashboardOutlined";
 import { styled } from "@mui/material/styles";
+import { Avatar, Card, Typography, Link } from "@material-ui/core";
+import GetAppIcon from "@mui/icons-material/GetApp";
+import PersonAddIcon from "@mui/icons-material/PersonAddOutlined";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import DashboardIcon from "@mui/icons-material/DashboardOutlined";
 // import gradients from 'src/utils/gradients';
 
 // const useStyles = makeStyles((theme) => ({

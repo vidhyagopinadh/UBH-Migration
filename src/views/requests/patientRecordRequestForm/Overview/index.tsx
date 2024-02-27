@@ -23,7 +23,7 @@ function Overview(props): JSX.Element {
         getTrace(
           "Patient Record Request Form Loaded",
           "ev-112",
-          userInfo.email,
+          userInfo.email
         );
       }
     }

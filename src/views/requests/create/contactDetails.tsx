@@ -1,8 +1,7 @@
 import type { BaseSyntheticEvent } from "react";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { styled } from "@mui/system";
-// import { makeStyles } from "@material-ui/core/styles";
+
 import {
   TextField,
   Typography,
@@ -18,12 +17,11 @@ import {
   validatePhone,
   validateString,
 } from "../../../utils/validator";
-import { AddCircle, Cancel } from "@material-ui/icons";
+import { AddCircle, Cancel } from "@mui/icons-material";
 import CardHeader from "./../../../components/cardHeader";
 import type { IContactDetails, IContactDetailsProps } from "../../../types";
-import { styled } from "@mui/material/styles";
 import { useTranslate } from "react-admin";
-
+import { styled } from "@mui/material/styles";
 // const useStyles = makeStyles((theme) => ({
 //   root: {},
 //   header: {

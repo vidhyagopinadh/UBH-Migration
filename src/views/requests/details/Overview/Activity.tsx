@@ -6,10 +6,10 @@ import { useHistory } from "react-router";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMutation } from "@apollo/react-hooks";
 import { Avatar, Card, IconButton, Typography } from "@material-ui/core";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import DashboardIcon from "@material-ui/icons/DashboardOutlined";
-import ListAltIcon from "@material-ui/icons/ListAlt";
+import GetAppIcon from "@mui/icons-material/GetApp";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import DashboardIcon from "@mui/icons-material/DashboardOutlined";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import { CO_ROLE_MRA, CO_ROLE_PATIENT } from "../../../../utils/roles";
 import {
   useNotify,
@@ -19,7 +19,7 @@ import {
 } from "react-admin";
 import { Button } from "@mui/material";
 import CopyToClipboardButton from "../../../../components/CopyToClipboardButton";
-import { AccessTime, Schedule } from "@material-ui/icons";
+import { AccessTime, Schedule } from "@mui/icons-material/";
 import { BootstrapTooltip as Tooltip } from "../../../../components/Tooltip";
 import type {
   GetNotificationDetailsInput,
