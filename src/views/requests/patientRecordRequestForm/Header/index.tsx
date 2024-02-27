@@ -6,10 +6,9 @@ import { useTranslate } from "react-admin";
 import Label from "./../../../../components/label";
 import { useSelector } from "react-redux";
 import type { AppState, IRequestPayload } from "../../../../types";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
-
-const PREFIX = 'PRRHeader';
+const PREFIX = "PRRHeader";
 
 const classes = {
   root: `${PREFIX}-root`,
@@ -17,9 +16,9 @@ const classes = {
   shareButton: `${PREFIX}-shareButton`,
   shareIcon: `${PREFIX}-shareIcon`,
   applyButton: `${PREFIX}-applyButton`,
-}
+};
 
-const StyledDiv = styled('div')(({ theme }) => ({
+const StyledDiv = styled("div")(({ theme }) => ({
   [`&.${classes.root}`]: {
     [theme.breakpoints.down("md")]: {
       marginTop: "20px",
@@ -42,14 +41,13 @@ const StyledDiv = styled('div')(({ theme }) => ({
       backgroundColor: colors.green[900],
     },
   },
-  
-}))
+}));
 
 function Header({ request, ...rest }): JSX.Element {
   const [requestSet, setRequestSet] = useState<IRequestPayload>({});
   const translate = useTranslate();
   const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
+    (state: AppState) => state.userInfoReducer
   );
 
   useEffect(() => {

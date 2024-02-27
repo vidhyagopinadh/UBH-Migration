@@ -65,6 +65,7 @@ import { tommddyyyy } from "../../../utils/dateFormator";
 import MuiPhoneNumber from "material-ui-phone-number";
 import DatePickerWithMonthAndYearDropdown from "../../../components/datePicker";
 import DependentTable from "../../../components/dependentTable";
+import { styled } from "@mui/material/styles";
 export default function CreateRequest({ trackId }): JSX.Element {
   const {
     useStyles,
@@ -280,7 +281,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
       }),
       () => {
         // set form
-      },
+      }
     );
   };
   const handleTypeChange = (event): void => {
@@ -294,7 +295,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
         }),
         () => {
           // set form
-        },
+        }
       );
     } else {
       setFormvalues(
@@ -305,7 +306,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
         }),
         () => {
           // set form
-        },
+        }
       );
       setSelectedDependentValue(null);
     }
@@ -330,7 +331,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
       }),
       () => {
         // set form
-      },
+      }
     );
   };
   React.useEffect(() => {
@@ -346,13 +347,13 @@ export default function CreateRequest({ trackId }): JSX.Element {
           getTrace(
             " Patient record request form loaded",
             "ev-054",
-            userInfoReducer.email,
+            userInfoReducer.email
           );
         else if (permissions === CO_ROLE_PATIENT)
           getTrace(
             " Patient record request form loaded",
             "ev-136",
-            userInfoReducer.email,
+            userInfoReducer.email
           );
       }
     }
@@ -371,17 +372,17 @@ export default function CreateRequest({ trackId }): JSX.Element {
           setSubmittedInstitution(
             JSON.parse(
               response.data.getInstitutionApprovalInfo.results[0]
-                .communicationMetaValue,
-            ).metaData,
+                .communicationMetaValue
+            ).metaData
           );
           setApprovedInstitution(
             response.data.getInstitutionApprovalInfo.results[0]
               .approvedMetaValue
               ? JSON.parse(
                   response.data.getInstitutionApprovalInfo.results[0]
-                    .approvedMetaValue,
+                    .approvedMetaValue
                 ).metaData
-              : null,
+              : null
           );
           if (
             response.data.getInstitutionApprovalInfo.results[0]
@@ -391,7 +392,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
               submittedInstitution,
               approvedInstitution,
               StatusToIgnore,
-              SourceToIgnore,
+              SourceToIgnore
             );
             setSameInstitutionData(isInstitutionEqual);
           }
@@ -412,7 +413,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
           setSudMsg("Yes");
           getFileDetails(
             requestData[0].disorderDisclosureAuthorizationFileId,
-            "disorderDisclosureAuthorizationFileId",
+            "disorderDisclosureAuthorizationFileId"
           );
         }
         if (
@@ -433,7 +434,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
           setHipaaMsg("Yes");
           getFileDetails(
             requestData[0].hipaaAuthorizationFileId,
-            "hipaaAuthorizationFileId",
+            "hipaaAuthorizationFileId"
           );
         }
         if (
@@ -449,7 +450,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
           setMrrMsg("Yes");
           getFileDetails(
             requestData[0].medicalRequestFormFileId,
-            "medicalRequestFormFileId",
+            "medicalRequestFormFileId"
           );
         }
         if (requestData[0].signatureId) {
@@ -486,14 +487,14 @@ export default function CreateRequest({ trackId }): JSX.Element {
                 (prevFormState) => ({
                   ...prevFormState,
                   timePeriod: String(
-                    currentVal.howLong + " " + currentVal.howLongUnit,
+                    currentVal.howLong + " " + currentVal.howLongUnit
                   ),
                 }),
                 () => {
                   // set form
-                },
+                }
               );
-            },
+            }
           );
         }
         if (requestData[0].contactPersonallyValue === 1) {
@@ -540,10 +541,10 @@ export default function CreateRequest({ trackId }): JSX.Element {
             sexualReproductiveCondition:
               requestData[0].hasSexualReproductiveHealthCondition,
             recordsFrom: moment(requestData[0].recordsRequestedFrom).format(
-              "YYYY-MM-DD",
+              "YYYY-MM-DD"
             ),
             recordsTo: moment(requestData[0].recordsRequestedTo).format(
-              "YYYY-MM-DD",
+              "YYYY-MM-DD"
             ),
             requestPriority: requestData[0].requestPriorityId,
             rti: {
@@ -593,7 +594,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
           }),
           () => {
             // console.log("after filling", formvalues);
-          },
+          }
         );
       }
     }
@@ -612,7 +613,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
           }),
           () => {
             //
-          },
+          }
         );
       }
       if (eachContent.obtainRecordType === "Personal Health Record") {
@@ -624,7 +625,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
           }),
           () => {
             //
-          },
+          }
         );
       }
       if (eachContent.obtainRecordType === "Other forms (please specify)") {
@@ -636,7 +637,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
           }),
           () => {
             //
-          },
+          }
         );
       }
     });
@@ -659,7 +660,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
         }),
         () => {
           // set form
-        },
+        }
       );
     }
   }, [userInfoReducer.id]);
@@ -672,7 +673,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
         }),
         () => {
           // set form
-        },
+        }
       );
     }
   }, [priority]);
@@ -769,7 +770,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
       }),
       () => {
         //
-      },
+      }
     );
   };
   const selectAlreadyExistingProvider = (providerSelected): void => {
@@ -793,7 +794,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
         setDepartmentList(deptTemp, () => {
           // set form
         });
-      },
+      }
     );
   };
   return !emailNotVerified &&
@@ -988,7 +989,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
                 history.push(`/myRequests/${requestData[0].trackId}/overview`);
               } else {
                 history.push(
-                  `/requestsOnBehalf/${requestData[0].trackId}/overview`,
+                  `/requestsOnBehalf/${requestData[0].trackId}/overview`
                 );
               }
             } else {
@@ -1074,7 +1075,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
             setIsLoading(false);
           }}
           title={translate(
-            "resources.requests.notification.errorTitleSendToProvider",
+            "resources.requests.notification.errorTitleSendToProvider"
           )}
           content={translate("resources.requests.notification.errorMessageMrr")}
           closeButtonName="Close"
@@ -1174,30 +1175,30 @@ export default function CreateRequest({ trackId }): JSX.Element {
                           }),
                           () => {
                             // set form
-                          },
+                          }
                         );
                         setSource({
                           id: "",
                           organizationName: translate(
-                            "resources.requests.dropdown.sourceInstitution",
+                            "resources.requests.dropdown.sourceInstitution"
                           ),
                         });
                         setSourceNature({
                           id: "",
                           value: translate(
-                            "resources.requests.dropdown.sourceNature",
+                            "resources.requests.dropdown.sourceNature"
                           ),
                         });
                         setDepartment({
                           id: "",
                           organizationName: translate(
-                            "resources.requests.dropdown.department",
+                            "resources.requests.dropdown.department"
                           ),
                         });
                         setAssignedTo({
                           id: "",
                           firstName: translate(
-                            "resources.requests.dropdown.mra",
+                            "resources.requests.dropdown.mra"
                           ),
                         });
                       }}
@@ -1341,7 +1342,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
                                           if (indv.parentOrgId === id) {
                                             deptTemp.push(indv);
                                           }
-                                        },
+                                        }
                                       );
                                       setDepartmentList(deptTemp, () => {
                                         // set form
@@ -1349,16 +1350,16 @@ export default function CreateRequest({ trackId }): JSX.Element {
                                       setDepartment({
                                         id: "",
                                         organizationName: translate(
-                                          "resources.requests.dropdown.department",
+                                          "resources.requests.dropdown.department"
                                         ),
                                       });
                                       setAssignedTo({
                                         id: "",
                                         firstName: translate(
-                                          "resources.requests.dropdown.mra",
+                                          "resources.requests.dropdown.mra"
                                         ),
                                       });
-                                    },
+                                    }
                                   );
                                 }
                               }}
@@ -1608,7 +1609,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
                                   title={
                                     permissions === CO_ROLE_PATIENT
                                       ? translate(
-                                          "tooltip.request.prr_toggle_patient",
+                                          "tooltip.request.prr_toggle_patient"
                                         )
                                       : translate("tooltip.request.prr_toggle")
                                   }
@@ -1820,7 +1821,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
                 </Grid>
                 <AddPatient
                   checkPatientValidator={(
-                    checkPatientValidatorProps: ICheckPatientValidatorProps,
+                    checkPatientValidatorProps: ICheckPatientValidatorProps
                   ) => checkPatientValidator(checkPatientValidatorProps)}
                   getpatient={getpatient}
                   alertAddPatient={alertAddPatient}
@@ -2102,7 +2103,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
                             >
                               <option key={0} value="0" hidden>
                                 {translate(
-                                  "resources.requests.dropdown.duration",
+                                  "resources.requests.dropdown.duration"
                                 )}
                               </option>
                               {howLongValue.map((option) => (
@@ -2133,7 +2134,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
                             >
                               <option key={0} value="0" hidden>
                                 {translate(
-                                  "resources.requests.dropdown.periodType",
+                                  "resources.requests.dropdown.periodType"
                                 )}
                               </option>
                               {HOW_LONG_UNITS.map((option) => (
@@ -2282,7 +2283,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
                                       individuals.recordStatusValue ===
                                       "Deleted"
                                         ? translate(
-                                            "tooltip.feature_in_progress",
+                                            "tooltip.feature_in_progress"
                                           )
                                         : ""
                                     }
@@ -2382,7 +2383,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
           {showObtainRecords &&
             (!requestView
               ? PHYSICAL_RECORD_TYPE.some((value) =>
-                  formvalues.obtainRecordType.includes(value),
+                  formvalues.obtainRecordType.includes(value)
                 )
               : true) && (
               <Card className={classes.root}>
@@ -2753,7 +2754,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
                           title={
                             permissions === CO_ROLE_PATIENT
                               ? translate(
-                                  "tooltip.request.hipaa_toggle_patient",
+                                  "tooltip.request.hipaa_toggle_patient"
                                 )
                               : translate("tooltip.request.hipaa_toggle")
                           }
@@ -2977,7 +2978,7 @@ export default function CreateRequest({ trackId }): JSX.Element {
                               title={
                                 permissions === CO_ROLE_PATIENT
                                   ? translate(
-                                      "tooltip.request.sod_toggle_patient",
+                                      "tooltip.request.sod_toggle_patient"
                                     )
                                   : translate("tooltip.request.sod_toggle")
                               }

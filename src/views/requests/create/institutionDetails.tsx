@@ -1,7 +1,7 @@
 import type { BaseSyntheticEvent } from "react";
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-
+import { styled } from "@mui/material/styles";
 import {
   TextField,
   Typography,
@@ -25,7 +25,7 @@ import {
   validateZipCode,
   validateCompanyName,
 } from "../../../utils/validator";
-import { Info } from "@material-ui/icons";
+import { Info } from "@mui/icons-material";
 import CardHeader from "./../../../components/cardHeader";
 import type {
   IInstitution,
@@ -43,6 +43,7 @@ import type {
 import { useMutation } from "@apollo/react-hooks";
 import BaseModal from "../../../components/baseModal";
 import { Base64 } from "js-base64";
+import { styled } from "@mui/material/styles";
 import { REQUEST_MESSAGES } from "../../../utils/messages/requestMessages";
 import { Autocomplete } from "@mui/material";
 import { correlationConstants } from "../../../utils/OT/correlationConstants";

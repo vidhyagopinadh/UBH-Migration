@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { Snackbar, SnackbarContent, colors } from "@material-ui/core";
-import CheckCircleIcon from "@material-ui/icons/CheckCircleOutlined";
-
+import CheckCircleIcon from "@mui/icons-material/CheckCircleOutline";
 // const useStyles = makeStyles((theme) => ({
 //   content: {
 //     backgroundColor: colors.green[600],

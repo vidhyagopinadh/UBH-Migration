@@ -16,9 +16,9 @@ import {
 import { perPageMax } from "../../../utils/pageConstants";
 import secureLocalStorage from "react-secure-storage";
 const { REACT_APP_GUEST_USERNAME, REACT_APP_GUEST_PASSWORD } = process.env;
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
-const PREFIX = 'PRRRequestDetails';
+const PREFIX = "PRRRequestDetails";
 const classes = {
   root: `${PREFIX}-root`,
   tabs: `${PREFIX}-tabs`,
@@ -30,9 +30,9 @@ const classes = {
   subtitle: `${PREFIX}-subtitle`,
   listitemStyle: `${PREFIX}-listitemStyle`,
   listitemStyle2: `${PREFIX}-listitemStyle2`,
-}
+};
 
-const StyledDiv = styled('div')(({ theme }) => ({
+const StyledDiv = styled("div")(({ theme }) => ({
   [`&.${classes.root}`]: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
@@ -70,8 +70,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
     display: "inline-block !important",
     borderBottom: "unset !important",
   },
-  
-}))
+}));
 
 export const RequestDetailComponent = (props): JSX.Element => {
   const dataProvider = useDataProvider();
@@ -120,7 +119,7 @@ export const RequestDetailComponent = (props): JSX.Element => {
         username: REACT_APP_GUEST_USERNAME,
         password: REACT_APP_GUEST_PASSWORD,
       },
-      `overview`,
+      `overview`
     )
       .then(() => {
         setAlreadyLoggedIn((prevFormState: IAlreadyLoggedIn) => ({
@@ -163,69 +162,69 @@ export const RequestDetailComponent = (props): JSX.Element => {
 
   return (
     <StyledDiv>
-    <Container maxWidth="lg">
-      {alreadyLoggedIn.alreadyThere &&
-      alreadyLoggedIn.role !== CO_ROLE_PATIENT ? (
-        <>
-          {openBase && (
-            <BaseModal
-              open={openBase}
-              confirmAction={alreadyConfirmation}
-              onClose={() => {
-                setOpenBase(false);
-                history.push("/");
-              }}
-              content={`${alreadyLoggedIn.userName} is already loggedin on this browser. If you continue, ${alreadyLoggedIn.userName} will disconnect. Do you want to continue?`}
-              title="User Already Logged In"
-              successButtonName="Continue"
-            />
-          )}
-        </>
-      ) : (
-        <>
-          {Object.entries(requestViewList).length > 0 &&
-            (requestViewList.signatureId &&
-            alreadyLoggedIn.role !== CO_ROLE_PATIENT ? (
-              <Acknowledge type="request_signed" />
-            ) : (
-              <>
-                {successAck ? (
-                  <Acknowledge type="successfully_signed" />
-                ) : (
-                  <>
-                    <Header path={props.basePath} request={requestViewList} />
-                    <Tabs
-                      className={classes.tabs}
-                      onChange={handleTabsChange}
-                      scrollButtons="auto"
-                      value={tab}
-                      style={{ marginTop: "0px" }}
-                      variant="scrollable"
-                    >
-                      {tabs.map((tab) => (
-                        <Tab
-                          key={tab.value}
-                          label={tab.label}
-                          value={tab.value}
-                        />
-                      ))}
-                    </Tabs>
-                    <Divider className={classes.divider} />
-                    <div className={classes.content}>
-                      {tab === "overview" && (
-                        <Overview
-                          request={requestViewList}
-                          onSuccess={() => doneAfter}
-                        />
-                      )}
-                    </div>
-                  </>
-                )}
-              </>
-            ))}
-        </>
-      )}
-    </Container>
+      <Container maxWidth="lg">
+        {alreadyLoggedIn.alreadyThere &&
+        alreadyLoggedIn.role !== CO_ROLE_PATIENT ? (
+          <>
+            {openBase && (
+              <BaseModal
+                open={openBase}
+                confirmAction={alreadyConfirmation}
+                onClose={() => {
+                  setOpenBase(false);
+                  history.push("/");
+                }}
+                content={`${alreadyLoggedIn.userName} is already loggedin on this browser. If you continue, ${alreadyLoggedIn.userName} will disconnect. Do you want to continue?`}
+                title="User Already Logged In"
+                successButtonName="Continue"
+              />
+            )}
+          </>
+        ) : (
+          <>
+            {Object.entries(requestViewList).length > 0 &&
+              (requestViewList.signatureId &&
+              alreadyLoggedIn.role !== CO_ROLE_PATIENT ? (
+                <Acknowledge type="request_signed" />
+              ) : (
+                <>
+                  {successAck ? (
+                    <Acknowledge type="successfully_signed" />
+                  ) : (
+                    <>
+                      <Header path={props.basePath} request={requestViewList} />
+                      <Tabs
+                        className={classes.tabs}
+                        onChange={handleTabsChange}
+                        scrollButtons="auto"
+                        value={tab}
+                        style={{ marginTop: "0px" }}
+                        variant="scrollable"
+                      >
+                        {tabs.map((tab) => (
+                          <Tab
+                            key={tab.value}
+                            label={tab.label}
+                            value={tab.value}
+                          />
+                        ))}
+                      </Tabs>
+                      <Divider className={classes.divider} />
+                      <div className={classes.content}>
+                        {tab === "overview" && (
+                          <Overview
+                            request={requestViewList}
+                            onSuccess={() => doneAfter}
+                          />
+                        )}
+                      </div>
+                    </>
+                  )}
+                </>
+              ))}
+          </>
+        )}
+      </Container>
     </StyledDiv>
   );
 };

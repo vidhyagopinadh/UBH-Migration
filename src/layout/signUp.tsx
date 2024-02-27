@@ -31,13 +31,14 @@ import {
 } from "../service/inviteQueries";
 import { AppBar, Autocomplete, Toolbar } from "@mui/material";
 import { InputLabel } from "@material-ui/core";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Info } from "@mui/icons-material";
 import BaseModal from "../components/baseModal";
 import SuccessModal from "../components/successModal";
 import { SIGNUP_CONSTANTS } from "../utils/messages/signupConstants";
 import useSignUp from "../hooks/InviteUser/useSignUp";
 import { useHistory } from "react-router";
+
 import type {
   CountryList,
   StateList,
@@ -536,7 +537,7 @@ export default function SignUp({ enrollToken }: ISignupProps): JSX.Element {
                                 >
                                   <option key={0} value="0" hidden>
                                     {translate(
-                                      "resources.patients.dropdown.state",
+                                      "resources.patients.dropdown.state"
                                     )}
                                   </option>
                                   {stateList.map((option) => (
@@ -563,7 +564,7 @@ export default function SignUp({ enrollToken }: ISignupProps): JSX.Element {
                                 >
                                   <option key={0} value="0" hidden>
                                     {translate(
-                                      "resources.patients.dropdown.country",
+                                      "resources.patients.dropdown.country"
                                     )}
                                   </option>
                                   {countryList.map((option) => (

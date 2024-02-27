@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import {
   TextField,
   Typography,
@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { BootstrapTooltip as Tooltip } from "../../../components/Tooltip";
 import MuiPhoneNumber from "material-ui-phone-number";
-import { AccessTimeOutlined, Info } from "@material-ui/icons";
+import { AccessTimeOutlined, Info } from "@mui/icons-material";
 import CardHeader from "./../../../components/cardHeader";
 import { useTranslate } from "react-admin";
 import moment from "moment";

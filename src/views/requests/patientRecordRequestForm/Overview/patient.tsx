@@ -16,17 +16,16 @@ import type { IRequestToken } from "../../../../types";
 import { perPageMax } from "../../../../utils/pageConstants";
 import { Tab, Tabs } from "@mui/material";
 import { titleCase } from "../../../../utils/titleCase";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 
-
-const PREFIX = 'PRRPatient';
+const PREFIX = "PRRPatient";
 const classes = {
   root: `${PREFIX}-root`,
   cardBottom: `${PREFIX}-cardBottom`,
   listItems: `${PREFIX}-listItems`,
-}
+};
 
-const StyledDiv = styled('div')(({ theme }) => ({
+const StyledDiv = styled("div")(({ theme }) => ({
   [`&.${classes.root}`]: {
     backgroundColor: theme.palette.primary.light,
   },
@@ -40,8 +39,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
       paddingRight: 0,
     },
   },
-  
-}))
+}));
 
 export function Patient({ request }): JSX.Element {
   const dataProvider = useDataProvider();
@@ -50,7 +48,7 @@ export function Patient({ request }): JSX.Element {
   const [currTab, setCurrTab] = React.useState("address");
   const handleTabsChange = (
     event: React.ChangeEvent<{}>,
-    value: string,
+    value: string
   ): void => {
     setCurrTab(value);
   };
@@ -70,7 +68,7 @@ export function Patient({ request }): JSX.Element {
     }
     getDetails();
   }, []);
- // const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <StyledDiv>
