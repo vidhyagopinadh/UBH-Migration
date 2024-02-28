@@ -2,17 +2,17 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  Typography,
-} from "@material-ui/core";
+// import {
+//   Button,
+//   Card,
+//   CardActions,
+//   CardContent,
+//   Divider,
+//   Grid,
+//   List,
+//   ListItem,
+//   Typography,
+// } from "@material-ui/core";
 import { tommddyyyy } from "./../../../../utils/dateFormator";
 import { SignatureBox } from "../../../../components/signature";
 import createFileUploadQuery from "../../../../queries/createFileUpload/createFileUploadQuery";
@@ -25,16 +25,26 @@ import { useMutation } from "@apollo/react-hooks";
 import { blobToFile } from "./../../../../utils/images/blobToFile";
 import b64toBlob from "./../../../../utils/images/b64toBlob";
 //import useTraces from "../../../../hooks/useTraces";
-import type { AppState } from "../../../../types";
-import { useSelector } from "react-redux";
+// import type { AppState } from "../../../../types";
+// import { useSelector } from "react-redux";
 import secureLocalStorage from "react-secure-storage";
 import { CO_ROLE_PATIENT } from "../../../../utils/roles";
 import { useDataProvider, useNotify, useTranslate } from "react-admin";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import ProviderView from "../../../../components/providerView";
 import { compareObjects } from "../../../../utils/compareObjects";
 import { perPageList } from "../../../../utils/pageConstants";
 import { styled } from "@mui/material/styles";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  Grid,
+  ListItem,
+  Typography,
+} from "@mui/material";
 
 const PREFIX = "PRRBrief";
 const classes = {
@@ -94,8 +104,8 @@ function Brief({ request, onSuccess, ...rest }): JSX.Element {
   const notify = useNotify();
   const translate = useTranslate();
   const dataProvider = useDataProvider();
-  const history = useHistory();
-  const userInfo = useSelector((state: AppState) => state.userInfoReducer);
+  const navigate = useNavigate();
+  // const userInfo = useSelector((state: AppState) => state.userInfoReducer);
   const { getTrace } = useTraces();
   const [submittedInstitution, setSubmittedInstitution] = useState([]);
   const [approvedInstitution, setApprovedInstitution] = useState([]);
@@ -197,9 +207,9 @@ function Brief({ request, onSuccess, ...rest }): JSX.Element {
             type: "success",
           });
           if (request.requester === userInfo.id) {
-            history.push("/myRequests/" + request.trackId + "/overview");
+            navigate("/myRequests/" + request.trackId + "/overview");
           } else {
-            history.push("/requestsOnBehalf/" + request.trackId + "/overview");
+            navigate("/requestsOnBehalf/" + request.trackId + "/overview");
           }
         }
       }

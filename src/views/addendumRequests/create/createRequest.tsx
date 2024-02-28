@@ -1,25 +1,25 @@
 import type { BaseSyntheticEvent } from "react";
 import React, { useEffect, useState } from "react";
 import { useDataProvider, useTranslate, useVersion } from "react-admin";
-import {
-  Checkbox,
-  CircularProgress,
-  Container,
-  Divider,
-  FormControlLabel,
-  Grid,
-  InputLabel,
-  LinearProgress,
-  Typography,
-} from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
+// import {
+//   Checkbox,
+//   CircularProgress,
+//   Container,
+//   Divider,
+//   FormControlLabel,
+//   Grid,
+//   InputLabel,
+//   LinearProgress,
+//   Typography,
+// } from "@material-ui/core";
+// import TextField from "@material-ui/core/TextField";
+// import Button from "@material-ui/core/Button";
+// import { makeStyles } from "@material-ui/core/styles";
+// import Card from "@material-ui/core/Card";
+// import CardContent from "@material-ui/core/CardContent";
+// import CardActions from "@material-ui/core/CardActions";
 import { useMutation } from "@apollo/react-hooks";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import RequestCreationQuery from "../../../queries/createAddendum/createAddendumQuery";
 import type {
   CreateAddendumRecordsRequestMutation,
@@ -30,14 +30,14 @@ import CreatePageHeader from "../../../components/createPageHeader";
 import AddPatient from "../../../components/addPatient";
 import CardHeader from "../../../components/cardHeader";
 import UploadFile from "../../../components/uploadFile";
-import type {
-  AppState,
-  ICheckPatientValidatorProps,
-  IFileResponse,
-  IGenericType,
-  IOrganization,
-} from "../../../types";
-import { useSelector } from "react-redux";
+// import type {
+//   AppState,
+//   ICheckPatientValidatorProps,
+//   IFileResponse,
+//   IGenericType,
+//   IOrganization,
+// } from "../../../types";
+// import { useSelector } from "react-redux";
 import createFileUploadQuery from "../../../queries/createFileUpload/createFileUploadQuery";
 import { perPageMax } from "../../../utils/pageConstants";
 import Upload from "../../../components/MedicalRecord";
@@ -53,7 +53,7 @@ import {
   ERROR_MESSAGE_KEY,
 } from "../../../utils/messages/errorMessages";
 import { useStateWithCallbackLazy } from "use-state-with-callback";
-import useTraces from "../../../hooks/useTraces";
+// import useTraces from "../../../hooks/useTraces";
 import { correlationConstants } from "../../../utils/OT/correlationConstants";
 import moment from "moment";
 import { CREATE_ADDENDUM_REQUEST_ERROR_INIT } from "../../../utils/messages/initializeConstants";
@@ -61,28 +61,65 @@ import BaseModal from "../../../components/baseModal";
 import { REQUEST_MESSAGES } from "../../../utils/messages/requestMessages";
 import PageNotFound from "../../../components/pageNotFound";
 import { CO_ROLE_PATIENT, CO_ROLE_PPA } from "../../../utils/roles";
-import { Warning } from "@material-ui/icons";
+import WarningIcon from "@mui/icons-material/Warning";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Checkbox,
+  CircularProgress,
+  Container,
+  Divider,
+  FormControlLabel,
+  Grid,
+  InputLabel,
+  LinearProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 const { REACT_APP_BASE_URL } = process.env;
-const useStyles = makeStyles((theme) => ({
-  root: {
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     backgroundColor: theme.palette.primary.light,
+//     marginTop: 20,
+//   },
+//   select: {
+//     minWidth: "40%",
+//   },
+//   button: {
+//     margin: theme.spacing(1),
+//   },
+//   header: {
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//     flexWrap: "wrap",
+//     marginBottom: theme.spacing(2),
+//   },
+// }));
+const PREFIX = "CreateRequest";
+const classes = {
+  root: `${PREFIX}-root`,
+  select: `${PREFIX}-select`,
+  button: `${PREFIX}- button`,
+  header: `${PREFIX}-header`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     backgroundColor: theme.palette.primary.light,
     marginTop: 20,
   },
-  select: {
+  [`& .${classes.select}`]: {
     minWidth: "40%",
   },
-  button: {
+  [`& .${classes.button}`]: {
     margin: theme.spacing(1),
   },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    marginBottom: theme.spacing(2),
+  [`& .${classes.header}`]: {
+    margin: theme.spacing(1),
   },
 }));
-
 export default function CreateRequest(): JSX.Element {
   const version = useVersion();
   const [refreshCount, setRefreshCount] = React.useState(1);
@@ -98,15 +135,15 @@ export default function CreateRequest(): JSX.Element {
   const [openBase, setOpenBase] = useState(false);
   const [openErrorBase, setOpenErrorBase] = useState(false);
   const today = moment(new Date()).format("YYYY-MM-DD");
-  const classes = useStyles();
+
   const translate = useTranslate();
   const dataProvider = useDataProvider();
-  const history = useHistory();
-  const { getTrace, handleTrace } = useTraces();
+  const navigate = useNavigate();
+  // const { getTrace, handleTrace } = useTraces();
   const [DOB, setDOB] = useState("");
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer
+  // );
   const [alertAddPatient, setAlertAddPatient] = useState(false);
   const [errorUpload, setErrorUpload] = useState(false);
   const [formvalues, setFormvalues] = useStateWithCallbackLazy({
@@ -193,7 +230,7 @@ export default function CreateRequest(): JSX.Element {
   const [arrStatus, setArrStatus] = useState(false);
 
   const addendumRecordRequest = document.getElementById(
-    "addendumRecordRequest",
+    "addendumRecordRequest"
   );
   const [errorMsg, setErrorMsg] = useState(CREATE_ADDENDUM_REQUEST_ERROR_INIT);
   useEffect(() => {
@@ -252,7 +289,7 @@ export default function CreateRequest(): JSX.Element {
   const setError = (
     fieldName: string,
     type: string,
-    setError: boolean,
+    setError: boolean
   ): void => {
     setErrorMsg((prevFormState) => ({
       ...prevFormState,
@@ -269,7 +306,7 @@ export default function CreateRequest(): JSX.Element {
         getTrace(
           " Correction/Amendment Request Form loaded",
           "ev-065",
-          userInfoReducer.email,
+          userInfoReducer.email
         );
       }
     }
@@ -313,7 +350,7 @@ export default function CreateRequest(): JSX.Element {
         }),
         () => {
           // set form
-        },
+        }
       );
     } else if (event.target.name === "requestPriority") {
       setFormvalues(
@@ -326,7 +363,7 @@ export default function CreateRequest(): JSX.Element {
         }),
         () => {
           // set form
-        },
+        }
       );
     } else if (event.target.name === "isRequestSupported") {
       setFormvalues(
@@ -349,10 +386,10 @@ export default function CreateRequest(): JSX.Element {
               }),
               () => {
                 // set form
-              },
+              }
             );
           }
-        },
+        }
       );
     } else if (event.target.name === "hasSignedRequest") {
       if (event.target.value === "true") {
@@ -373,7 +410,7 @@ export default function CreateRequest(): JSX.Element {
           if (curr.hasSignedRequest === false) {
             delete uploadStack["upload_file_addendum_form"];
           }
-        },
+        }
       );
     } else {
       setFormvalues(
@@ -386,7 +423,7 @@ export default function CreateRequest(): JSX.Element {
         }),
         () => {
           // set form
-        },
+        }
       );
     }
     if (event.target.name === "sourceInstitution") {
@@ -406,7 +443,7 @@ export default function CreateRequest(): JSX.Element {
         }),
         () => {
           // set form
-        },
+        }
       );
       getDepartmentHeadsId(deptTemp.length > 0 ? deptTemp[0].id : "");
     }
@@ -420,7 +457,7 @@ export default function CreateRequest(): JSX.Element {
         }),
         () => {
           // set form
-        },
+        }
       );
       getDepartmentHeadsId(event.target.value);
     }
@@ -477,7 +514,7 @@ export default function CreateRequest(): JSX.Element {
       }),
       () => {
         //
-      },
+      }
     );
   };
   const getDoctorDetail = (doctorDetail): void => {
@@ -493,7 +530,7 @@ export default function CreateRequest(): JSX.Element {
       }),
       () => {
         // set form
-      },
+      }
     );
   };
 
@@ -529,7 +566,7 @@ export default function CreateRequest(): JSX.Element {
       }),
       () => {
         // set form
-      },
+      }
     );
   }
   useEffect(() => {
@@ -541,7 +578,7 @@ export default function CreateRequest(): JSX.Element {
         }),
         () => {
           // set form
-        },
+        }
       );
     }
   }, [userInfoReducer.id]);
@@ -575,10 +612,10 @@ export default function CreateRequest(): JSX.Element {
             }
             setInstitutionList(curOrg);
             setDepartmentList(
-              elseDept.filter((indv) => indv.parentOrgId === curOrg[0].id),
+              elseDept.filter((indv) => indv.parentOrgId === curOrg[0].id)
             );
             const deptTemp = elseDept.filter(
-              (indv) => indv.parentOrgId === curOrg[0].id,
+              (indv) => indv.parentOrgId === curOrg[0].id
             );
             getDepartmentHeadsId(deptTemp[0].id);
             setFormvalues(
@@ -590,7 +627,7 @@ export default function CreateRequest(): JSX.Element {
               }),
               () => {
                 // set form
-              },
+              }
             );
           }
         })
@@ -610,7 +647,7 @@ export default function CreateRequest(): JSX.Element {
               }),
               () => {
                 // set form
-              },
+              }
             );
           }
         })
@@ -709,14 +746,14 @@ export default function CreateRequest(): JSX.Element {
     getTrace(
       "Data filled in Addendum Request",
       "ev-067",
-      userInfoReducer.email,
+      userInfoReducer.email
     );
     if (Object.entries(uploadStack).length > 0) {
       Object.entries(uploadStack).forEach(async (indvUploadAct, key) => {
         await uploadFileMutation(
           uploadStack[indvUploadAct[0]],
           key,
-          Object.entries(uploadStack).length,
+          Object.entries(uploadStack).length
         );
       });
     } else {
@@ -753,21 +790,21 @@ export default function CreateRequest(): JSX.Element {
               getTrace(
                 "Display 'Successfully created Addendum request'  message",
                 "ev-072",
-                userInfoReducer.email,
+                userInfoReducer.email
               );
             } else {
               setOpenErrorBase(true);
             }
-          },
+          }
         );
-      },
+      }
     ); //end of handletrace
   };
 
   async function uploadFileMutation(
     attachmentResponse: { response: any; name: string },
     key: number,
-    leng: number,
+    leng: number
   ): Promise<void> {
     try {
       if (attachmentResponse.response) {
@@ -792,7 +829,7 @@ export default function CreateRequest(): JSX.Element {
                 if (count === leng) {
                   mutationFunction(currentValue);
                 }
-              },
+              }
             );
           }
         });
@@ -875,13 +912,13 @@ export default function CreateRequest(): JSX.Element {
       getTrace(
         "Attach Screen shot of the Medical Record",
         "ev-068",
-        userInfoReducer.email,
+        userInfoReducer.email
       );
     } else if (response.name === "upload_file_addendum_form") {
       getTrace(
         "Attach signed addendum request form.",
         "ev-069",
-        userInfoReducer.email,
+        userInfoReducer.email
       );
     }
 
@@ -921,17 +958,17 @@ export default function CreateRequest(): JSX.Element {
           confirmAction={() => {
             setOpenSubmitBase(false);
             if (userInfoReducer.role === CO_ROLE_PATIENT) {
-              history.push("/myRequests");
+              navigate("/myRequests");
             } else {
-              history.push("/requests");
+              navigate("/requests");
             }
           }}
           onClose={() => {
             setOpenSubmitBase(false);
             if (userInfoReducer.role === CO_ROLE_PATIENT) {
-              history.push("/myRequests");
+              navigate("/myRequests");
             } else {
-              history.push("/requests");
+              navigate("/requests");
             }
           }}
           title={
@@ -958,17 +995,17 @@ export default function CreateRequest(): JSX.Element {
           confirmAction={() => {
             setOpenErrorBase(false);
             if (userInfoReducer.role === CO_ROLE_PATIENT) {
-              history.push("/myRequests");
+              navigate("/myRequests");
             } else {
-              history.push("/requests");
+              navigate("/requests");
             }
           }}
           onClose={() => {
             setOpenErrorBase(false);
             if (userInfoReducer.role === CO_ROLE_PATIENT) {
-              history.push("/myRequests");
+              navigate("/myRequests");
             } else {
-              history.push("/requests");
+              navigate("/requests");
             }
           }}
           title={
@@ -1031,7 +1068,7 @@ export default function CreateRequest(): JSX.Element {
                 </Grid>
                 <AddPatient
                   checkPatientValidator={(
-                    checkPatientValidatorProps: ICheckPatientValidatorProps,
+                    checkPatientValidatorProps: ICheckPatientValidatorProps
                   ) => checkPatientValidator(checkPatientValidatorProps)}
                   getpatient={getpatient}
                   alertAddPatient={alertAddPatient}
@@ -1415,7 +1452,7 @@ export default function CreateRequest(): JSX.Element {
                   ) : (
                     <Typography gutterBottom>
                       <span style={{ display: "flex", alignItems: "center" }}>
-                        <Warning
+                        <WarningIcon
                           style={{ marginRight: "8px", color: "orange" }}
                         />
                         A addendum request form will be sent via above email.

@@ -1,7 +1,9 @@
 import React from "react";
 import { FilterList, FilterListItem } from "react-admin";
-import LowPriorityIcon from "@material-ui/icons/LowPriority";
-import DoneAllIcon from "@material-ui/icons/DoneAll";
+
+import LowPriorityIcon from "@mui/icons-material/LowPriority";
+
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 export const StatusFilter = (): JSX.Element => {
   return (
     <FilterList

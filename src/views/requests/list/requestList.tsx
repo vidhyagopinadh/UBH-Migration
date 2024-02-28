@@ -17,8 +17,8 @@ import {
 // import { useSelector } from "react-redux";
 //import type { AppState } from "../../../types";
 import { MedicalInformation } from "@mui/icons-material";
-import AddIcon from '@mui/icons-material/Add';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import AddIcon from "@mui/icons-material/Add";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import { useNavigate } from "react-router-dom";
 import CustomEmpty from "../../../components/customEmpty";
 import PageNotFound from "../../../components/pageNotFound";
@@ -26,14 +26,23 @@ import CustomFilter from "../../../components/customFilter";
 import { Link } from "react-router-dom";
 import NotVerifiedBanner from "../../../components/notVerifiedBanner";
 import LinearProgressWithLabel from "../../../components/linearProgressWithLabel";
-import { Typography, Box, Tabs, Divider, Grid, Card, CardContent, Container } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Tabs,
+  Divider,
+  Grid,
+  Card,
+  CardContent,
+  Container,
+} from "@mui/material";
 import useRequestList from "./useRequestList";
-import { styled } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
+import { styled } from "@mui/material/styles";
+
 import Add from "@mui/icons-material/Add";
 import Assignment from "@mui/icons-material/Assignment";
 
-const PREFIX = 'RequestDetails';
+const PREFIX = "RequestDetails";
 const classes = {
   root: `${PREFIX}-root`,
   listStyle: `${PREFIX}-listStyle`,
@@ -47,11 +56,10 @@ const classes = {
   actions: `${PREFIX}-actions`,
   sortButton: `${PREFIX}-sortButton`,
   paginate: `${PREFIX}-paginate`,
-}
+};
 
-const StyledDiv = styled('div')(({ theme }) => ({
-  [`&.${classes.root}`]: {
-  },
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {},
   [`& .${classes.listStyle}`]: {
     backgroundColor: "unset !important",
   },
@@ -106,9 +114,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
     display: "flex",
     justifyContent: "center",
   },
-
-}))
-
+}));
 
 const useListStyles = makeStyles({
   content: {
@@ -144,7 +150,7 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = {}
+  const userInfoReducer: any = {};
   useEffect(() => {
     setMode("grid");
     // if (permissions === CO_ROLE_PPA) {
@@ -164,7 +170,7 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
   useEffect(() => {
     const timer = setInterval(() => {
       setProgress((prevProgress) =>
-        prevProgress >= 100 ? 100 : prevProgress + 10,
+        prevProgress >= 100 ? 100 : prevProgress + 10
       );
     }, 800);
 
@@ -222,17 +228,16 @@ CommentGrid.defaultProps = {
 };
 
 const FilterSidebar = ({ type = null }): JSX.Element => {
-  const PREFIX = 'RequestList';
+  const PREFIX = "RequestList";
 
   const classes = {
     filter: `${PREFIX}-filter`,
-  }
+  };
 
-  const Root = styled('div')(({ theme }) => ({
+  const Root = styled("div")(({ theme }) => ({
     [`&.${classes.filter}`]: {
       backgroundColor: theme.palette.primary.light,
     },
-
   }));
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
@@ -241,7 +246,11 @@ const FilterSidebar = ({ type = null }): JSX.Element => {
   //const classes = useStyles();
   return (
     <Root>
-      <Card className={classes.filter} id="filter-sidebar" sx={{ display: { sm: "none" } }}>
+      <Card
+        className={classes.filter}
+        id="filter-sidebar"
+        sx={{ display: { sm: "none" } }}
+      >
         <CardContent>
           <PriorityFilter />
           <StatusFilter />
@@ -261,7 +270,7 @@ export const RequestList = (props: any): JSX.Element => {
   const [showBanner, setShowBanner] = React.useState(false);
   const [filterValue, setFilterValue] = React.useState("");
   const [currTab, setCurrTab] = React.useState(
-    window.location.href.includes("myRequests") ? "myself" : "behalf",
+    window.location.href.includes("myRequests") ? "myself" : "behalf"
   );
   const tabs = [
     { id: "0", value: "myself", label: "My Requests" },
@@ -270,7 +279,7 @@ export const RequestList = (props: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = {}
+  const userInfoReducer: any = {};
   const [emailNotVerified, setEmailNotVerified] = useState(false);
 
   useEffect(() => {
@@ -298,7 +307,7 @@ export const RequestList = (props: any): JSX.Element => {
   // const [ppaRequests, setPpaRequests] = useState([]);
   const handleTabsChange = (
     event: React.ChangeEvent<{}>,
-    value: string,
+    value: string
   ): void => {
     if (value === "myself") {
       navigate("/myRequests");
@@ -416,8 +425,8 @@ export const RequestList = (props: any): JSX.Element => {
                       }}
                       actions={null}
                       aside={<FilterSidebar type={currTab} />}
-                    // filters={<UserFilter />}
-                    // filterDefaultValues={{ categoryType: "request" }}
+                      // filters={<UserFilter />}
+                      // filterDefaultValues={{ categoryType: "request" }}
                     >
                       <CommentGrid {...props} />
                     </List>
@@ -446,8 +455,8 @@ export const RequestList = (props: any): JSX.Element => {
                     actions={null}
                     aside={<FilterSidebar />}
 
-                  // filters={<UserFilter />}
-                  // filterDefaultValues={{ categoryType: "request" }}
+                    // filters={<UserFilter />}
+                    // filterDefaultValues={{ categoryType: "request" }}
                   >
                     <CommentGrid {...props} />
                   </List>

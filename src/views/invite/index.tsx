@@ -1,7 +1,7 @@
-import PatientIcon from "@material-ui/icons/Person";
+import PersonIcon from "@mui/icons-material/Person";
 import { InviteTable } from "./inviteTable";
 
 export default {
-  icon: PatientIcon,
+  icon: PersonIcon,
   list: InviteTable,
 };

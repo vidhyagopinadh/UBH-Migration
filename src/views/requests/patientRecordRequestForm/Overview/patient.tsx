@@ -1,20 +1,29 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  List,
-  Typography,
-  ListItem,
-  Divider,
-} from "@material-ui/core";
+// import {
+//   Card,
+//   CardContent,
+//   List,
+//   Typography,
+//   ListItem,
+//   Divider,
+// } from "@material-ui/core";
 import { PatientContact } from "./patientContact";
 import { tommddyyyy } from "../../../../utils/dateFormator";
 import { useDataProvider } from "react-admin";
 import Activity from "./Activity";
 import type { IRequestToken } from "../../../../types";
 import { perPageMax } from "../../../../utils/pageConstants";
-import { Tab, Tabs } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Divider,
+  List,
+  ListItem,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import { titleCase } from "../../../../utils/titleCase";
 import { styled } from "@mui/material/styles";
 
