@@ -43,8 +43,39 @@ import PageNotFound from "../../components/pageNotFound";
 import CustomEmpty from "../../components/customEmpty";
 import CustomFilter from "../../components/customFilter";
 import NotVerifiedBanner from "../../components/notVerifiedBanner";
-const useStyles = makeStyles((theme) => ({
-  container: {
+import { styled } from "@mui/material/styles";
+
+const PREFIX = "PRRApplication";
+const classes = {
+  container: `${PREFIX}-container`,
+  filterBar: `${PREFIX}-filterBar`,
+  tableContainer: `${PREFIX}-tableContainer`,
+  icons: `${PREFIX}-icons`,
+  addIcon: `${PREFIX}-addIcon`,
+  inviteButton: `${PREFIX}-inviteButton`,
+  inviteTable: `${PREFIX}-inviteTable`,
+  item: `${PREFIX}-item`,
+  fullName: `${PREFIX}-fullName`,
+  email: `${PREFIX}-email`,
+  userGroup: `${PREFIX}-userGroup`,
+  invitedBy: `${PREFIX}-invitedBy`,
+  createdAt: `${PREFIX}-createdAt`,
+  invitationStatus: `${PREFIX}-invitationStatus`,
+  showIcon: `${PREFIX}-showIcon`,
+  reminderIcon: `${PREFIX}-reminderIcon`,
+  iconDiv: `${PREFIX}-iconDiv`,
+  filterContainer: `${PREFIX}-filterContainer`,
+  filter: `${PREFIX}-filter`,
+  filterContent: `${PREFIX}-filterContent`,
+  customHeader: `${PREFIX}-customHeader`,
+  dataGridContainer: `${PREFIX}-dataGridContainer`,
+  hideHeader: `${PREFIX}-hideHeader`,
+  customColumn: `${PREFIX}-customColumn`,
+  customDivider: `${PREFIX}-customDivider`,
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.container}`]: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -54,100 +85,99 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "hidden",
     overflowX: "scroll",
   },
-  filterBar: {
+  [`& .${classes.filterBar}`]: {
     marginBottom: "20px",
   },
-  tableContainer: {
-    width: "100%",
-    overflowX: "auto",
+  [`& .${classes.tableContainer}`]: {
+    padding: theme.spacing(0, 2),
+    maxWidth: 720,
+    margin: "0 auto",
   },
-  icons: { margin: "0px", padding: "0px", paddingRight: "3px" },
-  addIcon: {
+  [`& .${classes.icons}`]: {
+    margin: "0px",
+    padding: "0px",
+    paddingRight: "3px"
+  },
+  [`& .${classes.addIcon}`]: {
     marginRight: theme.spacing(1),
   },
-  inviteButton: {
+  [`& .${classes.inviteButton}`]: {
     "&:hover": {
       backgroundColor: "#ffffff",
     },
     marginTop: "15px",
     float: "right",
   },
-  inviteTable: {
+  [`& .${classes.inviteTable}`]: {
     "& th": {
       borderBottom: "2px solid #ccc",
     },
   },
-  item: {
+  [`& .${classes.item}`]: {
     fontSize: "12px",
     lineHeight: "1",
   },
-  fullName: {
+  [`&.${classes.fullName}`]: {
     maxWidth: 150,
     wordBreak: "break-all",
   },
-  email: {
+  [`& .${classes.email}`]: {
     maxWidth: 150,
     overflow: "hidden",
     textOverflow: "ellipsis",
     wordBreak: "break-all",
   },
-  userGroup: {
+  [`& .${classes.userGroup}`]: {
     maxWidth: 100,
   },
-  invitedBy: {
-    maxWidth: 100,
-  },
-  createdAt: {
+  [`& .${classes.createdAt}`]: {
     maxWidth: 30,
   },
-  invitationStatus: {
+  [`& .${classes.invitationStatus}`]: {
     maxWidth: 150,
   },
-  showIcon: {
-    color: "green",
-  },
-  reminderIcon: {
+  [`& .${classes.reminderIcon}`]: {
     color: "blue",
   },
-  iconDiv: {
+  [`& .${classes.iconDiv}`]: {
     display: "flex",
     justifyContent: "flex-start",
     width: "100%",
   },
-  filterContainer: {
+  [`& .${classes.filterContainer}`]: {
     display: "flex",
     order: -1,
     paddingRight: "20px",
   },
-  filter: {
+  [`& .${classes.filter}`]: {
     backgroundColor: theme.palette.primary.light,
     width: 200,
     display: "flex",
     flexDirection: "column",
   },
-  filterContent: {
+  [`& .${classes.filterContent}`]: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
   },
-  customHeader: {
+  [`& .${classes.customHeader}`]: {
     width: "200px",
   },
-  dataGridContainer: {
+  [`& .${classes.dataGridContainer}`]: {
     width: "700px",
     maxWidth: "100%",
   },
-  hideHeader: {
+  [`& .${classes.hideHeader}`]: {
     "& .MuiDataGrid-columnHeaders": {
       minHeight: "0!important",
       maxHeight: "0!important",
       lineHeight: "0!important",
     },
   },
-  customColumn: {
+  [`& .${classes.customColumn}`]: {
     width: "200px",
   },
-  customDivider: {
+  [`& .${classes.customDivider}`]: {
     margin: 0,
     borderStyle: "hidden!important ",
     borderColor: "rgba(0, 0, 0, 0.12)",
@@ -155,8 +185,9 @@ const useStyles = makeStyles((theme) => ({
     disply: "none",
   },
 }));
+
+
 export const InviteTable = (props): JSX.Element => {
-  const classes = useStyles();
   const refresh = useRefresh();
   const translate = useTranslate();
   const notify = useNotify();
@@ -317,7 +348,7 @@ export const InviteTable = (props): JSX.Element => {
     };
 
     return (
-      <div className={classes.iconDiv}>
+      <StyledDiv className={classes.iconDiv}>
         <IconButton
           className={classes.icons}
           color="primary"
@@ -387,7 +418,7 @@ export const InviteTable = (props): JSX.Element => {
             />
           </Tooltip>
         </IconButton>
-      </div>
+      </StyledDiv>
     );
   };
 
@@ -414,39 +445,49 @@ export const InviteTable = (props): JSX.Element => {
       translate(`tooltip.invite.noPhone`),
     );
 
-    const useStyles = makeStyles({
-      customHeader: {
+    const PREFIX = "inviteTable";
+
+    const classes = {
+      customHeader: `${PREFIX}-customHeader`,
+      dataGridContainer: `${PREFIX}-dataGridContainer`,
+      hideHeader: `${PREFIX}-hideHeader`,
+      customColumn: `${PREFIX}-customColumn`,
+      customDivider: `${PREFIX}-customDivider`,
+      info: `${PREFIX}-info`,
+    };
+    
+    const Root = styled("div")(({ theme }) => ({
+      [`&.${classes.customHeader}`]: {
         width: "200px",
       },
-      dataGridContainer: {
+      [`& .${classes.dataGridContainer}`]: {
         width: "700px",
         maxWidth: "100%",
       },
-      hideHeader: {
+      [`& .${classes.hideHeader}`]: {
         "& .MuiDataGrid-columnHeaders": {
           minHeight: "0!important",
           maxHeight: "0!important",
           lineHeight: "0!important",
         },
       },
-      customColumn: {
+      [`&.${classes.customColumn}`]: {
         width: "200px",
       },
-      customDivider: {
+      [`& .${classes.customDivider}`]: {
         margin: 0,
         borderStyle: "hidden!important ",
         borderColor: "rgba(0, 0, 0, 0.12)",
         borderBottomWidth: "inherit!important",
         disply: "none",
       },
-      info: {
+      [`& .${classes.info}`]: {
         cursor: "auto",
         width: "20px",
         height: "15px",
         color: "grey",
       },
-    });
-    const classes = useStyles();
+    }));
     const getRowHeight = (): number => {
       return 35;
     };
@@ -519,6 +560,7 @@ export const InviteTable = (props): JSX.Element => {
       setPhoneTooltipTitle(translate(`tooltip.invite.noPhone`));
     }, []);
     return (
+      <Root>
       <Box
         sx={{
           width: "100%",
@@ -605,6 +647,7 @@ export const InviteTable = (props): JSX.Element => {
           />
         </div>
       </Box>
+      </Root>
     );
   };
 

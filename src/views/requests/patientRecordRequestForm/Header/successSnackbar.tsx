@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Snackbar, SnackbarContent, colors } from "@material-ui/core";
+import { Snackbar, SnackbarContent, colors } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutlined";
 import { styled } from "@mui/material/styles";
 
