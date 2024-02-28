@@ -7,9 +7,9 @@ import moment from "moment";
 // import { makeStyles } from "@material-ui/core/styles";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { BootstrapTooltip as Tooltip } from "./Tooltip";
-import DeleteIcon from "@material-ui/icons/Delete";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import DeleteIcon from '@mui/icons-material/Delete';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import Label from "./label";
 import BaseModal from "./baseModal";
 import Truncate from "react-truncate";
@@ -21,7 +21,7 @@ import type {
   RequestContactDetail,
   RequestObtainRecordType,
 } from "../__generated__/typescript-operations_all";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import HIPAAFilled from "./../images/HIPAAFilled.png";
 import HIPAANotFilled from "./../images/HIPAANotFilled.png";
 import signingFilled from "./../images/signingFilled.png";
@@ -34,17 +34,19 @@ import {
   usePermissions,
   useNotify,
   useTranslate,
+  Link,
 } from "react-admin";
 import { CO_ROLE_MRA, CO_ROLE_PATIENT, CO_ROLE_PPA } from "../utils/roles";
-import { perPageMax } from "../utils/pageConstants";
+import { perPageMax } from "../lib/universal/utils/pageConstants";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import MyDocument from "./download/downloadGenerator";
 import { getImagesByFileUploadId } from "../service/restConfig";
 import useTraces from "../hooks/useTraces";
-import { correlationConstants } from "../utils/OT/correlationConstants";
-import type { AppState, IImageStack } from "../types";
-import { HourglassFullTwoTone } from "@material-ui/icons";
+import { correlationConstants } from "../lib/universal/utils/OT/correlationConstants";
+//import type { AppState, IImageStack } from "../types";
+import HourglassFullTwoToneIcon from '@mui/icons-material/HourglassFullTwoTone';
 import { AccessTimeFilled, Edit } from "@mui/icons-material";
+import { CardContent, CardHeader, Chip, Divider, IconButton, Typography, Grid } from "@mui/material";
 interface IRequestToken {
   id?: string | number;
   requestId?: string;
@@ -613,7 +615,7 @@ function ProjectCard({ project, ...rest }) {
             setHideTimer(true);
           }}
         >
-          <HourglassFullTwoTone
+          <HourglassFullTwoToneIcon
             className={classes.timerIcon}
             style={{ color: "white", fontSize: "100px", opacity: "1" }}
           />

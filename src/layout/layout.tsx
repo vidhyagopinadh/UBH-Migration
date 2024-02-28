@@ -12,6 +12,7 @@ import { perPageMin } from "../lib/universal/utils/pageConstants";
 import { UserProps } from "../types/comptypes";
 import secureLocalStorage from "react-secure-storage";
 import { CO_ROLE_MRA } from "../lib/universal/utils/roles";
+import { UserContext } from "../contexts";
 
 
 // const CustomSidebar = (props: any): JSX.Element => (
@@ -127,15 +128,18 @@ export default (props: LayoutProps): JSX.Element => {
         ""
       )} */}
       {(keycloak.authenticated || ifAuthForm) && !loading && (
-        <div style={{ fontFamily: "Roboto, sans-serif" }}>
-          <Layout
-            {...props}
-            appBar={ifAuthForm ? emptySideBar : AppBar}
-            sidebar={ifAuthForm ? emptySideBar : CustomSidebar}
-            menu={Menu}
-          //theme={theme}
-          />
-        </div>
+        <UserContext.Provider value={userInfo}>
+          <div style={{ fontFamily: "Roboto, sans-serif" }}>
+            <Layout
+              {...props}
+              appBar={ifAuthForm ? emptySideBar : AppBar}
+              sidebar={ifAuthForm ? emptySideBar : CustomSidebar}
+              menu={Menu}
+            //theme={theme}
+            />
+          </div>
+        </UserContext.Provider>
+
       )}
 
     </>
