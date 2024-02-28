@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet, Image } from "@react-pdf/renderer";
-import { tommddyyyy } from "../../utils/dateFormator";
+import { tommddyyyy } from "../../lib/universal/utils/dateFormator";
 const styles = StyleSheet.create({
   page: {
     backgroundColor: "#FFF",
@@ -107,14 +107,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ContentGenerator = ({ request, attachmentData }) => {
+export const ContentGenerator = ({ request, attachmentData }: any) => {
   const adRep = request.isRequestedSupport
     ? {
-        "Representative Name": request.representName,
-        "Representative Email": request.representMail,
-      }
+      "Representative Name": request.representName,
+      "Representative Email": request.representMail,
+    }
     : {};
-  const requestContent = {
+  const requestContent: any = {
     billing: {
       "Request Type": request.requestCategoryName,
       "Description of Billing Question Request": request.requesttype,
@@ -147,9 +147,8 @@ export const ContentGenerator = ({ request, attachmentData }) => {
       "Submitted a signed medical records request": request.hasSignedRequest
         ? "Yes"
         : "No",
-      "Like to be contacted personally regarding this request?": `${
-        request.contactPersonallyValue ? "Yes:" : "No"
-      }
+      "Like to be contacted personally regarding this request?": `${request.contactPersonallyValue ? "Yes:" : "No"
+        }
           ${request.contactByMailValue ? "  By Mail  ," : ""}
           ${request.contactByPhoneValue ? "  By Call , " : ""}
           ${request.contactBySmsValue ? "  By SMS  " : ""}`,
@@ -159,8 +158,8 @@ export const ContentGenerator = ({ request, attachmentData }) => {
         request.isInspect
           ? "Inspect"
           : request.isObtainCopy
-          ? "Obtain Copy "
-          : "Nil",
+            ? "Obtain Copy "
+            : "Nil",
       // "Fax Number": obtainData ? request.faxNumber : "Nil",
       // "Other Formats":request.otherFormat?request.otherFormat:"NIl",
       "Do you have a signed HIPAA authorization form?":

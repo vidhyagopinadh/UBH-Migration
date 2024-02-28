@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
@@ -41,12 +41,16 @@ import { perPageMax } from "../lib/universal/utils/pageConstants";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import MyDocument from "./download/downloadGenerator";
 import { getImagesByFileUploadId } from "../service/restConfig";
-import useTraces from "../hooks/useTraces";
+//import useTraces from "../hooks/useTraces";
 import { correlationConstants } from "../lib/universal/utils/OT/correlationConstants";
 //import type { AppState, IImageStack } from "../types";
 import HourglassFullTwoToneIcon from '@mui/icons-material/HourglassFullTwoTone';
 import { AccessTimeFilled, Edit } from "@mui/icons-material";
-import { CardContent, CardHeader, Chip, Divider, IconButton, Typography, Grid } from "@mui/material";
+import { CardContent, CardHeader, Chip, Divider, IconButton, Typography, makeStyles, colors, Card, CircularProgress } from "@mui/material";
+import { IImageStack } from "../types/types";
+import { UserContext } from "../contexts";
+import Grid from '@mui/material/Grid'; // Grid version 1
+
 interface IRequestToken {
   id?: string | number;
   requestId?: string;
@@ -57,11 +61,29 @@ interface IRequestToken {
   isResend?: boolean;
   resendDate?: string;
 }
-function ProjectCard({ project, ...rest }) {
-  const history = useHistory();
+function ProjectCard({ project, ...rest }: any) {
+  const navigate = useNavigate();
   const { permissions } = usePermissions();
   const [emailNotVerified, setEmailNotVerified] = useState(false);
-  const useStyles = makeStyles((theme) => ({
+
+  const PREFIX = 'ProjectCard';
+  // const classes = {
+  //   root: `${PREFIX}-root`,
+  //   rotateIcon: `${PREFIX}-rotateIcon`,
+  //   header: `${PREFIX}-header`,
+  //   content: `${PREFIX}-content`,
+  //   description: `${PREFIX}-description`,
+  //   tags: `${PREFIX}-tags`,
+  //   learnMoreButton: `${PREFIX}-learnMoreButton`,
+  //   likedButton: `${PREFIX}-likedButton`,
+  //   shareButton: `${PREFIX}-shareButton`,
+  //   timerIcon: `${PREFIX}-timerIcon`,
+  //   timer: `${PREFIX}-timer`,
+  //   details: `${PREFIX}-details`,
+  //   authImage: `${PREFIX}-authImage`,
+  //   loader: `${PREFIX}-loader`,
+  // }
+  const usePCStyles = makeStyles((theme: any) => ({
     rotateIcon: {
       animation: `$rotateY 5s ease-in-out infinite `,
     },
@@ -168,7 +190,7 @@ function ProjectCard({ project, ...rest }) {
       marginLeft: theme.spacing(1),
     },
   }));
-  const classes = useStyles();
+  const classes: any = usePCStyles;
   const dataProvider = useDataProvider();
   const refresh = useRefresh();
   const notify = useNotify();
@@ -184,7 +206,7 @@ function ProjectCard({ project, ...rest }) {
   const [fileData, setFileData] = useState({});
   const [editedImageData, setEditedImageData] = useState({});
   const [billingData, setBillingData] = useState({});
-  const { getTrace, handleTrace } = useTraces();
+  //const { getTrace, handleTrace } = useTraces();
   const [imageStack, setImageStack] = useState<IImageStack>({
     disorderDisclosureAuthorizationFileId:
       project.disorderDisclosureAuthorizationFileId || null,
@@ -204,15 +226,17 @@ function ProjectCard({ project, ...rest }) {
     signatureFile: null,
   });
   const [hideTimer, setHideTimer] = useState(false);
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
+  const userInfoReducer: any = useContext(UserContext)
+
   const [authStatus, setAuthStatus] = useState<IRequestToken[]>([]);
   const [obtainData, setObtainData] = useState<RequestObtainRecordType[]>([]);
   const [contactData, setContactData] = useState<RequestContactDetail[]>([]);
   const [doctorData, setDoctorData] = useState<AddendumDoctorsDetail[]>([]);
   const [hipaaData, setHipaaData] = useState({});
-  const [submittedInstitution, setSubmittedInstitution] = useState([]);
+  const [submittedInstitution, setSubmittedInstitution] = useState<any>([]);
   const [sudData, setSudData] = useState({});
 
   useEffect(() => {
@@ -233,7 +257,7 @@ function ProjectCard({ project, ...rest }) {
       signatureId: project.signatureId || null,
       attachment: project.attachment || null,
     });
-    const queryOption = {
+    const queryOption: any = {
       pagination: { page: 1, perPage: perPageMax },
       sort: { field: "id", order: "ASC" },
       filter: {
@@ -310,8 +334,8 @@ function ProjectCard({ project, ...rest }) {
           }
         });
     }
-    function getFileDetails(indvImageStack, type = "default") {
-      const queryOptionFile = {
+    function getFileDetails(indvImageStack: any[], type = "default") {
+      const queryOptionFile: any = {
         pagination: { page: 1, perPage: perPageMax },
         sort: { field: "id", order: "ASC" },
         filter: {
@@ -351,14 +375,14 @@ function ProjectCard({ project, ...rest }) {
   }, [project.id]);
 
   useEffect(() => {
-    const queryOption = {
+    const queryOption: any = {
       pagination: { page: 1, perPage: perPageMax },
       sort: { field: "id", order: "ASC" },
       filter: {
         requestId: project.id,
       },
     };
-    const addendumQueryOption = {
+    const addendumQueryOption: any = {
       pagination: { page: 1, perPage: perPageMax },
       sort: { field: "id", order: "ASC" },
       filter: {
@@ -397,36 +421,36 @@ function ProjectCard({ project, ...rest }) {
   const [openBase, setOpenBase] = useState(false);
   function editRequest(trackId: string) {
     if (permissions === CO_ROLE_PATIENT) {
-      getTrace(
-        "Clicked on Edit Button(Patient)",
-        "ev-132",
-        userInfoReducer.email,
-      );
+      // getTrace(
+      //   "Clicked on Edit Button(Patient)",
+      //   "ev-132",
+      //   userInfoReducer.email,
+      // );
     }
-    history.push(`/requestView/requestId=${trackId}`);
+    navigate(`/requestView/requestId=${trackId}`);
   }
   function viewMoreRequest(id: string) {
     if (permissions === CO_ROLE_PPA) {
-      getTrace(
-        "Clicked on View More Button(PPA)",
-        "ev-043",
-        userInfoReducer.email,
-      );
-      history.push(`/requests/${id}/overview`);
+      // getTrace(
+      //   "Clicked on View More Button(PPA)",
+      //   "ev-043",
+      //   userInfoReducer.email,
+      // );
+      navigate(`/requests/${id}/overview`);
     } else if (permissions === CO_ROLE_MRA) {
-      getTrace(
-        "Clicked on View More Button(MRA)",
-        "ev-094",
-        userInfoReducer.email,
-      );
-      history.push(`/requests/${id}/overview`);
+      // getTrace(
+      //   "Clicked on View More Button(MRA)",
+      //   "ev-094",
+      //   userInfoReducer.email,
+      // );
+      navigate(`/requests/${id}/overview`);
     } else if (permissions === CO_ROLE_PATIENT) {
-      getTrace(
-        "Clicked on View More Button(Patient)",
-        "ev-127",
-        userInfoReducer.email,
-      );
-      history.push(
+      // getTrace(
+      //   "Clicked on View More Button(Patient)",
+      //   "ev-127",
+      //   userInfoReducer.email,
+      // );
+      navigate(
         `/` + window.location.href.split("/")[3] + `/${id}/overview`,
       );
     }
@@ -466,33 +490,33 @@ function ProjectCard({ project, ...rest }) {
         },
       };
 
-      handleTrace(
-        eventObj.eventTitle,
-        inputContext,
-        (spanContext: any, fingerprint: any) => {
-          deleteRequestInput.otContext = JSON.stringify(spanContext);
-          deleteRequestInput.fingerPrint = fingerprint;
-          deleteRequestInput.otTags = JSON.stringify({
-            name: "Attempt to delete Medical/Addendum/Billing Request ",
-          });
-          subscribeDeletionMutation({
-            variables: { input: deleteRequestInput },
-          }).then((response) => {
-            if (response.data.deleteRequestV2.requestResult.success) {
-              refresh();
-            } else {
-              notify(translate("resources.delete.submit_failure"), "warning");
-            }
-          });
-        },
-      ); //end of handletrace
+      // handleTrace(
+      //   eventObj.eventTitle,
+      //   inputContext,
+      //   (spanContext: any, fingerprint: any) => {
+      //     deleteRequestInput.otContext = JSON.stringify(spanContext);
+      //     deleteRequestInput.fingerPrint = fingerprint;
+      //     deleteRequestInput.otTags = JSON.stringify({
+      //       name: "Attempt to delete Medical/Addendum/Billing Request ",
+      //     });
+      //     subscribeDeletionMutation({
+      //       variables: { input: deleteRequestInput },
+      //     }).then((response) => {
+      //       if (response.data.deleteRequestV2.requestResult.success) {
+      //         refresh();
+      //       } else {
+      //         notify(translate("resources.delete.submit_failure"), "warning");
+      //       }
+      //     });
+      //   },
+      // ); //end of handletrace
     }
   };
 
   const [subscribeDeletionMutation] = useMutation(deleteRequest, {});
 
-  const blobToBase64 = (blob, fieldName, type) => {
-    const reader = new FileReader();
+  const blobToBase64 = (blob: Blob, fieldName: string, type: string) => {
+    const reader: any = new FileReader();
     reader.readAsDataURL(blob);
     reader.onloadend = function () {
       if (fieldName === "disorderDisclosureAuthorizationFileId") {
@@ -531,35 +555,35 @@ function ProjectCard({ project, ...rest }) {
       }
     };
   };
-  const openInNewTab = (url) => {
+  const openInNewTab = (event: any, url: URL) => {
     event.preventDefault();
     if (permissions === CO_ROLE_PPA) {
-      getTrace(
-        " Clicked on Download Button(PPA)",
-        "ev-051",
-        userInfoReducer.email,
-      );
+      // getTrace(
+      //   " Clicked on Download Button(PPA)",
+      //   "ev-051",
+      //   userInfoReducer.email,
+      // );
     } else if (permissions === CO_ROLE_MRA) {
-      getTrace(
-        " Clicked on Download Button(MRA)",
-        "ev-102",
-        userInfoReducer.email,
-      );
+      // getTrace(
+      //   " Clicked on Download Button(MRA)",
+      //   "ev-102",
+      //   userInfoReducer.email,
+      //);
     } else if (permissions === CO_ROLE_PATIENT) {
-      getTrace(
-        " Clicked on Download Button(Patient)",
-        "ev-133",
-        userInfoReducer.email,
-      );
+      // getTrace(
+      //   " Clicked on Download Button(Patient)",
+      //   "ev-133",
+      //   userInfoReducer.email,
+      // );
     }
     const newWindow = window.open(url, "_blank", "noopener,noreferrer");
-    if (newWindow === null && permissions === CO_ROLE_PPA) {
-      getTrace("Files Downloaded by PPA", "ev-052", userInfoReducer.email);
-    } else if (newWindow === null && permissions === CO_ROLE_MRA) {
-      getTrace("Files Downloaded by MRA", "ev-103", userInfoReducer.email);
-    } else if (newWindow === null && permissions === CO_ROLE_PATIENT) {
-      getTrace("Files Downloaded by Patient", "ev-134", userInfoReducer.email);
-    }
+    // if (newWindow === null && permissions === CO_ROLE_PPA) {
+    //   getTrace("Files Downloaded by PPA", "ev-052", userInfoReducer.email);
+    // } else if (newWindow === null && permissions === CO_ROLE_MRA) {
+    //   getTrace("Files Downloaded by MRA", "ev-103", userInfoReducer.email);
+    // } else if (newWindow === null && permissions === CO_ROLE_PATIENT) {
+    //   getTrace("Files Downloaded by Patient", "ev-134", userInfoReducer.email);
+    // }
   };
   let backgroundval = "rgb(255, 255, 255)";
   if (localStorage.getItem("Theme") === "dark") {
@@ -748,7 +772,7 @@ function ProjectCard({ project, ...rest }) {
             color={statuscolor}
             variant="contained"
             shape="square"
-            id="status"
+            //id="status"
             className=""
             style={{}}
           >
@@ -913,11 +937,7 @@ function ProjectCard({ project, ...rest }) {
           <div style={{ display: "inline-flex", width: "100%" }}>
             {project.categoryType === "request" && (
               <Grid
-                alignItems="flex-start"
-                container
-                justify="flex-start"
-                spacing={3}
-                style={{ padding: "5px 10px" }}
+
               >
                 {authStatus && (
                   <>
@@ -1059,7 +1079,7 @@ function ProjectCard({ project, ...rest }) {
                               id="download"
                               className={classes.shareButton}
                               size="small"
-                              onClick={() => openInNewTab(url)}
+                              onClick={(e) => openInNewTab(e, url)}
                               disabled={emailNotVerified}
                             >
                               <GetAppIcon />

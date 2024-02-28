@@ -145,7 +145,7 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = {}
+  const userInfoReducer: any = useContext(UserContext)
   useEffect(() => {
     setMode("grid");
     // if (permissions === CO_ROLE_PPA) {
@@ -173,6 +173,8 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
       clearInterval(timer);
     };
   }, []);
+
+  console.log(ids)
 
   return (
     <>
@@ -422,6 +424,7 @@ export const RequestList = (props: any): JSX.Element => {
                     // filters={<UserFilter />}
                     // filterDefaultValues={{ categoryType: "request" }}
                     >
+
                       <CommentGrid {...props} />
                     </List>
                   </>

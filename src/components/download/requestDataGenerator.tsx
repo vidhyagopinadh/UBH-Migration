@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
-import { tommddyyyy } from "../../utils/dateFormator";
+import { tommddyyyy } from "../../lib/universal/utils/dateFormator";
 const styles = StyleSheet.create({
   page: {
     backgroundColor: "#FFF",
@@ -110,15 +110,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export const RequestDataGenerator = ({ request }) => {
+export const RequestDataGenerator = ({ request }: any) => {
   const requestDataContent = {
     "Requested By": ` ${request.createdfname} ${request.createdmname} ${request.createdlastname}`,
     "Request Type":
       request.categoryType === "request"
         ? "Medical Record Request"
         : request.categoryType === "addendum"
-        ? "Addendum Request"
-        : "Billing/Insurance Request",
+          ? "Addendum Request"
+          : "Billing/Insurance Request",
     "Created On": tommddyyyy(request.createdat),
     "Request Status": request.requeststatus,
   };
