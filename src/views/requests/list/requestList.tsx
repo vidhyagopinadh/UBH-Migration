@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Button, List, Tab, usePermissions, useTranslate } from "react-admin";
-// import ProjectCard from "./../../../components/projectCard";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, List, usePermissions, useTranslate } from "react-admin";
+import ProjectCard from "./../../../components/projectCard";
 import {
   PatientDependentFilter,
   PriorityFilter,
@@ -26,12 +26,13 @@ import CustomFilter from "../../../components/customFilter";
 import { Link } from "react-router-dom";
 import NotVerifiedBanner from "../../../components/notVerifiedBanner";
 import LinearProgressWithLabel from "../../../components/linearProgressWithLabel";
-import { Typography, Box, Tabs, Divider, Grid, Card, CardContent, Container } from "@mui/material";
+import { Typography, Box, Tabs, Tab, Divider, Grid, Card as MuiCard, CardContent, Container } from "@mui/material";
 import useRequestList from "./useRequestList";
 import { styled } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
+import { makeStyles, withStyles } from '@mui/styles';
 import Add from "@mui/icons-material/Add";
 import Assignment from "@mui/icons-material/Assignment";
+import { UserContext } from "../../../contexts";
 
 const PREFIX = 'RequestDetails';
 const classes = {
@@ -122,19 +123,19 @@ const useListStyles = makeStyles({
     backgroundColor: "Lavender",
   },
 });
-// const Card = withStyles((theme) => ({
-//   root: {
-//     [theme.breakpoints.up("sm")]: {
-//       order: -1,
-//       marginRight: "1em",
-//       backgroundColor: theme.palette.primary.light,
-//       overflow: "unset",
-//     },
-//     [theme.breakpoints.down("sm")]: {
-//       display: "none",
-//     },
-//   },
-// }))(MuiCard);
+const Card = withStyles((theme) => ({
+  root: {
+    [theme.breakpoints.up("sm")]: {
+      order: -1,
+      marginRight: "1em",
+      backgroundColor: theme.palette.primary.light,
+      overflow: "unset",
+    },
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
+}))(MuiCard);
 
 export const CommentGrid = ({ ids }: any): JSX.Element => {
   const { StyledDiv } = useRequestList();
@@ -144,7 +145,7 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = {}
+  const userInfoReducer: any = useContext(UserContext)
   useEffect(() => {
     setMode("grid");
     // if (permissions === CO_ROLE_PPA) {
@@ -173,6 +174,8 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
     };
   }, []);
 
+  console.log(ids)
+
   return (
     <>
       {ids.length !== 0 ? (
@@ -194,9 +197,9 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
                 xs={12}
                 style={{ padding: 10 }}
               >
-                {/* {data[d] !== undefined && (
+                {data[d] !== undefined && (
                   <ProjectCard path={basePath} project={data[d]} />
-                )} */}
+                )}
               </Grid>
             ))}
           </Grid>
@@ -270,8 +273,10 @@ export const RequestList = (props: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = {}
+  const userInfoReducer: any = useContext(UserContext)
   const [emailNotVerified, setEmailNotVerified] = useState(false);
+
+  console.log("currTab", currTab)
 
   useEffect(() => {
     if (!userInfoReducer.emailVerified) {
@@ -419,6 +424,7 @@ export const RequestList = (props: any): JSX.Element => {
                     // filters={<UserFilter />}
                     // filterDefaultValues={{ categoryType: "request" }}
                     >
+
                       <CommentGrid {...props} />
                     </List>
                   </>
@@ -446,8 +452,6 @@ export const RequestList = (props: any): JSX.Element => {
                     actions={null}
                     aside={<FilterSidebar />}
 
-                  // filters={<UserFilter />}
-                  // filterDefaultValues={{ categoryType: "request" }}
                   >
                     <CommentGrid {...props} />
                   </List>

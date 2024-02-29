@@ -3,7 +3,7 @@ import { context, trace, SpanStatusCode } from "@opentelemetry/api";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
 import { Resource } from "@opentelemetry/resources";
 import { SimpleSpanProcessor } from "@opentelemetry/sdk-trace-base";
-import { CollectorTraceExporter } from "@opentelemetry/exporter-collector";
+// import { CollectorTraceExporter } from "@opentelemetry/exporter-collector";
 import { ZoneContextManager } from "@opentelemetry/context-zone";
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { isMobile, isTablet } from "react-device-detect";
@@ -18,10 +18,10 @@ const resource = new Resource({
 });
 const provider = new WebTracerProvider({ resource });
 
-const collector = new CollectorTraceExporter({
-  url: VITE_OT_TRACING_URL,
-  headers: {},
-});
+// const collector = new CollectorTraceExporter({
+//   url: VITE_OT_TRACING_URL,
+//   headers: {},
+// });
 // provider.addSpanProcessor(new SimpleSpanProcessor(collector));
 provider.register({ contextManager: new ZoneContextManager() });
 

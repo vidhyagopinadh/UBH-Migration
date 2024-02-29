@@ -19,7 +19,7 @@ import type { AppState } from "../../../types";
 import CategoryIcon from '@mui/icons-material/Category';
 export const PriorityFilter = (): JSX.Element => {
   const { filterValues } = useListContext();
-  const { getTrace } = useTraces();
+  //const { getTrace } = useTraces();
   const [mount, setMount] = useState(false);
   const { permissions } = usePermissions();
   // const userInfoReducer = useSelector(
@@ -27,25 +27,25 @@ export const PriorityFilter = (): JSX.Element => {
   // );
   useEffect(() => {
     setMount(true);
-    if (mount === true && permissions === CO_ROLE_PPA) {
-      getTrace(
-        " Priority Filter Selected by PPA",
-        "ev-042",
-        userInfoReducer.email,
-      );
-    } else if (mount === true && permissions === CO_ROLE_MRA) {
-      getTrace(
-        " Priority Filter Selected by MRA",
-        "ev-093",
-        userInfoReducer.email,
-      );
-    } else if (mount === true && permissions === CO_ROLE_PATIENT) {
-      getTrace(
-        " Priority Filter Selected by Patient",
-        "ev-126",
-        userInfoReducer.email,
-      );
-    }
+    // if (mount === true && permissions === CO_ROLE_PPA) {
+    //   getTrace(
+    //     " Priority Filter Selected by PPA",
+    //     "ev-042",
+    //     userInfoReducer.email,
+    //   );
+    // } else if (mount === true && permissions === CO_ROLE_MRA) {
+    //   getTrace(
+    //     " Priority Filter Selected by MRA",
+    //     "ev-093",
+    //     userInfoReducer.email,
+    //   );
+    // } else if (mount === true && permissions === CO_ROLE_PATIENT) {
+    //   getTrace(
+    //     " Priority Filter Selected by Patient",
+    //     "ev-126",
+    //     userInfoReducer.email,
+    //   );
+    // }
   }, [mount, filterValues.requestpriority]);
   return (
     <FilterList
@@ -62,7 +62,7 @@ export const PriorityFilter = (): JSX.Element => {
 };
 
 export const StatusFilter = (): JSX.Element => {
-  const { getTrace } = useTraces();
+  //  const { getTrace } = useTraces();
   const { filterValues } = useListContext();
   const [mount, setMount] = useState(false);
   const { permissions } = usePermissions();
@@ -71,25 +71,25 @@ export const StatusFilter = (): JSX.Element => {
   // );
   useEffect(() => {
     setMount(true);
-    if (mount === true && permissions === CO_ROLE_PPA) {
-      getTrace(
-        "Status Filter Selected by PPA",
-        "ev-042",
-        userInfoReducer.email,
-      );
-    } else if (mount === true && permissions === CO_ROLE_MRA) {
-      getTrace(
-        "Status Filter Selected by MRA",
-        "ev-093",
-        userInfoReducer.email,
-      );
-    } else if (mount === true && permissions === CO_ROLE_PATIENT) {
-      getTrace(
-        "Status Filter Selected by Patient",
-        "ev-126",
-        userInfoReducer.email,
-      );
-    }
+    // if (mount === true && permissions === CO_ROLE_PPA) {
+    //   getTrace(
+    //     "Status Filter Selected by PPA",
+    //     "ev-042",
+    //     userInfoReducer.email,
+    //   );
+    // } else if (mount === true && permissions === CO_ROLE_MRA) {
+    //   getTrace(
+    //     "Status Filter Selected by MRA",
+    //     "ev-093",
+    //     userInfoReducer.email,
+    //   );
+    // } else if (mount === true && permissions === CO_ROLE_PATIENT) {
+    //   getTrace(
+    //     "Status Filter Selected by Patient",
+    //     "ev-126",
+    //     userInfoReducer.email,
+    //   );
+    // }
   }, [mount, filterValues.requeststatus]);
   return (
     <FilterList
@@ -125,7 +125,7 @@ export const StatusFilter = (): JSX.Element => {
 };
 
 export const RequestTypeFilter = (): JSX.Element => {
-  const { getTrace } = useTraces();
+  // const { getTrace } = useTraces();
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
@@ -134,25 +134,25 @@ export const RequestTypeFilter = (): JSX.Element => {
   const { permissions } = usePermissions();
   useEffect(() => {
     setMount(true);
-    if (mount === true && permissions === CO_ROLE_PPA) {
-      getTrace(
-        "Request Type Filter Selected by PPA",
-        "ev-042",
-        userInfoReducer.email,
-      );
-    } else if (mount === true && permissions === CO_ROLE_MRA) {
-      getTrace(
-        "Request Type Filter Selected by MRA",
-        "ev-093",
-        userInfoReducer.email,
-      );
-    } else if (mount === true && permissions === CO_ROLE_PATIENT) {
-      getTrace(
-        "Request type Filter Selected by Patient",
-        "ev-126",
-        userInfoReducer.email,
-      );
-    }
+    // if (mount === true && permissions === CO_ROLE_PPA) {
+    //   getTrace(
+    //     "Request Type Filter Selected by PPA",
+    //     "ev-042",
+    //     userInfoReducer.email,
+    //   );
+    // } else if (mount === true && permissions === CO_ROLE_MRA) {
+    //   getTrace(
+    //     "Request Type Filter Selected by MRA",
+    //     "ev-093",
+    //     userInfoReducer.email,
+    //   );
+    // } else if (mount === true && permissions === CO_ROLE_PATIENT) {
+    //   getTrace(
+    //     "Request type Filter Selected by Patient",
+    //     "ev-126",
+    //     userInfoReducer.email,
+    //   );
+    // }
   }, [mount, filterValues.type]);
   return (
     <FilterList
