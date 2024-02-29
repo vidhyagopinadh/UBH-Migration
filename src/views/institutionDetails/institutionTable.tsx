@@ -1,17 +1,24 @@
 import React from "react";
 import type { ListProps } from "react-admin";
 import type { ReactElement } from "react";
-import { Card, CardContent, IconButton, makeStyles } from "@material-ui/core";
+// import { Card, CardContent, IconButton, makeStyles } from "@material-ui/core";
 import { BootstrapTooltip as Tooltip } from "../../components/Tooltip";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+// import { Visibility, VisibilityOff } from "@material-ui/icons";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
-import { Grid, Box, Divider } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Divider,
+  Card,
+  CardContent,
+  IconButton,
+} from "@mui/material";
 import CreatePageHeader from "../../components/createPageHeader";
 import Chip from "@mui/material/Chip";
 import type { GridColDef } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid";
-import { Info } from "@material-ui/icons";
+import InfoIcon from "@mui/icons-material/Info";
 import {
   Datagrid,
   TextField,
@@ -25,120 +32,147 @@ import {
 import jsonExport from "jsonexport/dist";
 import { StatusFilter } from "./filters";
 import { Base64 } from "js-base64";
-import type { AppState } from "../../types";
-import { useSelector } from "react-redux";
+// import type { AppState } from "../../types";
+// import { useSelector } from "react-redux";
 import { CO_ROLE_ADMIN } from "../../utils/roles";
 import PageNotFound from "../../components/pageNotFound";
 import CustomFilter from "../../components/customFilter";
 import CustomEmpty from "../../components/customEmpty";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    gap: "20px",
-    padding: "20px",
-    flex: "1 1 auto",
-    overflowY: "hidden",
-    overflowX: "scroll",
+
+
+const PREFIX = "InstitutionList";
+const classes = {
+  container: `${PREFIX}-container`,
+  filterBar: `${PREFIX}-filterBar`,
+  tableContainer: `${PREFIX}-tableContainer`,
+  icons: `${PREFIX}- icons`,
+  institutionTable: `${PREFIX}-institutionTable`,
+  item: `${PREFIX}-item`,
+  email: `${PREFIX}- email`,
+  showIcon: `${PREFIX}-showIcon`,
+  iconDiv: `${PREFIX}-iconDiv`,
+  filterContainer: `${PREFIX}-filterContainer`,
+  filter: `${PREFIX}-filter`,
+  filterContent: `${PREFIX}- filterContent`,
+  customHeader: `${PREFIX}- customHeader`,
+  dataGridContainer: `${PREFIX}-dataGridContainer`,
+  hideHeader: `${PREFIX}-hideHeader`,
+  customColumn: `${PREFIX}-customColumn`,
+  customDivider: `${PREFIX}-customDivider`,
+  website: `${PREFIX}-website`,
+  institutionName: `${PREFIX}-institutionName`,
+  institutionType: `${PREFIX}-institutionType`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.container}`]: {
+   
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          padding: "20px",
+          flex: "1 1 auto",
+          overflowY: "hidden",
+          overflowX: "scroll",
+     
   },
-  filterBar: {
+  [`& .${classes.filterBar}`]: {
     marginBottom: "20px",
   },
-  tableContainer: {
+  [`& .${classes.tableContainer}`]: {
     width: "100%",
     overflowX: "auto",
   },
-  icons: { margin: "0px", padding: "0px", paddingRight: "3px" },
-
-  institutionTable: {
+  [`&.${classes.icons}`]: {
+    margin: "0px", padding: "0px", paddingRight: "3px"
+  },
+  [`& .${classes.institutionTable}`]: {
     "& th": {
-      borderBottom: "2px solid #ccc",
-    },
-    "& .MuiToolbar-root": {
-      minHeight: 0,
-    },
-    ".MuiToolbar-regular": {
-      height: "0px !important",
-    },
+            borderBottom: "2px solid #ccc",
+          },
+          "& .MuiToolbar-root": {
+            minHeight: 0,
+          },
+          ".MuiToolbar-regular": {
+            height: "0px !important",
+          },
   },
-  item: {
+  [`& .${classes.item}`]: {
     fontSize: "12px",
-    lineHeight: "1",
+       lineHeight: "1",
   },
-  email: {
+  [`&.${classes.email}`]: {
     maxWidth: 200,
     overflow: "hidden",
     textOverflow: "ellipsis",
     wordBreak: "break-all",
   },
-  showIcon: {
+  [`& .${classes.showIcon}`]: {
     color: "green",
   },
-
-  iconDiv: {
+  [`& .${classes.iconDiv}`]: {
     display: "flex",
-    justifyContent: "flex-start",
-    width: "100%",
+        justifyContent: "flex-start",
+        width: "100%",
   },
-  filterContainer: {
+  [`&.${classes.filterContainer}`]: {
     display: "flex",
-    order: -1,
-    paddingRight: "20px",
+        order: -1,
+        paddingRight: "20px",
   },
-  filter: {
+  [`& .${classes.filter}`]: {
     backgroundColor: theme.palette.primary.light,
     width: 200,
     display: "flex",
     flexDirection: "column",
   },
-  filterContent: {
+  [`& .${classes.filterContent}`]: {
     flex: 1,
-    display: "flex",
-    flexDirection: "column",
+        display: "flex",
+        flexDirection: "column",
   },
-  customHeader: {
+  [`&.${classes.customHeader}`]: {
     width: "200px",
   },
-  dataGridContainer: {
+  [`& .${classes.dataGridContainer}`]: {
     width: "700px",
-    maxWidth: "100%",
+     maxWidth: "100%",
   },
-  hideHeader: {
+  [`& .${classes.hideHeader}`]: {
     "& .MuiDataGrid-columnHeaders": {
-      minHeight: "0!important",
-      maxHeight: "0!important",
-      lineHeight: "0!important",
-    },
+            minHeight: "0!important",
+            maxHeight: "0!important",
+            lineHeight: "0!important",
   },
-  customColumn: {
+  [`&.${classes.customColumn}`]: {
     width: "200px",
   },
-  customDivider: {
+  [`& .${classes.customDivider}`]: {
     margin: 0,
     borderStyle: "hidden!important ",
     borderColor: "rgba(0, 0, 0, 0.12)",
     borderBottomWidth: "inherit!important",
     disply: "none",
   },
-  website: {
+  [`& .${classes.website}`]: {
+    maxWidth: 150,
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        wordBreak: "break-all",
+  },
+  [`&.${classes.institutionName}`]: {
     maxWidth: 150,
     overflow: "hidden",
     textOverflow: "ellipsis",
     wordBreak: "break-all",
   },
-  institutionName: {
-    maxWidth: 150,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    wordBreak: "break-all",
-  },
-  institutionType: {
+  [`& .${classes.institutionType}`]: {
     maxWidth: 250,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    wordBreak: "break-all",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        wordBreak: "break-all",
   },
 }));
 
@@ -151,7 +185,7 @@ export const InstitutionList = (props: ListProps): ReactElement => {
   const [selectedId, setSelectedId] = React.useState<string>(null);
   const [filterValue, setFilterValue] = React.useState("");
   const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
+    (state: AppState) => state.userInfoReducer
   );
   function exportInstitution(institutions): void {
     jsonExport(institutions, (err, csv) => {
@@ -161,7 +195,7 @@ export const InstitutionList = (props: ListProps): ReactElement => {
   const CustomButtonLinkField = (props): JSX.Element => {
     const [expanded, toggleExpanded] = useExpanded(
       "institutions",
-      props.record.id,
+      props.record.id
     );
     React.useEffect(() => {
       if (props.record.id !== selectedId) {
@@ -306,7 +340,7 @@ export const InstitutionList = (props: ListProps): ReactElement => {
       {
         id: 13,
         label: translate(
-          `resources.institutions.fields.institution_directAddress`,
+          `resources.institutions.fields.institution_directAddress`
         ),
         value: record.directAddress,
       },
@@ -417,10 +451,10 @@ export const InstitutionList = (props: ListProps): ReactElement => {
                       {translate(`resources.patients.noInfoDetails.noInfo`)}
                       <Tooltip
                         title={translate(
-                          `resources.patients.noInfoDetails.noInfo`,
+                          `resources.patients.noInfoDetails.noInfo`
                         )}
                       >
-                        <Info className={classes.info} />
+                        <InfoIcon className={classes.info} />
                       </Tooltip>
                     </span>
                   );
@@ -498,7 +532,7 @@ export const InstitutionList = (props: ListProps): ReactElement => {
                   >
                     <FunctionField
                       label={translate(
-                        "resources.institutions.fields.institution_name",
+                        "resources.institutions.fields.institution_name"
                       )}
                       render={(record) => (
                         <span>{`${record.institutionName}`}</span>
@@ -507,14 +541,14 @@ export const InstitutionList = (props: ListProps): ReactElement => {
                     />
                     <TextField
                       label={translate(
-                        "resources.institutions.fields.institution_type",
+                        "resources.institutions.fields.institution_type"
                       )}
                       source="institutionType"
                       cellClassName={classes.institutionType}
                     />
                     <FunctionField
                       label={translate(
-                        "resources.institutions.fields.institution_email",
+                        "resources.institutions.fields.institution_email"
                       )}
                       render={(record) => (
                         <span>
@@ -527,7 +561,7 @@ export const InstitutionList = (props: ListProps): ReactElement => {
                     />
                     <FunctionField
                       label={translate(
-                        "resources.institutions.fields.requester_name",
+                        "resources.institutions.fields.requester_name"
                       )}
                       render={(record) => (
                         <span>{`${record.requesterName}`}</span>
@@ -540,7 +574,7 @@ export const InstitutionList = (props: ListProps): ReactElement => {
                           {record.status === "Pending" ? (
                             <Chip
                               label={translate(
-                                "resources.institutions.fields.pending",
+                                "resources.institutions.fields.pending"
                               )}
                               color="primary"
                               style={{ width: "80px" }}
@@ -548,7 +582,7 @@ export const InstitutionList = (props: ListProps): ReactElement => {
                           ) : record.status === "Approved" ? (
                             <Chip
                               label={translate(
-                                "resources.institutions.fields.approved",
+                                "resources.institutions.fields.approved"
                               )}
                               color="success"
                               style={{ width: "80px" }}
