@@ -189,6 +189,7 @@ const StyledDiv = styled("div")(({ theme }) => ({
 
 
 export const InviteTable = (props: any): JSX.Element => {
+
   const refresh = useRefresh();
   const translate = useTranslate();
   const notify = useNotify();
@@ -222,6 +223,9 @@ export const InviteTable = (props: any): JSX.Element => {
       setShowBanner(true);
     }
   }, []);
+  React.useEffect(() => {
+    console.log("In invite", props)
+  }, [props])
   const deleteInvite = (): void => {
     setOpenDeleteBase(false);
     const deleteInviteInput: DeleteInviteInput = {
@@ -255,7 +259,7 @@ export const InviteTable = (props: any): JSX.Element => {
       props?.record?.id,
     );
     useEffect(() => {
-      if (props.record.id !== selectedId) {
+      if (props.record?.id !== selectedId) {
         if (expanded) {
           toggleExpanded();
         }
@@ -365,11 +369,11 @@ export const InviteTable = (props: any): JSX.Element => {
         </IconButton>
         <Tooltip
           title={
-            props.record.invitationCode === "CANCELLED"
+            props.record?.invitationCode === "CANCELLED"
               ? "Sending reminders is not allowed for a canceled patient."
-              : props.record.invitationCode === "LOGGED_IN"
+              : props.record?.invitationCode === "LOGGED_IN"
                 ? "Sending a reminder is not allowed for an already logged in patient. "
-                : props.record.invitationCode === "EXPIRED"
+                : props.record?.invitationCode === "EXPIRED"
                   ? "Sending a reminder is not allowed for an expired invite."
                   : "Send Reminder"
           }
@@ -378,20 +382,20 @@ export const InviteTable = (props: any): JSX.Element => {
             <IconButton
               className={classes.icons}
               disabled={
-                props.record.invitationCode === "CANCELLED" ||
-                props.record.invitationCode === "LOGGED_IN" ||
-                props.record.invitationCode === "EXPIRED"
+                props.record?.invitationCode === "CANCELLED" ||
+                props.record?.invitationCode === "LOGGED_IN" ||
+                props.record?.invitationCode === "EXPIRED"
               }
               onClick={() => {
                 setSelectedId(props.record.id);
-                setInvitationCode(props.record.invitationCode);
-                onReminderClick(props.record.id, props.record.invitationCode);
+                setInvitationCode(props.record?.invitationCode);
+                onReminderClick(props.record.id, props.record?.invitationCode);
               }}
             >
               <Schedule
                 style={{
                   color: ["LOGGED_IN", "EXPIRED", "CANCELLED"].includes(
-                    props.record.invitationCode,
+                    props.record?.invitationCode,
                   )
                     ? "grey"
                     : "blue",
@@ -510,7 +514,7 @@ export const InviteTable = (props: any): JSX.Element => {
       {
         id: 1,
         label: translate(`resources.invite.expandFields.invitedDate`),
-        value: record.createdAt ? tommddyyyy(record.createdAt) : null,
+        value: record?.createdAt ? tommddyyyy(record?.createdAt) : null,
       },
       {
         id: 2,
@@ -614,7 +618,7 @@ export const InviteTable = (props: any): JSX.Element => {
                       params.row.label ===
                       translate(`resources.invite.expandFields.linkOpenedOn`)
                     ) {
-                      if (record.invitationCode === "INVITE_NOT_USED") {
+                      if (record?.invitationCode === "INVITE_NOT_USED") {
                         return (
                           <span>
                             {translate(`tooltip.invite.noInfo`)}
@@ -716,9 +720,15 @@ export const InviteTable = (props: any): JSX.Element => {
     return <></>;
   }
   const FormattedDateField = (props: any): JSX.Element => {
-    const { record, source } = props;
-    const formattedDate = tommddyyyy(record[source]);
-    return <span>{formattedDate}</span>;
+    const { record, source }: any = props;
+    if (record) {
+      const formattedDate = tommddyyyy(record[source]);
+      return <span>{formattedDate}</span>;
+    }
+    else {
+      return <></>
+    }
+
   };
   return (
     <>
@@ -878,12 +888,12 @@ export const InviteTable = (props: any): JSX.Element => {
                     <FormattedDateField
                       source="createdAt"
                       label={translate("resources.invite.fields.invitedDate")}
-                      cellClassName={classes.createdAt}
+                      cellClassName={classes?.createdAt}
                     />
                     <FunctionField
                       label={translate("resources.invite.fields.days")}
                       render={(record: any) => (
-                        <span>{moment(record.createdAt).fromNow()}</span>
+                        <span>{moment(record?.createdAt).fromNow()}</span>
                       )}
                     />
                     <FunctionField
@@ -891,7 +901,7 @@ export const InviteTable = (props: any): JSX.Element => {
                       render={(record: any) => (
                         <>
                           {renderDescription(
-                            record.invitationCode,
+                            record?.invitationCode,
                             record.expiredDt,
                             record.lastReminderSentAt,
                             record.openedDt,
