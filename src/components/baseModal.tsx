@@ -264,7 +264,7 @@ const BaseModal: React.FC<BaseModalProps> = (props): JSX.Element => {
                   <>
                     {" "}
                     <br />
-                    {subContent.map((value, key) => (
+                    {subContent.map((value: any, key: number) => (
                       <>
                         {value}
                         {key !== subContent.length - 1 && <br />}{" "}
@@ -304,7 +304,7 @@ const BaseModal: React.FC<BaseModalProps> = (props): JSX.Element => {
             {(subContent.length > 0 && type === "logout") ||
               type === "authConfirm" ? (
               <>
-                {subContent.map((value, key) => (
+                {subContent.map((value: any, key: any) => (
                   <>
                     <Typography
                       variant="body1"
