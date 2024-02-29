@@ -432,8 +432,8 @@ export const RequestList = (props: any): JSX.Element => {
                       }}
                       actions={null}
                       aside={<FilterSidebar type={currTab} />}
-                      // filters={<UserFilter />}
-                      // filterDefaultValues={{ categoryType: "request" }}
+                    // filters={<UserFilter />}
+                    // filterDefaultValues={{ categoryType: "request" }}
                     >
                       <CommentGrid {...props} />
                     </List>
@@ -462,8 +462,8 @@ export const RequestList = (props: any): JSX.Element => {
                     actions={null}
                     aside={<FilterSidebar />}
 
-                    // filters={<UserFilter />}
-                    // filterDefaultValues={{ categoryType: "request" }}
+                  // filters={<UserFilter />}
+                  // filterDefaultValues={{ categoryType: "request" }}
                   >
                     <CommentGrid {...props} />
                   </List>
