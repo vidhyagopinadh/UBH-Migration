@@ -212,7 +212,7 @@ export const INVITE_ALREADY_EXISTS_SUBTITLE = [
   ["Click on the 'Send Reminder' ", " button associated with the invitation."],
 ];
 
-export const DESCRIPTION_MAP = {
+export const DESCRIPTION_MAP: any = {
   AWAITING_LOGIN: "Awaiting login",
   INVITE_NOT_USED: "Not Opened",
   OPENED: "Invitation opened, registration not completed",
