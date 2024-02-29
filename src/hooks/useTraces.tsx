@@ -1,6 +1,6 @@
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
-import { traceSpan } from "../utils/OT/OTTracing";
-import { correlationConstants } from "../utils/OT/correlationConstants";
+import { traceSpan } from "../lib/universal/utils/OT/OTTracing";
+import { correlationConstants } from "../lib/universal/utils/OT/correlationConstants";
 
 interface IContext {
   action: string;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Typography, Grid, colors } from "@material-ui/core";
+import { Typography, Grid, colors } from "@mui/material";
 import { useTranslate } from "react-admin";
 import Label from "./../../../../components/label";
 import { useSelector } from "react-redux";

@@ -1,10 +1,12 @@
 import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
+import { usePermissions } from 'react-admin';
+import { CO_ROLE_MRA, CO_ROLE_PATIENT, CO_ROLE_PPA } from '../../../lib/universal/utils/roles';
 
 const useRequestList = () => {
     const PREFIX = 'RequestList';
     const [mode, setMode] = useState("grid");
-
+    const {permissions} = usePermissions()
     const classes = {
         root: `${PREFIX}-root`,
         listStyle: `${PREFIX}-listStyle`,
@@ -81,17 +83,17 @@ const useRequestList = () => {
 
       useEffect(() => {
         setMode("grid");
-        if (permissions === CO_ROLE_PPA) {
-          getTrace(" All Requests listed.(PPA)", "ev-041", userInfoReducer.email);
-        } else if (permissions === CO_ROLE_MRA) {
-          getTrace(" All Requests listed.(MRA)", "ev-092", userInfoReducer.email);
-        } else if (permissions === CO_ROLE_PATIENT) {
-          getTrace(
-            " All Requests listed.(Patient)",
-            "ev-125",
-            userInfoReducer.email,
-          );
-        }
+        // if (permissions === CO_ROLE_PPA) {
+        //   getTrace(" All Requests listed.(PPA)", "ev-041", userInfoReducer.email);
+        // } else if (permissions === CO_ROLE_MRA) {
+        //   getTrace(" All Requests listed.(MRA)", "ev-092", userInfoReducer.email);
+        // } else if (permissions === CO_ROLE_PATIENT) {
+        //   getTrace(
+        //     " All Requests listed.(Patient)",
+        //     "ev-125",
+        //     userInfoReducer.email,
+        //   );
+        // }
       }, [permissions]);
 
 
