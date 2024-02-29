@@ -452,11 +452,8 @@ export const RequestList = (props: any): JSX.Element => {
                     actions={null}
                     aside={<FilterSidebar />}
 
-<<<<<<< HEAD
                   // filters={<UserFilter />}
                   // filterDefaultValues={{ categoryType: "request" }}
-=======
->>>>>>> VG/feat-uimigrate
                   >
                     <CommentGrid {...props} />
                   </List>
