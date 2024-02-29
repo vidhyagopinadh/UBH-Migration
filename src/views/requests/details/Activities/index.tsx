@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 
-import { Card, CardContent, Grid, List, Typography } from "@material-ui/core";
+// import { Card, CardContent, Grid, List, Typography } from "@material-ui/core";
 import SuccessSnackbar from "./SuccessSnackbar";
 import Replies from "../../../../components/repliesComponent/replies";
 import {
@@ -13,8 +13,9 @@ import {
   useRecordContext,
 } from "react-admin";
 import moment from "moment";
-import type { RecordInterface } from "../../../../types";
+// import type { RecordInterface } from "../../../../types";
 import { styled } from "@mui/material/styles";
+import { Card, CardContent, Grid, List, Typography } from "@mui/material";
 
 // const useStyles = makeStyles(() => ({
 //   root: {},

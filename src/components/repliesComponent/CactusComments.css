@@ -1,0 +1,40 @@
+.cactus-send-button {
+  visibility: hidden;
+}
+.cactus-button {
+  background-color: rgb(107, 104, 104);
+}
+.cactus-send-button:after {
+  content: "Post";
+  visibility: visible;
+  padding-block: 0.6em;
+  padding-inline: 1em;
+  font-weight: 700;
+  background-color: rgb(107, 104, 104);
+  border-radius: var(--cactus-border-radius);
+  /* color: var(--cactus-button-text-color); */
+  font-size: inherit;
+  border: none;
+}
+.cactus-logout-button {
+  visibility: hidden;
+}
+.cactus-login-button {
+  visibility: hidden;
+}
+.cactus-editor-textarea {
+  font-family: "Courier New", Courier, monospace;
+  resize: none;
+}
+.cactus-message-text {
+  font-size: 14px;
+  font-family: "Courier New", Courier, monospace;
+  width: 700px;
+  word-wrap: break-word;
+}
+.cactus-comment-displayname {
+  pointer-events: none;
+}
+.cactus-errors {
+  visibility: collapse;
+}

@@ -49,7 +49,6 @@ const Root = styled("div")(({ theme }) => ({
 }));
 
 export const PostReply = (props): JSX.Element => {
-  const classes = useStyles();
   return (
     <Grid container xs={12} className={classes.root}>
       <Grid item xs={1}>
