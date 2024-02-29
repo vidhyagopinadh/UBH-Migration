@@ -7,21 +7,21 @@ import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { useDataProvider, usePermissions, useTranslate } from "react-admin";
 import { getImagesByFileUploadId } from "./../../../../service/restConfig";
-import {
-  Card,
-  CardContent,
-  Typography,
-  ListItem,
-  Grid,
-  InputLabel,
-  TextField,
-  Checkbox,
-  Divider,
-  TextareaAutosize,
-  FormControl,
-  FormControlLabel,
-  IconButton,
-} from "@material-ui/core";
+// import {
+//   Card,
+//   CardContent,
+//   Typography,
+//   ListItem,
+//   Grid,
+//   InputLabel,
+//   TextField,
+//   Checkbox,
+//   Divider,
+//   TextareaAutosize,
+//   FormControl,
+//   FormControlLabel,
+//   IconButton,
+// } from "@material-ui/core";
 import { perPageList, perPageMax } from "./../../../../utils/pageConstants";
 import {
   CO_ROLE_MRA,
@@ -37,6 +37,16 @@ import DenialFormDetail from "../Activities/DenialFormDetail";
 import ContentGenerator from "./contentGenerator";
 import useBrief from "../../../../hooks/useBrief";
 import BaseModal from "../../../../components/baseModal";
+import {
+  Card,
+  CardContent,
+  Divider,
+  Grid,
+  IconButton,
+  InputLabel,
+  ListItem,
+  Typography,
+} from "@mui/material";
 
 interface IRequestToken {
   id?: string | number;
@@ -147,7 +157,7 @@ function Brief({ request, ...rest }): JSX.Element {
       try {
         const { data } = await dataProvider.getList(
           "requestTokenV1s",
-          queryOption,
+          queryOption
         );
         setAuthStatus(data);
 
@@ -343,10 +353,10 @@ function Brief({ request, ...rest }): JSX.Element {
                           ? " (An email with HIPAA form link is sent at " +
                             (authStatus[0].resendDate
                               ? moment(authStatus[0].resendDate).format(
-                                  "DD MMM YYYY hh:mm a",
+                                  "DD MMM YYYY hh:mm a"
                                 )
                               : moment(request.createdat).format(
-                                  "DD MMM YYYY hh:mm a",
+                                  "DD MMM YYYY hh:mm a"
                                 ) + ")")
                           : ""}
                         {!request.healthInformationAuth && !highlight
@@ -537,7 +547,7 @@ function Brief({ request, ...rest }): JSX.Element {
                               >
                                 {option.value}
                               </option>
-                            ),
+                            )
                       )}
                     </TextField>
                   </Grid>
@@ -629,7 +639,7 @@ function Brief({ request, ...rest }): JSX.Element {
                                         onChange={(e) =>
                                           handleInternalChangeReason(
                                             e,
-                                            individuals.id,
+                                            individuals.id
                                           )
                                         }
                                         control={<Checkbox color="primary" />}
@@ -685,7 +695,7 @@ function Brief({ request, ...rest }): JSX.Element {
                                           arrow
                                           placement="top"
                                           title={translate(
-                                            "tooltip.brief.denial_checkbox",
+                                            "tooltip.brief.denial_checkbox"
                                           )}
                                         >
                                           <Info className={classes.info} />

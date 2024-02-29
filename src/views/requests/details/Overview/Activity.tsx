@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { useHistory } from "react-router";
-import { makeStyles } from "@material-ui/core/styles";
+import { useNavigate } from "react-router";
+import { styled } from "@mui/material/styles";
 import { useMutation } from "@apollo/react-hooks";
-import { Avatar, Card, IconButton, Typography } from "@material-ui/core";
+// import { Avatar, Card, IconButton, Typography } from "@material-ui/core";
 import GetAppIcon from "@mui/icons-material/GetApp";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DashboardIcon from "@mui/icons-material/DashboardOutlined";
@@ -17,7 +17,7 @@ import {
   useRefresh,
   useTranslate,
 } from "react-admin";
-import { Button } from "@mui/material";
+import { Avatar, Button, Card, IconButton, Typography } from "@mui/material";
 import CopyToClipboardButton from "../../../../components/CopyToClipboardButton";
 import { AccessTime, Schedule } from "@mui/icons-material/";
 import { BootstrapTooltip as Tooltip } from "../../../../components/Tooltip";
@@ -69,14 +69,13 @@ const Root = styled("div")(({ theme }) => ({
   },
 }));
 function Activity({ activity, className, ...rest }): JSX.Element {
-  const classes = useStyles();
   const translate = useTranslate();
   const notify = useNotify();
   const refresh = useRefresh();
   const [to, setTo] = useState("");
   const { permissions } = usePermissions();
   const [highlight, setHighlight] = useState("#718cc7");
-  const history = useHistory();
+  const history = useNavigate();
   const [subscribeGetNotificationDetailsMutation] = useMutation(
     getNotificationDetails,
     {}
@@ -330,7 +329,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                         textTransform: "capitalize",
                       }}
                       onClick={() => {
-                        history.push(
+                        navigate(
                           "/authorizationForm/hipaa/" +
                             activity.requestToken.token
                         );
@@ -346,7 +345,7 @@ function Activity({ activity, className, ...rest }): JSX.Element {
                         textTransform: "capitalize",
                       }}
                       onClick={() => {
-                        history.push(
+                        navigate(
                           "/authorizationForm/sud/" +
                             activity.requestToken.token
                         );

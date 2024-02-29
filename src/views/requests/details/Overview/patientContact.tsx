@@ -1,10 +1,11 @@
 import * as React from "react";
-import { Grid, Button, ButtonGroup } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+// import { Grid, Button, ButtonGroup } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import { useNotify } from "react-admin";
+import { Button, ButtonGroup, Grid } from "@mui/material";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -58,7 +59,6 @@ export const PatientContact = ({
   phoneNumber,
   email,
 }: IPatientContact): JSX.Element => {
-  const classes = useStyles();
   const notify = useNotify();
   return (
     <Grid container>

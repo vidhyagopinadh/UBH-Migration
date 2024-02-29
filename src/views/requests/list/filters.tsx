@@ -5,9 +5,9 @@ import {
   useListContext,
   usePermissions,
 } from "react-admin";
-import LowPriorityIcon from '@mui/icons-material/LowPriority';
-import EqualizerIcon from '@mui/icons-material/Equalizer';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
+import LowPriorityIcon from "@mui/icons-material/LowPriority";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 // import useTraces from "../../../hooks/useTraces";
 import {
   CO_ROLE_MRA,
@@ -15,8 +15,8 @@ import {
   CO_ROLE_PPA,
 } from "../../../utils/roles";
 // import { useSelector } from "react-redux";
-import type { AppState } from "../../../types";
-import CategoryIcon from '@mui/icons-material/Category';
+// import type { AppState } from "../../../types";
+import CategoryIcon from "@mui/icons-material/Category";
 export const PriorityFilter = (): JSX.Element => {
   const { filterValues } = useListContext();
   //const { getTrace } = useTraces();
@@ -177,7 +177,7 @@ export const RequestTypeFilter = (): JSX.Element => {
 export const PatientDependentFilter = (): JSX.Element => {
   const { getTrace } = useTraces();
   const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
+    (state: AppState) => state.userInfoReducer
   );
   const { permissions } = usePermissions();
   useEffect(() => {
@@ -185,7 +185,7 @@ export const PatientDependentFilter = (): JSX.Element => {
       getTrace(
         "Patient/Dependent Filter Selected by Patient",
         "ev-126",
-        userInfoReducer.email,
+        userInfoReducer.email
       );
     }
   }, []);

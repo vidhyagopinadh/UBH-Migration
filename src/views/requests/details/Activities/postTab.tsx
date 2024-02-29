@@ -1,8 +1,10 @@
 import * as React from "react";
-import { Tabs, Tab, Divider } from "@material-ui/core";
+// import { Tabs, Tab, Divider } from "@material-ui/core";
 import { PostReply } from "./postReply";
 import { usePermissions } from "react-admin";
 import { CO_ROLE_MRA } from "../../../../utils/roles";
+import { Tabs } from "@mui/base";
+import { Divider, Tab } from "@mui/material";
 
 export const PostTab = (): JSX.Element => {
   const [currTab, setCurrTab] = React.useState("postlabel");
@@ -16,7 +18,7 @@ export const PostTab = (): JSX.Element => {
       : [{ id: "0", value: "postlabel", label: "POST REPLY" }];
   const handleTabsChange = (
     event: React.ChangeEvent<{}>,
-    value: string,
+    value: string
   ): void => {
     setCurrTab(value);
   };

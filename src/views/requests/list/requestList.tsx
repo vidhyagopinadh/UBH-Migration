@@ -26,10 +26,21 @@ import CustomFilter from "../../../components/customFilter";
 import { Link } from "react-router-dom";
 import NotVerifiedBanner from "../../../components/notVerifiedBanner";
 import LinearProgressWithLabel from "../../../components/linearProgressWithLabel";
-import { Typography, Box, Tabs, Tab, Divider, Grid, Card as MuiCard, CardContent, Container } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Tabs,
+  Tab,
+  Divider,
+  Grid,
+  Card as MuiCard,
+  CardContent,
+  Container,
+} from "@mui/material";
 import useRequestList from "./useRequestList";
-import { styled } from '@mui/material/styles';
-import { makeStyles, withStyles } from '@mui/styles';
+import { styled } from "@mui/material/styles";
+// import { makeStyles, withStyles } from '@mui/styles';
+
 import Add from "@mui/icons-material/Add";
 import Assignment from "@mui/icons-material/Assignment";
 import { UserContext } from "../../../contexts";
@@ -142,7 +153,7 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = useContext(UserContext)
+  const userInfoReducer: any = useContext(UserContext);
   useEffect(() => {
     setMode("grid");
     // if (permissions === CO_ROLE_PPA) {
@@ -171,7 +182,7 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
     };
   }, []);
 
-  console.log(ids)
+  console.log(ids);
 
   return (
     <>
@@ -273,10 +284,10 @@ export const RequestList = (props: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = useContext(UserContext)
+  const userInfoReducer: any = useContext(UserContext);
   const [emailNotVerified, setEmailNotVerified] = useState(false);
 
-  console.log("currTab", currTab)
+  console.log("currTab", currTab);
 
   useEffect(() => {
     if (!userInfoReducer.emailVerified) {
@@ -421,10 +432,9 @@ export const RequestList = (props: any): JSX.Element => {
                       }}
                       actions={null}
                       aside={<FilterSidebar type={currTab} />}
-                    // filters={<UserFilter />}
-                    // filterDefaultValues={{ categoryType: "request" }}
+                      // filters={<UserFilter />}
+                      // filterDefaultValues={{ categoryType: "request" }}
                     >
-
                       <CommentGrid {...props} />
                     </List>
                   </>
@@ -452,8 +462,8 @@ export const RequestList = (props: any): JSX.Element => {
                     actions={null}
                     aside={<FilterSidebar />}
 
-                  // filters={<UserFilter />}
-                  // filterDefaultValues={{ categoryType: "request" }}
+                    // filters={<UserFilter />}
+                    // filterDefaultValues={{ categoryType: "request" }}
                   >
                     <CommentGrid {...props} />
                   </List>

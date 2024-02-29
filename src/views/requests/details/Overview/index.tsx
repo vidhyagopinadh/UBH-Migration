@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Grid } from "@material-ui/core";
+// import { Grid } from "@material-ui/core";
 import Brief from "./brief";
 import Replies from "../../../../components/repliesComponent/replies";
 import { Patient } from "./patient";
 import { Contact } from "./contactDetails";
 import { ObtainCopy } from "./obtainCopy";
+import { Grid } from "@mui/material";
 
 function Overview(props): JSX.Element {
   return (

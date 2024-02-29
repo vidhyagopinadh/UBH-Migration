@@ -1,16 +1,16 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  List,
-  Typography,
-  ListItem,
-  Divider,
-  Button,
-  Avatar,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+// import {
+//   Card,
+//   CardContent,
+//   List,
+//   Typography,
+//   ListItem,
+//   Divider,
+//   Button,
+//   Avatar,
+// } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
 import { PatientContact } from "./patientContact";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import { tommddyyyy } from "./../../../../utils/dateFormator";
@@ -18,11 +18,22 @@ import { useDataProvider, usePermissions } from "react-admin";
 import Activity from "./Activity";
 import { getImagesByFileUploadId } from "./../../../../service/restConfig";
 import FileCard from "./../../../../components/FileCard";
-import type { IImageStack, IRequestToken } from "../../../../types";
+// import type { IImageStack, IRequestToken } from "../../../../types";
 import { perPageMax } from "../../../../utils/pageConstants";
-import { Tab, Tabs } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  List,
+  ListItem,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import { CO_ROLE_PATIENT } from "../../../../utils/roles";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { titleCase } from "../../../../utils/titleCase";
 
 // const useStyles = makeStyles((theme) => ({
@@ -175,7 +186,6 @@ export function Patient({ request }): JSX.Element {
       }
     });
   }, [request]);
-  const classes = useStyles();
 
   const blobToFile = function (blob, name, fieldName): void {
     blob.lastModifiedDate = new Date();
@@ -706,7 +716,7 @@ export function Patient({ request }): JSX.Element {
                         textTransform: "capitalize",
                       }}
                       onClick={() => {
-                        history.push(
+                        navigate(
                           "/patientRequests/" + request.id + "/overview"
                         );
                       }}
@@ -744,7 +754,7 @@ export function Patient({ request }): JSX.Element {
                         textTransform: "capitalize",
                       }}
                       onClick={() => {
-                        history.push(
+                        navigate(
                           "/patientRequests/" + request.id + "/overview"
                         );
                       }}

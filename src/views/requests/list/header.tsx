@@ -1,21 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Grid, Typography } from "@material-ui/core";
+// import { Grid, Typography } from "@material-ui/core";
 import { useTranslate } from "react-admin";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
+import { Grid, Typography } from "@mui/material";
 
-const PREFIX = 'RequestList';
+const PREFIX = "RequestList";
 
 const classes = {
   root: `${PREFIX}-root`,
-  }
-  
-const StyledDiv = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-    },
- 
-  }));
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {},
+}));
 
 function Header({ className, ...rest }): JSX.Element {
   const translate = useTranslate();
@@ -36,7 +35,7 @@ function Header({ className, ...rest }): JSX.Element {
           </Typography>
         </Grid>
       </Grid>
-      </StyledDiv>
+    </StyledDiv>
   );
 }
 

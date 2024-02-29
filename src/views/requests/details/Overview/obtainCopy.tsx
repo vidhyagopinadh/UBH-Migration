@@ -1,17 +1,25 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  List,
-  Typography,
-  ListItem,
-  Divider,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+// import {
+//   Card,
+//   CardContent,
+//   List,
+//   Typography,
+//   ListItem,
+//   Divider,
+// } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
 import { useDataProvider } from "react-admin";
 import { perPageMax } from "../../../../utils/pageConstants";
 import type { RequestObtainRecordType } from "../../../../__generated__/typescript-operations_all";
+import {
+  Card,
+  CardContent,
+  Divider,
+  List,
+  ListItem,
+  Typography,
+} from "@mui/material";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -89,8 +97,6 @@ export function ObtainCopy({ request }): JSX.Element {
       mounted = false;
     };
   }, [request]);
-
-  const classes = useStyles();
 
   return (
     <div>

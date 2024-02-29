@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  List,
-  Typography,
-  Divider,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+// import {
+//   Card,
+//   CardContent,
+//   List,
+//   Typography,
+//   Divider,
+// } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
 import {
   useDataProvider,
   Datagrid,
@@ -15,6 +15,7 @@ import {
   ReferenceManyField,
 } from "react-admin";
 import { perPageMax } from "../../../../utils/pageConstants";
+import { Card, CardContent, Divider, List, Typography } from "@mui/material";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -113,8 +114,6 @@ export function Contact({ request }): JSX.Element {
       mounted = false;
     };
   }, [request]);
-
-  const classes = useStyles();
 
   return (
     <div>

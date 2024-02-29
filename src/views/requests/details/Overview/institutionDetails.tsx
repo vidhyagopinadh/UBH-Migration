@@ -1,5 +1,7 @@
+import { Typography } from "@mui/material";
 import * as React from "react";
-import { Typography, makeStyles } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
+// import { Typography, makeStyles } from "@material-ui/core";
 // const useStyles = makeStyles(() => ({
 //   subtitle1: {
 //     width: "100%",
@@ -20,7 +22,6 @@ const Root = styled("div")(({ theme }) => ({
   },
 }));
 export const InstitutionDetails = ({ institutionData }): JSX.Element => {
-  const classes = useStyles();
   return (
     <>
       <Typography variant="subtitle2" className={classes.subtitle1}>
