@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
+//import { makeStyles } from "@material-ui/styles";
 import {
   Button,
   Dialog,
@@ -10,13 +10,13 @@ import {
   Radio,
   RadioGroup,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useMutation } from "@apollo/react-hooks";
-
 import { CardHeader, Divider } from "semantic-ui-react";
 import { GridCloseIcon } from "@mui/x-data-grid";
-import type { IConfirmMrrViewProps } from "../../types";
-import { NavigateNext } from "@material-ui/icons";
+//import type { IConfirmMrrViewProps } from "../../types";
+import type { IConfirmMrrViewProps } from "../../types/types";
+import { NavigateNext } from "@mui/icons-material";
 import { useDataProvider } from "react-admin";
 import { perPageMax } from "../../utils/pageConstants";
 import type {
@@ -25,42 +25,57 @@ import type {
   Integration,
 } from "../../__generated__/typescript-operations_all";
 import getPatientMedicalRecord from "../../queries/getPatientMedicalRecord/getPatientMedicalRecord";
-const useStyles = makeStyles(() => ({
-  root: {
+import { styled } from "@mui/material/styles";
+
+const PREFIX = "confirmMrrView";
+
+const classes = {
+  root: `${PREFIX}-root`,
+  cancel: `${PREFIX}-cancel`,
+  continue: `${PREFIX}-continue`,
+  dialogContainer: `${PREFIX}-dialogContainer`,
+  dialogContent: `${PREFIX}-dialogContent`,
+  header: `${PREFIX}-header`,
+  content: `${PREFIX}-content`,
+  closeIcon: `${PREFIX}-closeIcon`,
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     padding: "30px",
     width: "100%",
   },
-  cancel: {
+  [`& .${classes.cancel}`]: {
     marginRight: "10px",
     backgroundColor: "grey",
     color: "white",
     textTransform: "none",
   },
-  continue: {
+  [`& .${classes.continue}`]: {
     textTransform: "none",
     borderRadius: "20px",
     color: "#000000",
   },
-  dialogContainer: {
+  [`&.${classes.dialogContainer}`]: {
     overflow: "hidden",
   },
-  dialogContent: {
+  [`& .${classes.dialogContent}`]: {
     maxHeight: "100%",
     overflow: "auto",
   },
-  header: {
+  [`& .${classes.header}`]: {
     maxWidth: 350,
     margin: "0 auto",
     textAlign: "center",
     marginBottom: "20px",
   },
-  content: {
+  [`&.${classes.content}`]: {
     maxWidth: 350,
     margin: "0 auto",
     textAlign: "justify",
     marginTop: "20px",
   },
-  closeIcon: {
+  [`& .${classes.closeIcon}`]: {
     position: "absolute",
     top: "8px",
     right: "8px",
@@ -77,7 +92,6 @@ function ConfirmMrrView({
   selectedPatientId,
   ...rest
 }: IConfirmMrrViewProps): JSX.Element {
-  const classes = useStyles();
   const dataProvider = useDataProvider();
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [subscribeGetPatientMedicalRecord] = useMutation<
@@ -122,6 +136,7 @@ function ConfirmMrrView({
   };
   return (
     <>
+    <StyledDiv>
       <Dialog
         maxWidth="sm"
         onClose={onClose}
@@ -195,6 +210,7 @@ function ConfirmMrrView({
           </div>
         </div>
       </Dialog>
+      </StyledDiv>
     </>
   );
 }

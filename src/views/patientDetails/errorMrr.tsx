@@ -1,50 +1,68 @@
 import React from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/styles";
-import { Button, Dialog, Typography } from "@material-ui/core";
+//import { makeStyles } from "@material-ui/styles";
+import { Button, Dialog, Typography } from "@mui/material";
 import { CardHeader } from "semantic-ui-react";
-import type { IErrorMrrProps } from "../../types";
-import { Error } from "@material-ui/icons";
-const useStyles = makeStyles(() => ({
-  root: {
+import type { IErrorMrrProps } from "../../types/types";
+import { Error } from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
+
+const PREFIX = "errorMrr";
+
+const classes = {
+  root: `${PREFIX}-root`,
+  dialogContainer: `${PREFIX}-dialogContainer`,
+  header: `${PREFIX}-header`,
+  content: `${PREFIX}-content`,
+  dialogContent: `${PREFIX}-dialogContent`,
+  image: `${PREFIX}-image`,
+  ok: `${PREFIX}-ok`,
+  agree: `${PREFIX}-agree`,
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     padding: "30px",
     width: "100%",
   },
-  dialogContainer: {
+  [`& .${classes.dialogContainer}`]: {
     overflow: "hidden",
   },
-  header: {
+  [`& .${classes.header}`]: {
     maxWidth: "350px",
     margin: "0 auto",
     textAlign: "center",
     marginBottom: "20px",
   },
-  content: {
+  [`&.${classes.content}`]: {
+    overflow: "hidden",
+  },
+  [`& .${classes.dialogContent}`]: {
     maxWidth: "350px",
     margin: "0 auto",
     textAlign: "center",
     marginTop: "20px",
   },
-  image: {
+  [`& .${classes.image}`]: {
     width: "40px",
     height: "40px",
   },
-  ok: {
+  [`&.${classes.ok}`]: {
     marginTop: "20px",
     backgroundColor: "grey",
     color: "white",
     textTransform: "none",
   },
-  agree: {
+  [`& .${classes.agree}`]: {
     textTransform: "none",
   },
 }));
 
 function ErrorMrr({ open, onClose, ...rest }: IErrorMrrProps): JSX.Element {
-  const classes = useStyles();
   return (
     <>
+    <StyledDiv>
       <Dialog
         maxWidth="sm"
         onClose={onClose}
@@ -77,6 +95,7 @@ function ErrorMrr({ open, onClose, ...rest }: IErrorMrrProps): JSX.Element {
           </div>
         </div>
       </Dialog>
+      </StyledDiv>
     </>
   );
 }
