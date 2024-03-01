@@ -44,6 +44,7 @@ import CustomEmpty from "../../components/customEmpty";
 import CustomFilter from "../../components/customFilter";
 import NotVerifiedBanner from "../../components/notVerifiedBanner";
 import { styled } from "@mui/material/styles";
+import { UserContext } from "../../contexts";
 
 const PREFIX = "PRRApplication";
 const classes = {
@@ -187,13 +188,15 @@ const StyledDiv = styled("div")(({ theme }) => ({
 }));
 
 
-export const InviteTable = (props): JSX.Element => {
+export const InviteTable = (props: any): JSX.Element => {
+
   const refresh = useRefresh();
   const translate = useTranslate();
   const notify = useNotify();
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
+  const userInfoReducer: any = React.useContext(UserContext)
   const [showBanner, setShowBanner] = React.useState(false);
   const [filterValue, setFilterValue] = React.useState("");
   const [emailNotVerified, setEmailNotVerified] = React.useState(false);
@@ -220,6 +223,9 @@ export const InviteTable = (props): JSX.Element => {
       setShowBanner(true);
     }
   }, []);
+  React.useEffect(() => {
+    console.log("In invite", props)
+  }, [props])
   const deleteInvite = (): void => {
     setOpenDeleteBase(false);
     const deleteInviteInput: DeleteInviteInput = {
@@ -247,13 +253,13 @@ export const InviteTable = (props): JSX.Element => {
       refresh();
     });
   };
-  const CustomButtonLinkField = (props): JSX.Element => {
+  const CustomButtonLinkField = (props: any): JSX.Element => {
     const [expanded, toggleExpanded] = useExpanded(
       "userInviteLists",
       props?.record?.id,
     );
     useEffect(() => {
-      if (props.record.id !== selectedId) {
+      if (props.record?.id !== selectedId) {
         if (expanded) {
           toggleExpanded();
         }
@@ -263,7 +269,7 @@ export const InviteTable = (props): JSX.Element => {
       toggleExpanded();
       setSelectedId(props.record.id);
     };
-    const onReminderClick = (selectedId, invitationCode): void => {
+    const onReminderClick = (selectedId: any, invitationCode: any): void => {
       const getNotificationDetailsInput: GetNotificationDetailsInput = {
         notificationCode: invitationCode,
         recordId: selectedId,
@@ -318,24 +324,21 @@ export const InviteTable = (props): JSX.Element => {
 
             let formattedDifference = "";
             if (differenceDays > 0) {
-              formattedDifference += `${differenceDays} day${
-                differenceDays > 1 ? "s" : ""
-              } `;
+              formattedDifference += `${differenceDays} day${differenceDays > 1 ? "s" : ""
+                } `;
             }
             if (differenceHours > 0) {
               if (differenceHours > 1) {
-                formattedDifference += `${differenceHours} hour${
-                  differenceHours > 1 ? "s" : ""
-                } `;
+                formattedDifference += `${differenceHours} hour${differenceHours > 1 ? "s" : ""
+                  } `;
               } else {
                 formattedDifference += `1 hour `;
               }
             }
             if (differenceMinutes > 0) {
               if (differenceMinutes > 1) {
-                formattedDifference += `${differenceMinutes} minute${
-                  differenceMinutes > 1 ? "s" : ""
-                }`;
+                formattedDifference += `${differenceMinutes} minute${differenceMinutes > 1 ? "s" : ""
+                  }`;
               } else {
                 formattedDifference += `1 minute`;
               }
@@ -366,33 +369,33 @@ export const InviteTable = (props): JSX.Element => {
         </IconButton>
         <Tooltip
           title={
-            props.record.invitationCode === "CANCELLED"
+            props.record?.invitationCode === "CANCELLED"
               ? "Sending reminders is not allowed for a canceled patient."
-              : props.record.invitationCode === "LOGGED_IN"
-              ? "Sending a reminder is not allowed for an already logged in patient. "
-              : props.record.invitationCode === "EXPIRED"
-              ? "Sending a reminder is not allowed for an expired invite."
-              : "Send Reminder"
+              : props.record?.invitationCode === "LOGGED_IN"
+                ? "Sending a reminder is not allowed for an already logged in patient. "
+                : props.record?.invitationCode === "EXPIRED"
+                  ? "Sending a reminder is not allowed for an expired invite."
+                  : "Send Reminder"
           }
         >
           <div>
             <IconButton
               className={classes.icons}
               disabled={
-                props.record.invitationCode === "CANCELLED" ||
-                props.record.invitationCode === "LOGGED_IN" ||
-                props.record.invitationCode === "EXPIRED"
+                props.record?.invitationCode === "CANCELLED" ||
+                props.record?.invitationCode === "LOGGED_IN" ||
+                props.record?.invitationCode === "EXPIRED"
               }
               onClick={() => {
                 setSelectedId(props.record.id);
-                setInvitationCode(props.record.invitationCode);
-                onReminderClick(props.record.id, props.record.invitationCode);
+                setInvitationCode(props.record?.invitationCode);
+                onReminderClick(props.record.id, props.record?.invitationCode);
               }}
             >
               <Schedule
                 style={{
                   color: ["LOGGED_IN", "EXPIRED", "CANCELLED"].includes(
-                    props.record.invitationCode,
+                    props.record?.invitationCode,
                   )
                     ? "grey"
                     : "blue",
@@ -455,7 +458,7 @@ export const InviteTable = (props): JSX.Element => {
       customDivider: `${PREFIX}-customDivider`,
       info: `${PREFIX}-info`,
     };
-    
+
     const Root = styled("div")(({ theme }) => ({
       [`&.${classes.customHeader}`]: {
         width: "200px",
@@ -511,7 +514,7 @@ export const InviteTable = (props): JSX.Element => {
       {
         id: 1,
         label: translate(`resources.invite.expandFields.invitedDate`),
-        value: record.createdAt ? tommddyyyy(record.createdAt) : null,
+        value: record?.createdAt ? tommddyyyy(record?.createdAt) : null,
       },
       {
         id: 2,
@@ -561,92 +564,92 @@ export const InviteTable = (props): JSX.Element => {
     }, []);
     return (
       <Root>
-      <Box
-        sx={{
-          width: "100%",
-          bgcolor: "transparent",
-          marginLeft: "30px",
-          overflowX: "auto",
-        }}
-      >
-        <Divider className={classes.customDivider} />
-        <div className={classes.dataGridContainer}>
-          <DataGrid
-            rows={rows}
-            //rows={filteredRows}
-            //columns={columns}
-            columns={columns.map((column) => ({
-              ...column,
-              renderCell: (params) => {
-                if (params.value) {
-                  return params.value;
-                } else {
-                  if (
-                    params.row.label ===
-                    translate(`resources.invite.expandFields.email`)
-                  ) {
-                    // Display a blank cell for the "email" field when it's null
-                    return "";
-                  } else if (
-                    params.row.label ===
-                    translate(`resources.invite.expandFields.name`)
-                  ) {
-                    return (
-                      <span>
-                        {translate(`tooltip.invite.noInfo`)}
-                        <Tooltip title={fullNameTooltipTitle}>
-                          <Info className={classes.info} />
-                        </Tooltip>
-                      </span>
-                    );
-                  } else if (
-                    params.row.label ===
-                    translate(`resources.invite.expandFields.phone`)
-                  ) {
-                    return (
-                      <span>
-                        {translate(`tooltip.invite.noInfo`)}
-                        <Tooltip title={phoneTooltipTitle}>
-                          <Info className={classes.info} />
-                        </Tooltip>
-                      </span>
-                    );
-                  } else if (
-                    params.row.label ===
-                    translate(`resources.invite.expandFields.linkOpenedOn`)
-                  ) {
-                    if (record.invitationCode === "INVITE_NOT_USED") {
+        <Box
+          sx={{
+            width: "100%",
+            bgcolor: "transparent",
+            marginLeft: "30px",
+            overflowX: "auto",
+          }}
+        >
+          <Divider className={classes.customDivider} />
+          <div className={classes.dataGridContainer}>
+            <DataGrid
+              rows={rows}
+              //rows={filteredRows}
+              //columns={columns}
+              columns={columns.map((column) => ({
+                ...column,
+                renderCell: (params) => {
+                  if (params.value) {
+                    return params.value;
+                  } else {
+                    if (
+                      params.row.label ===
+                      translate(`resources.invite.expandFields.email`)
+                    ) {
+                      // Display a blank cell for the "email" field when it's null
+                      return "";
+                    } else if (
+                      params.row.label ===
+                      translate(`resources.invite.expandFields.name`)
+                    ) {
                       return (
                         <span>
                           {translate(`tooltip.invite.noInfo`)}
-                          <Tooltip
-                            title={translate(`tooltip.invite.inviteNotUsed`)}
-                          >
+                          <Tooltip title={fullNameTooltipTitle}>
                             <Info className={classes.info} />
                           </Tooltip>
                         </span>
                       );
+                    } else if (
+                      params.row.label ===
+                      translate(`resources.invite.expandFields.phone`)
+                    ) {
+                      return (
+                        <span>
+                          {translate(`tooltip.invite.noInfo`)}
+                          <Tooltip title={phoneTooltipTitle}>
+                            <Info className={classes.info} />
+                          </Tooltip>
+                        </span>
+                      );
+                    } else if (
+                      params.row.label ===
+                      translate(`resources.invite.expandFields.linkOpenedOn`)
+                    ) {
+                      if (record?.invitationCode === "INVITE_NOT_USED") {
+                        return (
+                          <span>
+                            {translate(`tooltip.invite.noInfo`)}
+                            <Tooltip
+                              title={translate(`tooltip.invite.inviteNotUsed`)}
+                            >
+                              <Info className={classes.info} />
+                            </Tooltip>
+                          </span>
+                        );
+                      }
                     }
+                    return (
+                      <span>
+                        {translate(`tooltip.invite.noInfo`)}
+                        <Tooltip title={translate(`tooltip.invite.noInfo`)}>
+                          <Info className={classes.info} />
+                        </Tooltip>
+                      </span>
+                    );
                   }
-                  return (
-                    <span>
-                      {translate(`tooltip.invite.noInfo`)}
-                      <Tooltip title={translate(`tooltip.invite.noInfo`)}>
-                        <Info className={classes.info} />
-                      </Tooltip>
-                    </span>
-                  );
-                }
-              },
-            }))}
-            autoHeight
-            hideFooter
-            disableRowSelectionOnClick
-            className={classes.hideHeader}
-            getRowHeight={getRowHeight}
-          />
-        </div>
-      </Box>
+                },
+              }))}
+              autoHeight
+              hideFooter
+              disableRowSelectionOnClick
+              className={classes.hideHeader}
+              getRowHeight={getRowHeight}
+            />
+          </div>
+        </Box>
       </Root>
     );
   };
@@ -655,13 +658,13 @@ export const InviteTable = (props): JSX.Element => {
     return { borderBottom: "1px solid #ccc" };
   };
   function renderDescription(
-    status,
-    expiredDate,
-    lastReminderSentAt,
-    openDt,
-    id,
+    status: string,
+    expiredDate: moment.MomentInput,
+    lastReminderSentAt: moment.MomentInput,
+    openDt: string | undefined,
+    id: React.SetStateAction<string>,
   ): JSX.Element {
-    const additionalDescriptionMap = {
+    const additionalDescriptionMap: any = {
       AWAITING_LOGIN: "Invitation accepted,user not logged in yet",
       INVITE_NOT_USED: "Invitation not opened",
       OPENED: openDt ? `Invitation opened on ${tommddyyyy(openDt)}` : null,
@@ -696,7 +699,7 @@ export const InviteTable = (props): JSX.Element => {
               </span>
               <span>
                 Last Reminder Sent: {moment(lastReminderSentAt).fromNow(true)}{" "}
-                ago{}
+                ago{ }
               </span>
               <span style={{ textDecoration: "underline", color: "blue" }}>
                 <span
@@ -714,12 +717,18 @@ export const InviteTable = (props): JSX.Element => {
         </>
       );
     }
-    return null;
+    return <></>;
   }
-  const FormattedDateField = (props): JSX.Element => {
-    const { record, source } = props;
-    const formattedDate = tommddyyyy(record[source]);
-    return <span>{formattedDate}</span>;
+  const FormattedDateField = (props: any): JSX.Element => {
+    const { record, source }: any = props;
+    if (record) {
+      const formattedDate = tommddyyyy(record[source]);
+      return <span>{formattedDate}</span>;
+    }
+    else {
+      return <></>
+    }
+
   };
   return (
     <>
@@ -757,33 +766,33 @@ export const InviteTable = (props): JSX.Element => {
             title={translate("resources.invite.reminder.confirmTitle")}
             content={
               isIntervalExeeds
-                ? null
+                ? ""
                 : isLimitExeeds
-                ? translate("resources.invite.reminder.reminderExeedsLimit")
-                : openReminderSendMessage
-                ? translate("resources.invite.reminder.reminderSend")
-                : translate(
-                    "resources.invite.reminder.sendReminderConfirmMessage",
-                  )
+                  ? translate("resources.invite.reminder.reminderExeedsLimit")
+                  : openReminderSendMessage
+                    ? translate("resources.invite.reminder.reminderSend")
+                    : translate(
+                      "resources.invite.reminder.sendReminderConfirmMessage",
+                    )
             }
             successButtonName="Send"
             closeButtonName={
               isIntervalExeeds
                 ? "Close"
                 : isLimitExeeds
-                ? "Close"
-                : openReminderSendMessage
-                ? "Close"
-                : null
+                  ? "Close"
+                  : openReminderSendMessage
+                    ? "Close"
+                    : ""
             }
             type={
               isIntervalExeeds
                 ? "reminderIntervalError"
                 : isLimitExeeds
-                ? "reminderError"
-                : openReminderSendMessage
-                ? "reminderWarning"
-                : "warning"
+                  ? "reminderError"
+                  : openReminderSendMessage
+                    ? "reminderWarning"
+                    : "warning"
             }
             timeRemaining={remainingTime}
             lastReminderSendAt={lastReminderSendAt}
@@ -859,7 +868,7 @@ export const InviteTable = (props): JSX.Element => {
                     />
                     <FunctionField
                       label={translate("resources.invite.fields.email")}
-                      render={(record) => (
+                      render={(record: any) => (
                         <span>
                           <a href={"mailto:" + record.email}>{record.email}</a>
                         </span>
@@ -879,20 +888,20 @@ export const InviteTable = (props): JSX.Element => {
                     <FormattedDateField
                       source="createdAt"
                       label={translate("resources.invite.fields.invitedDate")}
-                      cellClassName={classes.createdAt}
+                      cellClassName={classes?.createdAt}
                     />
                     <FunctionField
                       label={translate("resources.invite.fields.days")}
-                      render={(record) => (
-                        <span>{moment(record.createdAt).fromNow()}</span>
+                      render={(record: any) => (
+                        <span>{moment(record?.createdAt).fromNow()}</span>
                       )}
                     />
                     <FunctionField
                       label={translate("resources.invite.fields.status")}
-                      render={(record) => (
+                      render={(record: any) => (
                         <>
                           {renderDescription(
-                            record.invitationCode,
+                            record?.invitationCode,
                             record.expiredDt,
                             record.lastReminderSentAt,
                             record.openedDt,

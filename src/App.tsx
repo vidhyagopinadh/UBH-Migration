@@ -36,10 +36,11 @@ import PageNotFound from './layout/PageNotFound';
 import BaseModal from './components/baseModal';
 import { Layout } from './layout/index';
 import requests from './views/requests';
-//import invite from "./views/invite";
+import invite from "./views/invite";
 
 import { CO_ROLE_ADMIN } from './lib/universal/utils/roles';
-import invite from './views/invite';
+import { RequestList } from './views/requests/list/requestList';
+import dependents from './views/dependents';
 
 const client = apolloConfig();
 console.log(client)
@@ -174,14 +175,15 @@ const App = () => {
         >
           {(permissions: any) => {
             return [
-              // permissions === CO_ROLE_PPA
-              //   ? [
-              //     <Resource name="requests" {...requests} />,
-              //     <Resource name="insuranceQuestionRequests" {...billing} />,
-              //     <Resource name="userInviteLists" {...invite} />,
-              //     <Resource name="patientDemographics" {...patientDetails} />,
-              //   ]
-              //   : null,
+              permissions === CO_ROLE_PPA
+                ? [
+                  <Resource name="requests" {...requests} />,
+                  <Resource name="userInviteLists" {...invite} />,
+                  // <Resource name="insuranceQuestionRequests" {...billing} />,
+                  // <Resource name="userInviteLists" {...invite} />,
+                  // <Resource name="patientDemographics" {...patientDetails} />,
+                ]
+                : null,
               // permissions === CO_ROLE_ADMIN
               //   ? [
               //     <Resource name="institutions" {...institutionDetails} />,
@@ -204,8 +206,9 @@ const App = () => {
               permissions === CO_ROLE_PATIENT
                 ? [
                   <Resource name="myRequests" {...requests} />,
+
                   <Resource name="requestsOnBehalf" {...requests} />,
-                   <Resource name="userInviteLists" {...invite} />,
+                  <Resource name="userInviteLists" {...invite} />,
                   // <Resource name="dependents" {...dependents} />,
                 ]
                 : null,

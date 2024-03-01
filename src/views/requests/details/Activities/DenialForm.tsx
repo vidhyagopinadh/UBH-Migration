@@ -2,24 +2,37 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import moment from "moment";
-import {
-  Typography,
-  Grid,
-  Divider,
-  TextField,
-  Button,
-  FormControlLabel,
-  Checkbox,
-  RadioGroup,
-  Radio,
-  FormControl,
-  TextareaAutosize,
-} from "@material-ui/core";
+// import {
+//   Typography,
+//   Grid,
+//   Divider,
+//   TextField,
+//   Button,
+//   FormControlLabel,
+//   Checkbox,
+//   RadioGroup,
+//   Radio,
+//   FormControl,
+//   TextareaAutosize,
+// } from "@material-ui/core";
 import type { Request } from "../../../../__generated__/typescript-operations_all";
 import { SignatureBox } from "../../../../components/signature";
-import type { AppState } from "../../../../types";
-import { useSelector } from "react-redux";
+// import type { AppState } from "../../../../types";
+// import { useSelector } from "react-redux";
 import useDenial from "../../../../hooks/useDenial";
+import {
+  Button,
+  Checkbox,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  TextField,
+  TextareaAutosize,
+  Typography,
+} from "@mui/material";
 
 function DenialForm({
   request,
@@ -57,9 +70,9 @@ function DenialForm({
   });
   const classes = useStyles();
   const [requestDetail, setRequestDetail] = useState<Request>({});
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer
+  // );
   useEffect(() => {
     let mounted = true;
     if (mounted) {
@@ -145,8 +158,8 @@ function DenialForm({
                     </>
                   ) : (
                     ""
-                  ),
-                ),
+                  )
+                )
               )}
             </>
           )}
@@ -175,8 +188,8 @@ function DenialForm({
                     </div>
                   ) : (
                     ""
-                  ),
-                ),
+                  )
+                )
               )}
             </>
           )}

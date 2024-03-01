@@ -2,19 +2,19 @@ import type { BaseSyntheticEvent } from "react";
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
-import {
-  TextField,
-  Typography,
-  colors,
-  Grid,
-  CardContent,
-  FormControl,
-  Button,
-  CircularProgress,
-  LinearProgress,
-  InputLabel,
-  Box,
-} from "@material-ui/core";
+// import {
+//   TextField,
+//   Typography,
+//   colors,
+//   Grid,
+//   CardContent,
+//   FormControl,
+//   Button,
+//   CircularProgress,
+//   LinearProgress,
+//   InputLabel,
+//   Box,
+// } from "@material-ui/core";
 import { BootstrapTooltip as Tooltip } from "../../../components/Tooltip";
 import MuiPhoneNumber from "material-ui-phone-number";
 import {
@@ -27,11 +27,11 @@ import {
 } from "../../../utils/validator";
 import { Info } from "@mui/icons-material";
 import CardHeader from "./../../../components/cardHeader";
-import type {
-  IInstitution,
-  IGenericType,
-  IInstitutionError,
-} from "../../../types";
+// import type {
+//   IInstitution,
+//   IGenericType,
+//   IInstitutionError,
+// } from "../../../types";
 import { perPageMax } from "../../../utils/pageConstants";
 import { useDataProvider, useTranslate } from "react-admin";
 import createNewGroupEntryQuery from "../../../queries/createNewGroupEntry/createNewGroupEntryQuery";
@@ -43,9 +43,22 @@ import type {
 import { useMutation } from "@apollo/react-hooks";
 import BaseModal from "../../../components/baseModal";
 import { Base64 } from "js-base64";
-import { styled } from "@mui/material/styles";
+
 import { REQUEST_MESSAGES } from "../../../utils/messages/requestMessages";
-import { Autocomplete } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  CardContent,
+  CircularProgress,
+  FormControl,
+  Grid,
+  InputLabel,
+  LinearProgress,
+  TextField,
+  Typography,
+  colors,
+} from "@mui/material";
 import { correlationConstants } from "../../../utils/OT/correlationConstants";
 // import useTraces from "../../../hooks/useTraces";
 import InstitutionModal from "../../../components/institutionModal";
@@ -197,10 +210,9 @@ function InstitutionDetails({
   institutionAddError,
   selectAlreadyExistingProvider,
 }): JSX.Element {
-  const classes = useStyles();
   const dataProvider = useDataProvider();
   const translate = useTranslate();
-  const { handleTrace } = useTraces();
+  // const { handleTrace } = useTraces();
   const [stateList, setStateList] = useState([]);
   const [countryList, setCountryList] = useState([]);
   const [institutionInCo, setInstitutionInCo] = useState({});

@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography } from "@material-ui/core";
+// import { Button, Typography } from "@material-ui/core";
 import { List, useTranslate } from "react-admin";
-import Grid from "@material-ui/core/Grid";
+// import Grid from "@material-ui/core/Grid";
 import IntegrationCard from "../../components/integrationCard";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container } from "@material-ui/core";
-import { useSelector } from "react-redux";
-import type { AppState } from "../../types";
-import { Add } from "@material-ui/icons";
+// import { Container } from "@material-ui/core";
+// import { useSelector } from "react-redux";
+// import type { AppState } from "../../types";
+// import { Add } from "@material-ui/icons";
 import CustomEmpty from "../../components/customEmpty";
 import PageNotFound from "../../components/pageNotFound";
 import { Link } from "react-router-dom";
 import { CO_ROLE_ADMIN } from "../../utils/roles";
+import { Add } from "@mui/icons-material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -88,7 +90,7 @@ export const IntegrationTable = (props): JSX.Element => {
   const listStyles = useListStyles();
   const translate = useTranslate();
   const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
+    (state: AppState) => state.userInfoReducer
   );
 
   return (

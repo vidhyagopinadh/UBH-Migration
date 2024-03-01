@@ -1,13 +1,14 @@
-import { List, ListItem, makeStyles, Typography } from "@material-ui/core";
+// import { List, ListItem, makeStyles, Typography } from "@material-ui/core";
 import classNames from "classnames";
 import React, { useState, useEffect } from "react";
 import { tommddyyyy } from "../../../../utils/dateFormator";
 import { perPageList } from "../../../../utils/pageConstants";
 import { useDataProvider } from "react-admin";
-import type { AppState } from "../../../../types";
-import { useSelector } from "react-redux";
+// import type { AppState } from "../../../../types";
+// import { useSelector } from "react-redux";
 import { compareObjects } from "../../../../utils/compareObjects";
 import ProviderView from "../../../../components/providerView";
+import { List, ListItem, Typography } from "@mui/material";
 // const useStyles = makeStyles((theme) => ({
 //   root: {
 //     backgroundColor: theme.palette.primary.light,
@@ -95,7 +96,7 @@ const Root = styled("div")(({ theme }) => ({
 const ContentGenerator = ({ request }): JSX.Element => {
   const StatusToIgnore = "status";
   const SourceToIgnore = "sourceOfInvitation";
-  const classes = useStyles();
+
   const dataProvider = useDataProvider();
   const listClass = classNames(classes.listitemStyle);
   const userInfoReducer = useSelector(

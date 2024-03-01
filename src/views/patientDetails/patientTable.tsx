@@ -10,7 +10,7 @@ import {
   Typography,
   Tab,
   Tabs,
-} from "@material-ui/core";
+} from "@mui/material";
 import { BootstrapTooltip as Tooltip } from "../../components/Tooltip";
 import {
   AccountCircle,
@@ -18,7 +18,7 @@ import {
   Delete,
   Visibility,
   VisibilityOff,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import type {
@@ -39,7 +39,7 @@ import CreatePageHeader from "../../components/createPageHeader";
 import Chip from "@mui/material/Chip";
 import type { GridColDef } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid";
-import { Info } from "@material-ui/icons";
+import { Info } from "@mui/icons-material";
 import {
   Datagrid,
   TextField,
@@ -55,9 +55,9 @@ import {
 } from "react-admin";
 //import { useSelector } from "react-redux";
 import useTraces from "../../hooks/useTraces";
-//import type { AppState } from "../../types";
+//import type { AppState } from "../../types/comptypes";
 import jsonExport from "jsonexport/dist";
-import { tommddyyyy } from "../../utils/dateFormator";
+import { tommddyyyy } from "../../lib/universal/utils/dateFormator";
 import { StatusFilter } from "./filters";
 import { formatSSN } from "../../utils/validator";
 import CustomEmpty from "../../components/customEmpty";
@@ -77,50 +77,158 @@ import { styled } from "@mui/material/styles";
 const PREFIX = "patientTable";
 
 const classes = {
-  root: `${PREFIX}-root`,
-  tickIcon: `${PREFIX}-tickIcon`,
-  errorIcon: `${PREFIX}-errorIcon`,
-  moreInfo: `${PREFIX}-moreInfo`,
-  message: `${PREFIX}-message`,
+  container: `${PREFIX}-container`,
+  filterBar: `${PREFIX}-filterBar`,
+  tableContainer: `${PREFIX}-tableContainer`,
+  icons: `${PREFIX}-icons`,
+  addIcon: `${PREFIX}-addIcon`,
+  patientInviteButton: `${PREFIX}-patientInviteButton`,
+  patientTable: `${PREFIX}-patientTable`,
+  item: `${PREFIX}-item`,
+  email: `${PREFIX}-email`,
+  userGroup: `${PREFIX}-userGroup`,
+  createdAt: `${PREFIX}-createdAt`,
+  invitationStatus: `${PREFIX}-invitationStatus`,
+  showIcon: `${PREFIX}-showIcon`,
+  reminderIcon: `${PREFIX}-reminderIcon`,
+  iconDiv: `${PREFIX}-iconDiv`,
+  filterContainer: `${PREFIX}-filterContainer`,
+  filter: `${PREFIX}-filter`,
+  customHeaderem: `${PREFIX}-customHeader`,
+  dataGridContainer: `${PREFIX}-dataGridContainer`,
+  hideHeader: `${PREFIX}-hideHeader`,
+  customColumn: `${PREFIX}-customColumn`,
+  customDivider: `${PREFIX}-customDivider`,
+  ssn: `${PREFIX}-ssn`,
+  filterContent: `${PREFIX}-filterContent`,
+  customHeader: `${PREFIX}-customHeader`,
 };
 
 const StyledDiv = styled("div")(({ theme }) => ({
-  [`&.${classes.root}`]: {
-    "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer":
-    {
-      display: "none",
+  [`&.${classes.container}`]: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+    padding: "20px",
+    flex: "1 1 auto",
+    overflowY: "hidden",
+    overflowX: "scroll",
+  },
+  [`& .${classes.filterBar}`]: {
+    marginBottom: "20px",
+  },
+  [`& .${classes.tableContainer}`]: {
+    width: "100%",
+    overflowX: "auto",
+  },
+  [`&.${classes.icons}`]: {
+    margin: "0px",
+    padding: "0px",
+    paddingRight: "3px"
+  },
+  [`& .${classes.addIcon}`]: {
+    marginRight: theme.spacing(1),
+  },
+  [`&.${classes.patientInviteButton}`]: {
+    "&:hover": {
+      backgroundColor: "#ffffff",
     },
-  "& .MuiDataGrid-menuOpen": {
-    display: "none",
+    marginTop: "15px",
+    float: "right",
   },
-  "& .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus":
-    {
-      outline: "none !important",
-    },
-  "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-cell:focus": {
-    outline: "none !important",
-  },
-  },
-  [`& .${classes.message}`]: {
+  [`& .${classes.filterBar}`]: {
     marginRight: "20px",
     fontWeight: 600,
   },
-  [`& .${classes.tickIcon}`]: {
-    color: "#2AAA8A",
-    width: "30px",
-    height: "30px",
-    marginRight: "10px",
+  [`& .${classes.patientTable}`]: {
+    "& th": {
+      borderBottom: "2px solid #ccc",
+    },
   },
-  [`&.${classes.errorIcon}`]: {
-    color: "red",
-    width: "30px",
-    height: "30px",
-    marginRight: "10px",
+  [`&.${classes.item}`]: {
+    fontSize: "12px",
+    lineHeight: "1",
   },
-  [`& .${classes.moreInfo}`]: {
-    textTransform: "none",
-    fontWeight: 600,
-    pointerEvents: "auto",
+  [`& .${classes.email}`]: {
+    maxWidth: 150,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    wordBreak: "break-all",
+  },
+  [`&.${classes.userGroup}`]: {
+    maxWidth: 100,
+  },
+  [`& .${classes.createdAt}`]: {
+    maxWidth: 120,
+  },
+  [`& .${classes.createdAt}`]: {
+    maxWidth: 120,
+  },
+  [`&.${classes.invitationStatus}`]: {
+    maxWidth: 100,
+  },
+  [`& .${classes.showIcon}`]: {
+    color: "green",
+  },
+  [`& .${classes.reminderIcon}`]: {
+    color: "blue",
+  },
+  [`& .${classes.iconDiv}`]: {
+    display: "flex",
+    justifyContent: "flex-start",
+    width: "100%",
+  },
+  [`&.${classes.filterContainer}`]: {
+    display: "flex",
+    order: -1,
+    paddingRight: "20px",
+  },
+  [`& .${classes.filter}`]: {
+    backgroundColor: theme.palette.primary.light,
+    width: 200,
+    display: "flex",
+    flexDirection: "column",
+  },
+  [`&.${classes.filterContent}`]: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+  },
+  [`& .${classes.customHeader}`]: {
+    width: "200px",
+  },
+  [`& .${classes.dataGridContainer}`]: {
+    width: "700px",
+    maxWidth: "100%",
+  },
+  [`&.${classes.hideHeader}`]: {
+    "& .MuiDataGrid-columnHeaders": {
+      minHeight: "0!important",
+      maxHeight: "0!important",
+      lineHeight: "0!important",
+    },
+  },
+  [`& .${classes.customColumn}`]: {
+    width: "200px",
+  },
+  [`&.${classes.customDivider}`]: {
+    margin: 0,
+    borderStyle: "hidden!important ",
+    borderColor: "rgba(0, 0, 0, 0.12)",
+    borderBottomWidth: "inherit!important",
+    disply: "none",
+  },
+  [`& .${classes.ssn}`]: {
+    maxWidth: 150,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    wordBreak: "break-all",
+    paddingLeft: "3px",
+    paddingRight: "3px",
+  },
+  "& .ra-datagrid .ra-no-results": {
+    display: "none",
   },
 }));
 
@@ -276,7 +384,7 @@ export const PatientList = (props: ListProps): ReactElement => {
     };
     const isDisabled = emailNotVerified;
     return (
-      <div className={classes.iconDiv}>
+      <StyledDiv className={classes.iconDiv}>
         <IconButton
           className={classes.icons}
           color="primary"
@@ -379,7 +487,7 @@ export const PatientList = (props: ListProps): ReactElement => {
             </IconButton>
           </div>
         </Tooltip>
-      </div>
+      </StyledDiv>
     );
   };
 

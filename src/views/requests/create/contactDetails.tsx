@@ -2,15 +2,15 @@ import type { BaseSyntheticEvent } from "react";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import {
-  TextField,
-  Typography,
-  colors,
-  Grid,
-  CardContent,
-  IconButton,
-  Button,
-} from "@material-ui/core";
+// import {
+//   TextField,
+//   Typography,
+//   colors,
+//   Grid,
+//   CardContent,
+//   IconButton,
+//   Button,
+// } from "@material-ui/core";
 import MuiPhoneNumber from "material-ui-phone-number";
 import {
   validateEmail,
@@ -19,9 +19,18 @@ import {
 } from "../../../utils/validator";
 import { AddCircle, Cancel } from "@mui/icons-material";
 import CardHeader from "./../../../components/cardHeader";
-import type { IContactDetails, IContactDetailsProps } from "../../../types";
+// import type { IContactDetails, IContactDetailsProps } from "../../../types";
 import { useTranslate } from "react-admin";
 import { styled } from "@mui/material/styles";
+import {
+  Button,
+  CardContent,
+  Grid,
+  IconButton,
+  TextField,
+  Typography,
+  colors,
+} from "@mui/material";
 // const useStyles = makeStyles((theme) => ({
 //   root: {},
 //   header: {
@@ -85,18 +94,52 @@ const classes = {
   addButton: `${PREFIX}-addButton`,
 };
 const Root = styled("div")(({ theme }) => ({
-  [`&.${classes.root}`]: {
+  [`&.${classes.root}`]: {},
+  [`& .${classes.header}`]: {
     display: "flex",
     alignItems: "center",
-    backgroundColor: theme.palette.primary.main,
-  },
-  [`& .${classes.cta}`]: {
-    borderRadius: theme.shape.radius,
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    marginBottom: theme.spacing(2),
   },
   [`& .${classes.content}`]: {
+    padding: theme.spacing(0, 2),
+    maxWidth: 720,
+    margin: "0 auto",
+  },
+  [`& .${classes.helperText}`]: {
+    textAlign: "right",
+    marginRight: 0,
+  },
+  [`& .${classes.author}`]: {
+    margin: theme.spacing(4, 0),
+    display: "flex",
+  },
+  [`& .${classes.avatar}`]: {
+    marginRight: theme.spacing(2),
+  },
+  [`& .${classes.actions}`]: {
+    backgroundColor: colors.grey[100],
+    padding: theme.spacing(2),
+    display: "flex",
+    justifyContent: "center",
+  },
+  [`& .${classes.applyButton}`]: {
     color: theme.palette.common.white,
-    fontSize: 16,
-    lineHeight: 1.7,
+    backgroundColor: colors.green[600],
+    "&:hover": {
+      backgroundColor: colors.green[900],
+    },
+  },
+  [`& .${classes.addButton}`]: {
+    borderRadius: "unset",
+    float: "right",
+    padding: "0px",
+    textTransform: "none",
+    backgroundColor: theme.palette.primary.light,
+    "&:hover": {
+      backgroundColor: theme.palette.primary.light,
+    },
   },
 }));
 function ContactDetails({
@@ -104,7 +147,6 @@ function ContactDetails({
   contactData,
   requestView,
 }: IContactDetailsProps): JSX.Element {
-  const classes = useStyles();
   const translate = useTranslate();
   const handleRemove = (i): void => {
     const values = [...contactCount];

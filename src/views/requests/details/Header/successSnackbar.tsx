@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
-import { Snackbar, SnackbarContent, colors } from "@material-ui/core";
+// import { Snackbar, SnackbarContent, colors } from "@material-ui/core";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutline";
+import { Snackbar, SnackbarContent, colors } from "@mui/material";
 
 // const useStyles = makeStyles((theme) => ({
 //   content: {
@@ -36,8 +37,6 @@ const Root = styled("div")(({ theme }) => ({
 }));
 
 function SuccessSnackbar({ open, onClose }): JSX.Element {
-  const classes = useStyles();
-
   return (
     <Snackbar
       anchorOrigin={{

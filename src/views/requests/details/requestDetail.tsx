@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { List, usePermissions, useTranslate } from "react-admin";
-import { useDispatch, useSelector } from "react-redux";
-import { colors, Container, Divider, Tab, Tabs } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from "react-router";
+// import { useDispatch, useSelector } from "react-redux";
+// import { colors, Container, Divider, Tab, Tabs } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
+import { useNavigate } from "react-router";
 import Overview from "./Overview";
 import Header from "./Header";
 import Activity from "./Activities";
@@ -13,9 +13,10 @@ import {
   CO_ROLE_PATIENT,
   CO_ROLE_PPA,
 } from "../../../utils/roles";
-import useTraces from "../../../hooks/useTraces";
-import type { AppState } from "../../../types";
+// import useTraces from "../../../hooks/useTraces";
+// import type { AppState } from "../../../types";
 import NotVerifiedBanner from "../../../components/notVerifiedBanner";
+import { Container, Divider, Tab, Tabs, colors } from "@mui/material";
 // import PageNotFound from "../../../components/pageNotFound";
 
 // const useStyles = makeStyles((theme) => ({
@@ -113,7 +114,7 @@ const Root = styled("div")(({ theme }) => ({
 }));
 const RequestDetailComponent = (props): JSX.Element => {
   const { id, tab } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [resetHeaderStatusDropdown, setResetHeaderStatusDropdown] =
     useState(false);
@@ -122,7 +123,7 @@ const RequestDetailComponent = (props): JSX.Element => {
   const userInfoReducer = useSelector(
     (state: AppState) => state.userInfoReducer
   );
-  const classes = useStyles();
+
   const tabs = [
     { value: "overview", label: "Overview" },
     { value: "activity", label: "Activity" },
@@ -179,7 +180,7 @@ const RequestDetailComponent = (props): JSX.Element => {
       })
     );
 
-    history.push(value);
+    navigate(value);
     if (value === "activity" && permissions === CO_ROLE_PPA) {
       getTrace("Click on activity by PPA", "ev-045", userInfoReducer.email);
     } else if (value === "activity" && permissions === CO_ROLE_MRA) {
@@ -192,7 +193,7 @@ const RequestDetailComponent = (props): JSX.Element => {
   const statusChangeTrigger = (val): void => {
     setResetHeaderStatusDropdown(false);
     if (String(props.data[id].requestStatusId) !== val) {
-      history.push({
+      navigate({
         pathname: `activity`,
       });
       dispatch(
@@ -202,7 +203,7 @@ const RequestDetailComponent = (props): JSX.Element => {
         })
       );
     } else {
-      history.push({
+      navigate({
         pathname: `activity`,
       });
       dispatch(
@@ -258,7 +259,6 @@ const RequestDetailComponent = (props): JSX.Element => {
   );
 };
 export const RequestShow = (props): JSX.Element => {
-  const classes = useStyles();
   const translate = useTranslate();
   const permissions = useSelector(
     (state: AppState) => state.userRoleInfoReducer

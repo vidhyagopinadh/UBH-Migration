@@ -12,7 +12,7 @@ import { PatientContact } from "./patientContact";
 import { tommddyyyy } from "../../../../utils/dateFormator";
 import { useDataProvider } from "react-admin";
 import Activity from "./Activity";
-import type { IRequestToken } from "../../../../types";
+import type { IRequestToken } from "../../../../types/types";
 import { perPageMax } from "../../../../utils/pageConstants";
 import {
   Card,

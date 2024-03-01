@@ -26,14 +26,25 @@ import CustomFilter from "../../../components/customFilter";
 import { Link } from "react-router-dom";
 import NotVerifiedBanner from "../../../components/notVerifiedBanner";
 import LinearProgressWithLabel from "../../../components/linearProgressWithLabel";
-import { Typography, Box, Tabs, Tab, Divider, Grid, Card as MuiCard, CardContent, Container } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Tabs,
+  Tab,
+  Divider,
+  Grid,
+  Card as MuiCard,
+  CardContent,
+  Container,
+} from "@mui/material";
 import useRequestList from "./useRequestList";
-import { styled } from '@mui/material/styles';
-import { makeStyles, withStyles } from '@mui/styles';
+import { makeStyles, styled } from "@mui/material/styles";
+// import { makeStyles, withStyles } from '@mui/styles';
+
 import Add from "@mui/icons-material/Add";
 import Assignment from "@mui/icons-material/Assignment";
 import { UserContext } from "../../../contexts";
-
+import { withStyles } from '@mui/styles';
 const PREFIX = "RequestDetails";
 const classes = {
   root: `${PREFIX}-root`,
@@ -48,6 +59,7 @@ const classes = {
   actions: `${PREFIX}-actions`,
   sortButton: `${PREFIX}-sortButton`,
   paginate: `${PREFIX}-paginate`,
+  content: `${PREFIX}-content`,
 };
 
 const StyledDiv = styled("div")(({ theme }) => ({
@@ -106,20 +118,26 @@ const StyledDiv = styled("div")(({ theme }) => ({
     display: "flex",
     justifyContent: "center",
   },
-}));
-
-const useListStyles = makeStyles({
-  content: {
+  [`&.${classes.content}`]: {
     backgroundColor: "transparent",
     border: "0px solid #ffffff",
   },
-  root: {
-    border: "0px solid #ffffff",
-  },
-  header: {
-    backgroundColor: "Lavender",
-  },
-});
+}));
+
+// const StyledList = styled("div")(({ theme }) => ({
+//   [`&.${classes.content}`]: {
+//     backgroundColor: "transparent",
+//     border: "0px solid #ffffff",
+//   },
+//   [`& .${classes.root}`]: {
+//     border: "0px solid #ffffff",
+//   },
+//   [`& .${classes.header}`]: {
+//     backgroundColor: "Lavender",
+//   }, 
+// }));
+
+
 const Card = withStyles((theme) => ({
   root: {
     [theme.breakpoints.up("sm")]: {
@@ -134,7 +152,7 @@ const Card = withStyles((theme) => ({
   },
 }))(MuiCard);
 
-export const CommentGrid = ({ ids }: any): JSX.Element => {
+export const CommentGrid = ({ ...props }: any): JSX.Element => {
   const { StyledDiv } = useRequestList();
   const [mode, setMode] = useState("grid");
   const { permissions } = usePermissions();
@@ -142,7 +160,7 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = useContext(UserContext)
+  const userInfoReducer: any = useContext(UserContext);
   useEffect(() => {
     setMode("grid");
     // if (permissions === CO_ROLE_PPA) {
@@ -171,11 +189,11 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
     };
   }, []);
 
-  console.log(ids)
+  console.log(props);
 
   return (
-    <>
-      {ids.length !== 0 ? (
+    <StyledDiv>
+      {/* {ids.length !== 0 ? (
         <>
           <Typography
             className={classes.title}
@@ -211,15 +229,15 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
             />
           )}
         </Box>
-      )}
-    </>
+      )} */}
+    </StyledDiv>
   );
 };
 
-CommentGrid.defaultProps = {
-  data: {},
-  ids: [],
-};
+// CommentGrid.defaultProps = {
+//   data: {},
+//   ids: [],
+// };
 
 const FilterSidebar = ({ type = null }): JSX.Element => {
   const PREFIX = "RequestList";
@@ -258,8 +276,9 @@ const FilterSidebar = ({ type = null }): JSX.Element => {
   );
 };
 export const RequestList = (props: any): JSX.Element => {
+  console.log(props)
   const navigate = useNavigate();
-  const listStyles = useListStyles();
+  //const listStyles = useListStyles();
   const translate = useTranslate();
   const [showBanner, setShowBanner] = React.useState(false);
   const [filterValue, setFilterValue] = React.useState("");
@@ -273,10 +292,10 @@ export const RequestList = (props: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = useContext(UserContext)
+  const userInfoReducer: any = useContext(UserContext);
   const [emailNotVerified, setEmailNotVerified] = useState(false);
 
-  console.log("currTab", currTab)
+  console.log("currTab", currTab);
 
   useEffect(() => {
     if (!userInfoReducer.emailVerified) {
@@ -284,6 +303,10 @@ export const RequestList = (props: any): JSX.Element => {
       setShowBanner(true);
     }
   }, []);
+
+  useEffect(() => {
+    console.log(props)
+  }, [props]);
   // const UserFilter = (props) => (
   //   <Filter {...props} style={{ justifyContent: "flex-end", display: "flex" }}>
   //     <SelectInput
@@ -313,6 +336,7 @@ export const RequestList = (props: any): JSX.Element => {
       setCurrTab("behalf");
     }
   };
+  const [mode, setMode] = useState("grid");
   return (
     <>
       <StyledDiv>
@@ -405,8 +429,8 @@ export const RequestList = (props: any): JSX.Element => {
                       perPage={9}
                       sort={{ field: "createdat", order: "DESC" }}
                       classes={{
-                        content: listStyles.content,
-                        root: listStyles.root,
+                        content: classes.content,
+                        root: classes.root,
                       }}
                       exporter={false}
                       empty={
@@ -424,7 +448,6 @@ export const RequestList = (props: any): JSX.Element => {
                     // filters={<UserFilter />}
                     // filterDefaultValues={{ categoryType: "request" }}
                     >
-
                       <CommentGrid {...props} />
                     </List>
                   </>
@@ -435,8 +458,8 @@ export const RequestList = (props: any): JSX.Element => {
                     perPage={9}
                     sort={{ field: "createdat", order: "DESC" }}
                     classes={{
-                      content: listStyles.content,
-                      root: listStyles.root,
+                      content: classes.content,
+                      root: classes.root,
                     }}
                     exporter={false}
                     empty={
@@ -455,7 +478,23 @@ export const RequestList = (props: any): JSX.Element => {
                   // filters={<UserFilter />}
                   // filterDefaultValues={{ categoryType: "request" }}
                   >
-                    <CommentGrid {...props} />
+                    <Grid container style={{ marginTop: 20 }} id="requests">
+                      {console.log("in grid", props)}
+                      {props.ids?.map((d: any) => (
+                        <Grid
+                          item
+                          key={d.id}
+                          md={mode === "grid" ? 4 : 12}
+                          sm={mode === "grid" ? 6 : 12}
+                          xs={12}
+                          style={{ padding: 10 }}
+                        >
+                          {props?.data[d] !== undefined && (
+                            <ProjectCard project={props?.data[d]} />
+                          )}
+                        </Grid>
+                      ))}
+                    </Grid>
                   </List>
                 )}
               </div>
