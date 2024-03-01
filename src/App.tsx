@@ -205,7 +205,7 @@ const App = () => {
               //   : null,
               permissions === CO_ROLE_PATIENT
                 ? [
-                  <Resource name="myRequests" {...requests} />,
+                  <Resource name="myRequests" list={RequestList} />,
 
                   <Resource name="requestsOnBehalf" {...requests} />,
                   <Resource name="userInviteLists" {...invite} />,
