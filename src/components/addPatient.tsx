@@ -1,14 +1,15 @@
 import type { BaseSyntheticEvent } from "react";
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import {
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  Typography,
-  TextField,
-  makeStyles,
-} from "@material-ui/core";
+// import {
+//   Checkbox,
+//   FormControlLabel,
+//   Grid,
+//   Typography,
+//   TextField,
+//   makeStyles,
+// } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
 import { formatSSN, validateAddPatient } from "../utils/validator";
 import MuiPhoneNumber from "material-ui-phone-number";
 import {
@@ -17,16 +18,40 @@ import {
 } from "../utils/messages/errorMessages";
 import moment from "moment";
 import { ADD_PATIENT_FORM_INIT } from "../utils/messages/initializeConstants";
-import type { AppState, IAddPatientProps, IPatientParams } from "../types";
+// import type { AppState, IAddPatientProps, IPatientParams } from "../types";
 import { perPageMax } from "../utils/pageConstants";
 import { useDataProvider, usePermissions, useTranslate } from "react-admin";
-import { Autocomplete, Box } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { CO_ROLE_PATIENT } from "../utils/roles";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import DatePickerWithMonthAndYearDropdown from "./datePicker";
 import useMedicalrequestGetFunctions from "../hooks/MedicalRecord/useMedicalRequestGetFunctions";
-const useStyles = makeStyles((theme) => ({
-  address: {
+// const useStyles = makeStyles((theme) => ({
+//   address: {
+//     width: "100%",
+//     [theme.breakpoints.down("sm")]: {
+//       display: "column",
+//     },
+//     [theme.breakpoints.up("sm")]: {
+//       display: "flex",
+//     },
+//     gap: "10px",
+//   },
+// }));
+
+const PREFIX = "AddPatient";
+const classes = {
+  address: `${PREFIX}-address`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.address}`]: {
     width: "100%",
     [theme.breakpoints.down("sm")]: {
       display: "column",
@@ -37,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
     gap: "10px",
   },
 }));
+
 function AddPatient({
   checkPatientValidator,
   getpatient,
@@ -66,7 +92,7 @@ function AddPatient({
   const { permissions } = usePermissions();
   const classes = useStyles();
   const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
+    (state: AppState) => state.userInfoReducer
   );
   const translate = useTranslate();
   const [patient, setPatient] = useState<IPatientParams>(ADD_PATIENT_FORM_INIT);
@@ -1170,7 +1196,7 @@ function AddPatient({
   const setError = (
     fieldName: string,
     type: string | undefined,
-    errorFlag: boolean,
+    errorFlag: boolean
   ) => {
     setErrors((prevFormState) => ({
       ...prevFormState,
@@ -1873,7 +1899,7 @@ function AddPatient({
           />
         </Grid>
       )}
-      <Grid item md={12} xs={12} className={classes.address}>
+      <Root item md={12} xs={12} className={classes.address}>
         <Typography
           style={{ fontSize: 14, position: "absolute", marginTop: "-15px" }}
           color="textPrimary"
@@ -2008,7 +2034,7 @@ function AddPatient({
           required={type === "dependent" ? false : true}
           variant="standard"
         />
-      </Grid>
+      </Root>
 
       <Grid
         item

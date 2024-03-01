@@ -1,18 +1,57 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/styles";
-import {
-  Typography,
-  useTheme,
-  useMediaQuery,
-  Container,
-} from "@material-ui/core";
+import { styled } from "@mui/material/styles";
+// import {
+//   Typography,
+//   useTheme,
+//   useMediaQuery,
+//   Container,
+// } from "@material-ui/core";
 import displayImage from "../images/undraw_resume_folder_2_arse.svg";
 import emptyDisplayImage from "../images/undraw_empty_xct9.svg";
 import { useTranslate } from "react-admin";
-import type { IAckProps } from "../types";
+// import type { IAckProps } from "../types";
+import { Container, Typography } from "@mui/material";
 
-const useStyles = makeStyles(() => ({
-  root: {
+// const useStyles = makeStyles(() => ({
+//   root: {
+//     padding: "5px",
+//     paddingTop: "10vh",
+//     display: "flex",
+//     flexDirection: "column",
+//     alignContent: "center",
+//     maxWidth: "900px",
+//   },
+//   title: {
+//     fontSize: "38px",
+//     marginBottom: "15px",
+//   },
+//   imageContainer: {
+//     marginTop: "10px",
+//     display: "flex",
+//     justifyContent: "center",
+//   },
+//   image: {
+//     maxWidth: " 474px%",
+//     width: 500,
+//     maxHeight: 400,
+//     height: "396px",
+//     marginTop: 50,
+//   },
+//   buttonContainer: {
+//     display: "flex",
+//     justifyContent: "center",
+//   },
+// }));
+const PREFIX = "Acknowledge";
+const classes = {
+  root: `${PREFIX}-root`,
+  title: `${PREFIX}-title`,
+  imageContainer: `${PREFIX}-imageContainer`,
+  image: `${PREFIX}-image`,
+  buttonContainer: `${PREFIX}-buttonContainer`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     padding: "5px",
     paddingTop: "10vh",
     display: "flex",
@@ -20,31 +59,30 @@ const useStyles = makeStyles(() => ({
     alignContent: "center",
     maxWidth: "900px",
   },
-  title: {
+  [`& .${classes.title}`]: {
     fontSize: "38px",
     marginBottom: "15px",
   },
-  imageContainer: {
+  [`& .${classes.imageContainer}`]: {
     marginTop: "10px",
     display: "flex",
     justifyContent: "center",
   },
-  image: {
+  [`& .${classes.image}`]: {
     maxWidth: " 474px%",
     width: 500,
     maxHeight: 400,
     height: "396px",
     marginTop: 50,
   },
-  buttonContainer: {
+  [`& .${classes.buttonContainer}`]: {
     display: "flex",
     justifyContent: "center",
   },
 }));
-
 function Acknowledge({ type }: IAckProps): JSX.Element {
   const translate = useTranslate();
-  const classes = useStyles();
+
   const theme = useTheme();
   const ackContent = {
     successfully_filled: {

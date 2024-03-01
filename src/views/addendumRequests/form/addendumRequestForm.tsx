@@ -1,6 +1,29 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
+// import {
+//   Button,
+//   Card,
+//   CardActions,
+//   CardContent,
+//   Container,
+//   Divider,
+//   Grid,
+//   InputLabel,
+//   List,
+//   ListItem,
+//   Typography,
+// } from "@material-ui/core";
+import { SignatureBox } from "../../../components/signature";
+import { tommddyyyy } from "../../../utils/dateFormator";
+import Acknowledge from "../../../components/acknowledge";
+import BaseModal from "../../../components/baseModal";
+// import type {
+//   IAddendumRequestFormProps,
+//   IAlreadyLoggedIn,
+// } from "../../../types";
+import { CO_NAME_GUEST, CO_ROLE_PATIENT } from "../../../utils/roles";
+import useAddendumForm from "../../../hooks/useAddendumForm";
 import {
   Button,
   Card,
@@ -13,17 +36,7 @@ import {
   List,
   ListItem,
   Typography,
-} from "@material-ui/core";
-import { SignatureBox } from "../../../components/signature";
-import { tommddyyyy } from "../../../utils/dateFormator";
-import Acknowledge from "../../../components/acknowledge";
-import BaseModal from "../../../components/baseModal";
-import type {
-  IAddendumRequestFormProps,
-  IAlreadyLoggedIn,
-} from "../../../types";
-import { CO_NAME_GUEST, CO_ROLE_PATIENT } from "../../../utils/roles";
-import useAddendumForm from "../../../hooks/useAddendumForm";
+} from "@mui/material";
 
 function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
   const {
@@ -42,7 +55,7 @@ function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
     error,
   } = useAddendumForm({ id });
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [openBase, setOpenBase] = useState(false);
   const addendumForm = document.getElementById("addendumForm");
   useEffect(() => {
@@ -87,7 +100,7 @@ function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
               confirmAction={alreadyConfirmation}
               onClose={() => {
                 setOpenBase(false);
-                history.push("/");
+                navigate("/");
               }}
               content={`${alreadyLoggedIn.userName} is already loggedin on this browser. If you continue, ${alreadyLoggedIn.userName} will disconnect. Do you want to continue?`}
               title="User Already Logged In"
@@ -203,7 +216,7 @@ function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
                                   service:{" "}
                                   <b>
                                     {`${tommddyyyy(
-                                      requestViewList.servicedDate,
+                                      requestViewList.servicedDate
                                     )}`}
                                   </b>
                                   .
@@ -410,7 +423,7 @@ function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
                                           className={classes.subtitle}
                                         >
                                           {`${tommddyyyy(
-                                            requestViewList.birthDate,
+                                            requestViewList.birthDate
                                           )}`}
                                         </Typography>
                                       </Grid>
@@ -720,7 +733,7 @@ function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
                                       >
                                         {
                                           JSON.parse(
-                                            requestViewList.previousAddress,
+                                            requestViewList.previousAddress
                                           ).previous_address1
                                         }
                                       </Typography>
@@ -739,7 +752,7 @@ function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
                                             className={classes.subtitle}
                                           >{`${
                                             JSON.parse(
-                                              requestViewList.previousAddress,
+                                              requestViewList.previousAddress
                                             ).previous_address2
                                           }`}</Typography>
                                         </ListItem>
@@ -761,7 +774,7 @@ function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
                                       >
                                         {
                                           JSON.parse(
-                                            requestViewList.previousAddress,
+                                            requestViewList.previousAddress
                                           ).previous_city
                                         }
                                       </Typography>
@@ -781,7 +794,7 @@ function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
                                       >
                                         {
                                           JSON.parse(
-                                            requestViewList.previousAddress,
+                                            requestViewList.previousAddress
                                           ).previous_state
                                         }
                                       </Typography>
@@ -801,7 +814,7 @@ function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
                                       >
                                         {
                                           JSON.parse(
-                                            requestViewList.previousAddress,
+                                            requestViewList.previousAddress
                                           ).previous_country
                                         }
                                       </Typography>
@@ -821,7 +834,7 @@ function AddendumRequestForm({ id }: IAddendumRequestFormProps): JSX.Element {
                                       >
                                         {
                                           JSON.parse(
-                                            requestViewList.previousAddress,
+                                            requestViewList.previousAddress
                                           ).previous_zip
                                         }
                                       </Typography>

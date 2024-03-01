@@ -1,38 +1,87 @@
 import * as React from "react";
 import SignatureCanvas from "react-signature-canvas";
-import { IconButton } from "@material-ui/core";
+// import { IconButton } from "@material-ui/core";
 import { BootstrapTooltip as Tooltip } from "./Tooltip";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { makeStyles } from "@material-ui/styles";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { styled } from "@mui/material/styles";
 import signature from "./../images/signature.jpg";
 import type ReactSignatureCanvas from "react-signature-canvas";
+import { IconButton } from "@mui/material";
 
-const useStyles = makeStyles(() => ({
-  root: {},
-  media: {
+// const useStyles = makeStyles(() => ({
+//   root: {},
+//   media: {
+//     height: 170,
+//   },
+//   placeholder: {
+//     height: 170,
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//   content: {
+//     padding: 8,
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//   actions: {
+//     padding: 8,
+//     justifyContent: "center",
+//   },
+//   menu: {
+//     width: 250,
+//     maxWidth: "100%",
+//   },
+//   additionalClass: {
+//     border: "2px solid #7c7c7c",
+//     borderRadius: "10px",
+//     background: `url(${signature})`,
+//     backgroundSize: "400px",
+//     backgroundRepeat: "no-repeat",
+//     backgroundPosition: "bottom left",
+//   },
+//   sigPad: {
+//     width: "100%",
+//     height: "200px",
+//   },
+// }));
+
+const PREFIX = "SignatureBox";
+const classes = {
+  root: `${PREFIX}-root`,
+  media: `${PREFIX}-media`,
+  placeholder: `${PREFIX}-placeholder`,
+  content: `${PREFIX}-content`,
+  actions: `${PREFIX}-actions`,
+  menu: `${PREFIX}-menu`,
+  additionalClass: `${PREFIX}-additionalClass`,
+  sigPad: `${PREFIX}-sigPad`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {},
+  [`& .${classes.media}`]: {
     height: 170,
   },
-  placeholder: {
+  [`& .${classes.placeholder}`]: {
     height: 170,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
   },
-  content: {
-    padding: 8,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  actions: {
+  [`&.${classes.content}`]: {
     padding: 8,
     justifyContent: "center",
   },
-  menu: {
+  [`& .${classes.actions}`]: {
+    padding: 8,
+    justifyContent: "center",
+  },
+  [`& .${classes.menu}`]: {
     width: 250,
     maxWidth: "100%",
   },
-  additionalClass: {
+  [`& .${classes.additionalClass}`]: {
     border: "2px solid #7c7c7c",
     borderRadius: "10px",
     background: `url(${signature})`,
@@ -40,7 +89,7 @@ const useStyles = makeStyles(() => ({
     backgroundRepeat: "no-repeat",
     backgroundPosition: "bottom left",
   },
-  sigPad: {
+  [`& .${classes.sigPad}`]: {
     width: "100%",
     height: "200px",
   },
@@ -50,8 +99,6 @@ interface ISignatureBox {
   getSign: Function;
 }
 export const SignatureBox = ({ getSign }: ISignatureBox) => {
-  const classes = useStyles();
-
   // @ts-ignore
   let sigPad: ReactSignatureCanvas = {};
 

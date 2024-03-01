@@ -1,75 +1,141 @@
 import type { BaseSyntheticEvent } from "react";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  TextField,
-  Typography,
-  colors,
-  Grid,
-  Card,
-  CardContent,
-  IconButton,
-  Button,
-} from "@material-ui/core";
+import { styled } from "@mui/material/styles";
+// import {
+//   TextField,
+//   Typography,
+//   colors,
+//   Grid,
+//   Card,
+//   CardContent,
+//   IconButton,
+//   Button,
+// } from "@material-ui/core";
 import MuiPhoneNumber from "material-ui-phone-number";
 import {
   validatePhone,
   validateString,
   validateSentance,
 } from "../../../utils/validator";
-import { AddCircle, Cancel } from "@material-ui/icons";
-import CardHeader from "./../../../components/cardHeader";
-import type { IAddContactProps, IDoctorDetails } from "../../../types";
-import { useTranslate } from "react-admin";
+import CancelIcon from "@mui/icons-material/Cancel";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  header: {
+import CardHeader from "./../../../components/cardHeader";
+// import type { IAddContactProps, IDoctorDetails } from "../../../types";
+import { useTranslate } from "react-admin";
+import {
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  IconButton,
+  TextField,
+  Typography,
+  colors,
+} from "@mui/material";
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {},
+//   header: {
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//     flexWrap: "wrap",
+//     marginBottom: theme.spacing(2),
+//   },
+//   content: {
+//     padding: theme.spacing(0, 2),
+//     maxWidth: 720,
+//     margin: "0 auto",
+//   },
+//   helperText: {
+//     textAlign: "right",
+//     marginRight: 0,
+//   },
+//   author: {
+//     margin: theme.spacing(4, 0),
+//     display: "flex",
+//   },
+//   avatar: {
+//     marginRight: theme.spacing(2),
+//   },
+//   actions: {
+//     backgroundColor: colors.grey[100],
+//     padding: theme.spacing(2),
+//     display: "flex",
+//     justifyContent: "center",
+//   },
+//   applyButton: {
+//     color: theme.palette.common.white,
+//     backgroundColor: colors.green[600],
+//     "&:hover": {
+//       backgroundColor: colors.green[900],
+//     },
+//   },
+//   addButton: {
+//     borderRadius: "unset",
+//     float: "right",
+//     padding: "0px",
+//     textTransform: "none",
+//     backgroundColor: theme.palette.primary.light,
+//     "&:hover": {
+//       backgroundColor: theme.palette.primary.light,
+//     },
+//   },
+// }));
+
+const PREFIX = "DoctorDetails";
+const classes = {
+  root: `${PREFIX}-root`,
+  header: `${PREFIX}-header`,
+  content: `${PREFIX}-content`,
+  helperText: `${PREFIX}-helperText`,
+  author: `${PREFIX}-author`,
+  avatar: `${PREFIX}-avatar`,
+  actions: `${PREFIX}-actions`,
+  applyButton: `${PREFIX}-applyButton`,
+  addButton: `${PREFIX}- addButton`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    marginBottom: theme.spacing(2),
+    backgroundColor: theme.palette.primary.main,
   },
-  content: {
-    padding: theme.spacing(0, 2),
-    maxWidth: 720,
-    margin: "0 auto",
+  [`& .${classes.header}`]: {
+    borderRadius: theme.shape.radius,
   },
-  helperText: {
-    textAlign: "right",
-    marginRight: 0,
-  },
-  author: {
-    margin: theme.spacing(4, 0),
-    display: "flex",
-  },
-  avatar: {
-    marginRight: theme.spacing(2),
-  },
-  actions: {
-    backgroundColor: colors.grey[100],
-    padding: theme.spacing(2),
-    display: "flex",
-    justifyContent: "center",
-  },
-  applyButton: {
+  [`& .${classes.content}`]: {
     color: theme.palette.common.white,
-    backgroundColor: colors.green[600],
-    "&:hover": {
-      backgroundColor: colors.green[900],
-    },
+    fontSize: 16,
+    lineHeight: 1.7,
   },
-  addButton: {
-    borderRadius: "unset",
-    float: "right",
-    padding: "0px",
-    textTransform: "none",
-    backgroundColor: theme.palette.primary.light,
-    "&:hover": {
-      backgroundColor: theme.palette.primary.light,
-    },
+  [`&.${classes.helperText}`]: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: theme.palette.primary.main,
+  },
+  [`& .${classes.author}`]: {
+    borderRadius: theme.shape.radius,
+  },
+  [`& .${classes.avatar}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
+  },
+  [`&.${classes.actions}`]: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: theme.palette.primary.main,
+  },
+  [`& .${classes.applyButton}`]: {
+    borderRadius: theme.shape.radius,
+  },
+  [`& .${classes.addButton}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
   },
 }));
 
@@ -113,7 +179,7 @@ function DoctorDetails({ getContact }: IAddContactProps): JSX.Element {
 
   const handleValidateOnBlur = (
     event: BaseSyntheticEvent,
-    id: number,
+    id: number
   ): void => {
     event.persist();
     let validationStatus: boolean;
@@ -135,7 +201,7 @@ function DoctorDetails({ getContact }: IAddContactProps): JSX.Element {
             event.target.name,
             !valid && "Invalid phone number",
             !valid,
-            id,
+            id
           );
           break;
         }
@@ -150,7 +216,7 @@ function DoctorDetails({ getContact }: IAddContactProps): JSX.Element {
             event.target.name,
             !valid && "Invalid institution",
             !valid,
-            id,
+            id
           );
           break;
         }
@@ -171,7 +237,7 @@ function DoctorDetails({ getContact }: IAddContactProps): JSX.Element {
     fieldName: string,
     type: string,
     setError: boolean,
-    id: number,
+    id: number
   ): void => {
     const values = [...contactCount];
 
@@ -256,7 +322,7 @@ function DoctorDetails({ getContact }: IAddContactProps): JSX.Element {
             aria-label="directions"
             color="primary"
             onClick={handleAdd}
-            startIcon={<AddCircle />}
+            startIcon={<AddCircleIcon />}
           >
             Add More Contacts
           </Button>
@@ -369,7 +435,7 @@ function DoctorDetails({ getContact }: IAddContactProps): JSX.Element {
                   onClick={() => handleRemove(idx)}
                   color="primary"
                 >
-                  <Cancel />
+                  <CancelIcon />
                 </IconButton>
               )}
             </Grid>

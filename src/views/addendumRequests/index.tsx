@@ -1,7 +1,7 @@
 import CreateRequest from "./create/createRequest";
-import RequestsIcon from "@material-ui/icons/List";
 
+import ListIcon from "@mui/icons-material/List";
 export default {
   create: CreateRequest,
-  icon: RequestsIcon,
+  icon: ListIcon,
 };

@@ -1,24 +1,31 @@
 import type { FunctionComponent } from "react";
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Divider } from "@material-ui/core";
-import type { PageProps } from "../types";
+import { styled } from "@mui/material/styles";
+import { Divider, Typography } from "@mui/material";
+// import { Grid, Typography, Divider } from "@material-ui/core";
+// import type { PageProps } from "../types";
 
-const useStyles = makeStyles(() => ({
-  gridItem: {
+// const useStyles = makeStyles(() => ({
+//   gridItem: {
+//     paddingTop: "16px",
+//   },
+// }));
+const PREFIX = "CardHeader";
+const classes = {
+  gridItem: `${PREFIX}-gridItem`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.gridItem}`]: {
     paddingTop: "16px",
   },
 }));
-
 const CardHeader: FunctionComponent<PageProps> = ({
   style = {},
   divider = true,
   children,
 }) => {
-  const classes = useStyles();
-
   return (
-    <Grid
+    <Root
       item
       md={12}
       xs={12}
@@ -29,7 +36,7 @@ const CardHeader: FunctionComponent<PageProps> = ({
         {children}
       </Typography>
       {divider && <Divider data-testid="card-header-divider" />}
-    </Grid>
+    </Root>
   );
 };
 

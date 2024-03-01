@@ -1,25 +1,92 @@
 import type { BaseSyntheticEvent, FC } from "react";
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Button } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
+// import { Typography, Button } from "@material-ui/core";
 import documentImage from "./../images/document.png";
 import { imagePdfFormat } from "../utils/fileFormat";
 import { useTranslate } from "react-admin";
 import { validateFileName } from "../utils/validator";
+import { Button, Typography } from "@mui/material";
 
-const useStyles = makeStyles(() => ({
-  inputFile: {
+// const useStyles = makeStyles(() => ({
+//   inputFile: {
+//     display: "none",
+//     padding: "5px 15px",
+//   },
+//   label: {
+//     display: "inline-flex",
+//     width: "70% !important",
+//     lineHeight: "35px",
+//     height: "30px",
+//     fontSize: "12px",
+//   },
+//   inputButton: {
+//     padding: "5px 15px",
+//     width: "40%",
+//     float: "right",
+//     right: "0",
+//     fontSize: "12px",
+//     background: "#325774",
+//     borderTopRightRadius: "0",
+//     borderBottomRightRadius: "0",
+//   },
+//   inputFileName: {
+//     width: "100%",
+//     padding: "8px 15px",
+//     background: "#eee",
+//     border: "1px solid #ccc",
+//     borderRadius: " 4px",
+//     borderTopLeftRadius: "0",
+//     borderBottomLeftRadius: "0",
+//     marginLeft: "-5px",
+//   },
+//   errorInput: {
+//     width: "100%",
+//     color: "red",
+//   },
+//   description: {
+//     float: "left",
+//   },
+//   fileOuterComponent: {
+//     width: "300px",
+//     height: "auto",
+//     overflow: "hidden",
+//     paddingTop: "20px",
+//     paddingBottom: "20px",
+//   },
+//   image: {
+//     width: "300px",
+//   },
+//   imageDocument: {
+//     width: "50px",
+//   },
+// }));
+
+const PREFIX = "UploadFile";
+const classes = {
+  inputFile: `${PREFIX}-inputFile`,
+  label: `${PREFIX}-label`,
+  inputButton: `${PREFIX}-inputButton`,
+  inputFileName: `${PREFIX}-inputFileName`,
+  errorInput: `${PREFIX}-errorInput`,
+  description: `${PREFIX}-description`,
+  fileOuterComponent: `${PREFIX}-fileOuterComponent`,
+  image: `${PREFIX}-image`,
+  imageDocument: `${PREFIX}-imageDocument`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.inputFile}`]: {
     display: "none",
     padding: "5px 15px",
   },
-  label: {
+  [`& .${classes.label}`]: {
     display: "inline-flex",
     width: "70% !important",
     lineHeight: "35px",
     height: "30px",
     fontSize: "12px",
   },
-  inputButton: {
+  [`& .${classes.inputButton}`]: {
     padding: "5px 15px",
     width: "40%",
     float: "right",
@@ -29,7 +96,7 @@ const useStyles = makeStyles(() => ({
     borderTopRightRadius: "0",
     borderBottomRightRadius: "0",
   },
-  inputFileName: {
+  [`&.${classes.inputFileName}`]: {
     width: "100%",
     padding: "8px 15px",
     background: "#eee",
@@ -39,24 +106,24 @@ const useStyles = makeStyles(() => ({
     borderBottomLeftRadius: "0",
     marginLeft: "-5px",
   },
-  errorInput: {
+  [`& .${classes.errorInput}`]: {
     width: "100%",
     color: "red",
   },
-  description: {
+  [`& .${classes.description}`]: {
     float: "left",
   },
-  fileOuterComponent: {
+  [`&.${classes.fileOuterComponent}`]: {
     width: "300px",
     height: "auto",
     overflow: "hidden",
     paddingTop: "20px",
     paddingBottom: "20px",
   },
-  image: {
+  [`& .${classes.image}`]: {
     width: "300px",
   },
-  imageDocument: {
+  [`& .${classes.imageDocument}`]: {
     width: "50px",
   },
 }));

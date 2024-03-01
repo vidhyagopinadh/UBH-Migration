@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import { makeStyles } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
 import {
   useDataProvider,
   useLogin,
   useNotify,
   useTranslate,
 } from "react-admin";
-import { useSelector } from "react-redux";
-import useTraces from "./useTraces";
+// import { useSelector } from "react-redux";
+// import useTraces from "./useTraces";
 import createFileUploadQuery from "../queries/createFileUpload/createFileUploadQuery";
 import updateRequestFiledetail from "../queries/updateRequestFiledetail/updateRequestFiledetail";
-import type {
-  AppState,
-  IAddendumRequestFormProps,
-  IAlreadyLoggedIn,
-} from "../types";
+// import type {
+//   AppState,
+//   IAddendumRequestFormProps,
+//   IAlreadyLoggedIn,
+// } from "../types";
 import b64toBlob from "../utils/images/b64toBlob";
 import { blobToFile } from "../utils/images/blobToFile";
 import { perPageMax } from "../utils/pageConstants";
@@ -25,13 +25,13 @@ import type {
   UpdateRequestFiledetailV1Input,
 } from "../__generated__/typescript-operations_all";
 import secureLocalStorage from "react-secure-storage";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 const { REACT_APP_GUEST_USERNAME, REACT_APP_GUEST_PASSWORD } = process.env;
 const useAddendumForm = ({ id }: IAddendumRequestFormProps) => {
   const login = useLogin();
   const notify = useNotify();
   const translate = useTranslate();
-  const history = useHistory();
+  const history = useNavigate();
   const dataProvider = useDataProvider();
   const [signature, setSignature] = useState("");
   const { getTrace } = useTraces();
@@ -42,31 +42,103 @@ const useAddendumForm = ({ id }: IAddendumRequestFormProps) => {
   });
   const [requestViewList, setRequestViewList] = useState<any>({});
   const userInfo = useSelector((state: AppState) => state.userInfoReducer);
-  const useStyles = makeStyles(() => ({
-    root: {
+  // const useStyles = makeStyles(() => ({
+  //   root: {
+  //     margin: "10px",
+  //     display: "flex",
+  //     flexDirection: "column",
+  //     alignContent: "center",
+  //   },
+  //   imageContainer: {
+  //     marginTop: "5px",
+  //     display: "flex",
+  //     justifyContent: "center",
+  //   },
+  //   image: {
+  //     maxWidth: "100%",
+  //     width: 560,
+  //     maxHeight: 300,
+  //     height: "auto",
+  //   },
+  //   buttonContainer: {
+  //     marginTop: "5px",
+  //     display: "flex",
+  //     justifyContent: "center",
+  //   },
+
+  //   additionalClass: {
+  //     border: "2px solid #7c7c7c",
+  //     borderRadius: "10px",
+  //     background: 'url("/images/signature.jpg")',
+  //     backgroundSize: "400px",
+  //     backgroundRepeat: "no-repeat",
+  //     backgroundPosition: "bottom left",
+  //   },
+  //   contentText1: {
+  //     width: "25%",
+  //     float: "left",
+  //     fontWeight: 400,
+  //   },
+  //   subHead: {
+  //     background: "#fafafa",
+  //     padding: "5px 10px",
+  //     marginBottom: "0px",
+  //     fontWeight: 600,
+  //     fontSize: "16px",
+  //   },
+  //   subtitle: {
+  //     width: "70%",
+  //     float: "left",
+  //     marginLeft: "5%",
+  //   },
+  //   listitemStyle: {
+  //     display: "inline-block !important",
+  //     borderBottom: "1px solid #eaeaea !important",
+  //   },
+  //   listitemStyle2: {
+  //     display: "inline-block !important",
+  //     borderBottom: "unset !important",
+  //   },
+  // }));
+
+  const PREFIX = "MyCard";
+  const classes = {
+    root: `${PREFIX}-root`,
+    imageContainer: `${PREFIX}-imageContainer`,
+    image: `${PREFIX}-image`,
+    buttonContainer: `${PREFIX}-buttonContainer`,
+    additionalClass: `${PREFIX}-additionalClass`,
+    contentText1: `${PREFIX}-contentText1`,
+
+    subHead: `${PREFIX}-subHead`,
+    subtitle: `${PREFIX}-subtitle`,
+    listitemStyle: `${PREFIX}-listitemStyle`,
+    listitemStyle2: `${PREFIX}-listitemStyle2`,
+  };
+  const Root = styled("div")(({ theme }) => ({
+    [`&.${classes.root}`]: {
       margin: "10px",
       display: "flex",
       flexDirection: "column",
       alignContent: "center",
     },
-    imageContainer: {
+    [`& .${classes.imageContainer}`]: {
       marginTop: "5px",
       display: "flex",
       justifyContent: "center",
     },
-    image: {
+    [`& .${classes.image}`]: {
       maxWidth: "100%",
       width: 560,
       maxHeight: 300,
       height: "auto",
     },
-    buttonContainer: {
+    [`&.${classes.buttonContainer}`]: {
       marginTop: "5px",
       display: "flex",
       justifyContent: "center",
     },
-
-    additionalClass: {
+    [`& .${classes.additionalClass}`]: {
       border: "2px solid #7c7c7c",
       borderRadius: "10px",
       background: 'url("/images/signature.jpg")',
@@ -74,33 +146,32 @@ const useAddendumForm = ({ id }: IAddendumRequestFormProps) => {
       backgroundRepeat: "no-repeat",
       backgroundPosition: "bottom left",
     },
-    contentText1: {
+    [`& .${classes.contentText1}`]: {
       width: "25%",
       float: "left",
       fontWeight: 400,
     },
-    subHead: {
+    [`&.${classes.subHead}`]: {
       background: "#fafafa",
       padding: "5px 10px",
       marginBottom: "0px",
       fontWeight: 600,
       fontSize: "16px",
     },
-    subtitle: {
+    [`& .${classes.subtitle}`]: {
       width: "70%",
       float: "left",
       marginLeft: "5%",
     },
-    listitemStyle: {
+    [`& .${classes.listitemStyle}`]: {
       display: "inline-block !important",
       borderBottom: "1px solid #eaeaea !important",
     },
-    listitemStyle2: {
+    [`& .${classes.listitemStyle2}`]: {
       display: "inline-block !important",
       borderBottom: "unset !important",
     },
   }));
-
   const [alreadyLoggedIn, setAlreadyLoggedIn] = useState<IAlreadyLoggedIn>({
     alreadyThere: localStorage.getItem("authState") == "true" ? true : false,
     userName: localStorage.getItem("User") || CO_NAME_GUEST,
@@ -116,7 +187,7 @@ const useAddendumForm = ({ id }: IAddendumRequestFormProps) => {
         username: REACT_APP_GUEST_USERNAME,
         password: REACT_APP_GUEST_PASSWORD,
       },
-      `/addendumRequestForm/${id}`,
+      `/addendumRequestForm/${id}`
     )
       .then(() => {
         setAlreadyLoggedIn((prevFormState: IAlreadyLoggedIn) => ({
@@ -178,7 +249,7 @@ const useAddendumForm = ({ id }: IAddendumRequestFormProps) => {
           getTrace(
             "Upload signature in Addendum Form",
             "ev-116",
-            userInfo.email,
+            userInfo.email
           );
           updateRequest(res.data?.createFileUpload.fileUpload.id);
         }
@@ -225,7 +296,7 @@ const useAddendumForm = ({ id }: IAddendumRequestFormProps) => {
   };
 
   return {
-    useStyles,
+    // useStyles,
     alreadyLoggedIn,
     userInfo,
     doLogin,
