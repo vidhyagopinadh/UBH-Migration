@@ -53,9 +53,9 @@ import {
   downloadCSV,
   useDataProvider,
 } from "react-admin";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 import useTraces from "../../hooks/useTraces";
-import type { AppState } from "../../types";
+//import type { AppState } from "../../types";
 import jsonExport from "jsonexport/dist";
 import { tommddyyyy } from "../../utils/dateFormator";
 import { StatusFilter } from "./filters";
@@ -72,127 +72,59 @@ import ConfirmMrrView from "./confirmMrrView";
 import LoadingMrr from "./loadingMrr";
 import { perPageMax } from "../../utils/pageConstants";
 import ErrorMrr from "./errorMrr";
-const useStyles = makeStyles((theme) => ({
-  container: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    gap: "20px",
-    padding: "20px",
-    flex: "1 1 auto",
-    overflowY: "hidden",
-    overflowX: "scroll",
-  },
-  filterBar: {
-    marginBottom: "20px",
-  },
-  tableContainer: {
-    width: "100%",
-    overflowX: "auto",
-  },
-  icons: { margin: "0px", padding: "0px", paddingRight: "3px" },
-  addIcon: {
-    marginRight: theme.spacing(1),
-  },
-  patientInviteButton: {
-    "&:hover": {
-      backgroundColor: "#ffffff",
-    },
-    marginTop: "15px",
-    float: "right",
-  },
-  patientTable: {
-    "& th": {
-      borderBottom: "2px solid #ccc",
-    },
-  },
+import { styled } from "@mui/material/styles";
 
-  item: {
-    fontSize: "12px",
-    lineHeight: "1",
-  },
+const PREFIX = "patientTable";
 
-  email: {
-    maxWidth: 150,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    wordBreak: "break-all",
-  },
-  userGroup: {
-    maxWidth: 100,
-  },
-  createdAt: {
-    maxWidth: 120,
-  },
-  invitationStatus: {
-    maxWidth: 100,
-  },
-  showIcon: {
-    color: "green",
-  },
-  reminderIcon: {
-    color: "blue",
-  },
-  iconDiv: {
-    display: "flex",
-    justifyContent: "flex-start",
-    width: "100%",
-  },
-  filterContainer: {
-    display: "flex",
-    order: -1,
-    paddingRight: "20px",
-  },
-  filter: {
-    backgroundColor: theme.palette.primary.light,
-    width: 200,
-    display: "flex",
-    flexDirection: "column",
-  },
-  filterContent: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-  },
-  customHeader: {
-    width: "200px",
-  },
-  dataGridContainer: {
-    width: "700px",
-    maxWidth: "100%",
-  },
-  hideHeader: {
-    "& .MuiDataGrid-columnHeaders": {
-      minHeight: "0!important",
-      maxHeight: "0!important",
-      lineHeight: "0!important",
+const classes = {
+  root: `${PREFIX}-root`,
+  tickIcon: `${PREFIX}-tickIcon`,
+  errorIcon: `${PREFIX}-errorIcon`,
+  moreInfo: `${PREFIX}-moreInfo`,
+  message: `${PREFIX}-message`,
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
+    "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer":
+    {
+      display: "none",
     },
-  },
-  customColumn: {
-    width: "200px",
-  },
-  customDivider: {
-    margin: 0,
-    borderStyle: "hidden!important ",
-    borderColor: "rgba(0, 0, 0, 0.12)",
-    borderBottomWidth: "inherit!important",
-    disply: "none",
-  },
-  ssn: {
-    maxWidth: 150,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    wordBreak: "break-all",
-    paddingLeft: "3px",
-    paddingRight: "3px",
-  },
-  "& .ra-datagrid .ra-no-results": {
+  "& .MuiDataGrid-menuOpen": {
     display: "none",
+  },
+  "& .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus":
+    {
+      outline: "none !important",
+    },
+  "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-cell:focus": {
+    outline: "none !important",
+  },
+  },
+  [`& .${classes.message}`]: {
+    marginRight: "20px",
+    fontWeight: 600,
+  },
+  [`& .${classes.tickIcon}`]: {
+    color: "#2AAA8A",
+    width: "30px",
+    height: "30px",
+    marginRight: "10px",
+  },
+  [`&.${classes.errorIcon}`]: {
+    color: "red",
+    width: "30px",
+    height: "30px",
+    marginRight: "10px",
+  },
+  [`& .${classes.moreInfo}`]: {
+    textTransform: "none",
+    fontWeight: 600,
+    pointerEvents: "auto",
   },
 }));
 
 export const PatientList = (props: ListProps): ReactElement => {
-  const classes = useStyles();
   const refresh = useRefresh();
   const notify = useNotify();
   const translate = useTranslate();

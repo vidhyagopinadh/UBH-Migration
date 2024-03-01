@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDataProvider, useLogin } from "react-admin";
-import { colors, Container, Divider, Tab, Tabs } from "@material-ui/core";
-import { useHistory } from "react-router";
+// import { colors, Container, Divider, Tab, Tabs } from "@material-ui/core";
+import { useNavigate } from "react-router";
 import Overview from "./Overview";
 import Header from "./Header";
 import Acknowledge from "../../../components/acknowledge";
 import BaseModal from "../../../components/baseModal";
-import type { AppState, IAlreadyLoggedIn } from "../../../types";
-import { useSelector } from "react-redux";
+// import type { AppState, IAlreadyLoggedIn } from "../../../types";
+// import { useSelector } from "react-redux";
 import {
   CO_ROLE_GUEST,
   CO_NAME_GUEST,
@@ -15,8 +15,9 @@ import {
 } from "../../../utils/roles";
 import { perPageMax } from "../../../utils/pageConstants";
 import secureLocalStorage from "react-secure-storage";
-const { REACT_APP_GUEST_USERNAME, REACT_APP_GUEST_PASSWORD } = process.env;
 import { styled } from "@mui/material/styles";
+import { Container, Divider, Tab, Tabs, colors } from "@mui/material";
+const { REACT_APP_GUEST_USERNAME, REACT_APP_GUEST_PASSWORD } = process.env;
 
 const PREFIX = "PRRRequestDetails";
 const classes = {
@@ -75,7 +76,7 @@ const StyledDiv = styled("div")(({ theme }) => ({
 export const RequestDetailComponent = (props): JSX.Element => {
   const dataProvider = useDataProvider();
   const { id, tab } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
   const login = useLogin();
   const [requestViewList, setRequestViewList] = useState<any>({});
   const [openBase, setOpenBase] = useState(false);
@@ -151,7 +152,7 @@ export const RequestDetailComponent = (props): JSX.Element => {
   const tabs = [{ value: "overview", label: "Overview" }];
 
   const handleTabsChange = (event, value): void => {
-    history.push(value);
+    navigate(value);
   };
 
   const alreadyConfirmation = (): void => {
@@ -172,7 +173,7 @@ export const RequestDetailComponent = (props): JSX.Element => {
                 confirmAction={alreadyConfirmation}
                 onClose={() => {
                   setOpenBase(false);
-                  history.push("/");
+                  navigate("/");
                 }}
                 content={`${alreadyLoggedIn.userName} is already loggedin on this browser. If you continue, ${alreadyLoggedIn.userName} will disconnect. Do you want to continue?`}
                 title="User Already Logged In"

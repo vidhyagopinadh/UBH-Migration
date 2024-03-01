@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { Typography, colors } from "@mui/material";
-import { styled } from "@mui/material/styles";
 
-const PREFIX = "label";
+import { Typography, colors, styled } from "@mui/material";
 
+
+const PREFIX = 'Label';
 const classes = {
   root: `${PREFIX}-root`,
   rounded: `${PREFIX}-rounded`,
-};
+}
 
-const StyledDiv = styled("div")(({ theme }) => ({
+const StyledDiv = styled('div')(({ theme }) => ({
   [`&.${classes.root}`]: {
     display: "inline-flex",
     alignItems: "center",
@@ -30,9 +30,12 @@ const StyledDiv = styled("div")(({ theme }) => ({
     borderRadius: 10,
     padding: theme.spacing(0.5),
   },
-}));
+}))
 
-function Label({ className, variant, color, shape, children, style, ...rest }) {
+
+
+function Label({ className, variant, color, shape, children, style, ...rest }: any) {
+  //const classes = useStyles();
   const rootClassName = clsx(
     {
       [classes.root]: true,
@@ -51,7 +54,6 @@ function Label({ className, variant, color, shape, children, style, ...rest }) {
   }
 
   return (
-    <StyledDiv>
     <Typography
       {...rest}
       className={rootClassName}
@@ -61,7 +63,6 @@ function Label({ className, variant, color, shape, children, style, ...rest }) {
     >
       {children}
     </Typography>
-    </StyledDiv>
   );
 }
 

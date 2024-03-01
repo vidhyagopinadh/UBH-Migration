@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Button, List, Tab, usePermissions, useTranslate } from "react-admin";
-// import ProjectCard from "./../../../components/projectCard";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, List, usePermissions, useTranslate } from "react-admin";
+import ProjectCard from "./../../../components/projectCard";
 import {
   PatientDependentFilter,
   PriorityFilter,
@@ -17,8 +17,8 @@ import {
 // import { useSelector } from "react-redux";
 //import type { AppState } from "../../../types";
 import { MedicalInformation } from "@mui/icons-material";
-import AddIcon from '@mui/icons-material/Add';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import AddIcon from "@mui/icons-material/Add";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import { useNavigate } from "react-router-dom";
 import CustomEmpty from "../../../components/customEmpty";
 import PageNotFound from "../../../components/pageNotFound";
@@ -26,14 +26,15 @@ import CustomFilter from "../../../components/customFilter";
 import { Link } from "react-router-dom";
 import NotVerifiedBanner from "../../../components/notVerifiedBanner";
 import LinearProgressWithLabel from "../../../components/linearProgressWithLabel";
-import { Typography, Box, Tabs, Divider, Grid, Card, CardContent, Container } from "@mui/material";
+import { Typography, Box, Tabs, Tab, Divider, Grid, Card as MuiCard, CardContent, Container } from "@mui/material";
 import useRequestList from "./useRequestList";
 import { styled } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
+import { makeStyles, withStyles } from '@mui/styles';
 import Add from "@mui/icons-material/Add";
 import Assignment from "@mui/icons-material/Assignment";
+import { UserContext } from "../../../contexts";
 
-const PREFIX = 'RequestDetails';
+const PREFIX = "RequestDetails";
 const classes = {
   root: `${PREFIX}-root`,
   listStyle: `${PREFIX}-listStyle`,
@@ -47,11 +48,10 @@ const classes = {
   actions: `${PREFIX}-actions`,
   sortButton: `${PREFIX}-sortButton`,
   paginate: `${PREFIX}-paginate`,
-}
+};
 
-const StyledDiv = styled('div')(({ theme }) => ({
-  [`&.${classes.root}`]: {
-  },
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {},
   [`& .${classes.listStyle}`]: {
     backgroundColor: "unset !important",
   },
@@ -106,9 +106,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
     display: "flex",
     justifyContent: "center",
   },
-
-}))
-
+}));
 
 const useListStyles = makeStyles({
   content: {
@@ -122,19 +120,19 @@ const useListStyles = makeStyles({
     backgroundColor: "Lavender",
   },
 });
-// const Card = withStyles((theme) => ({
-//   root: {
-//     [theme.breakpoints.up("sm")]: {
-//       order: -1,
-//       marginRight: "1em",
-//       backgroundColor: theme.palette.primary.light,
-//       overflow: "unset",
-//     },
-//     [theme.breakpoints.down("sm")]: {
-//       display: "none",
-//     },
-//   },
-// }))(MuiCard);
+const Card = withStyles((theme) => ({
+  root: {
+    [theme.breakpoints.up("sm")]: {
+      order: -1,
+      marginRight: "1em",
+      backgroundColor: theme.palette.primary.light,
+      overflow: "unset",
+    },
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
+}))(MuiCard);
 
 export const CommentGrid = ({ ids }: any): JSX.Element => {
   const { StyledDiv } = useRequestList();
@@ -144,7 +142,7 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = {}
+  const userInfoReducer: any = useContext(UserContext)
   useEffect(() => {
     setMode("grid");
     // if (permissions === CO_ROLE_PPA) {
@@ -164,7 +162,7 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
   useEffect(() => {
     const timer = setInterval(() => {
       setProgress((prevProgress) =>
-        prevProgress >= 100 ? 100 : prevProgress + 10,
+        prevProgress >= 100 ? 100 : prevProgress + 10
       );
     }, 800);
 
@@ -172,6 +170,8 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
       clearInterval(timer);
     };
   }, []);
+
+  console.log(ids)
 
   return (
     <>
@@ -194,9 +194,9 @@ export const CommentGrid = ({ ids }: any): JSX.Element => {
                 xs={12}
                 style={{ padding: 10 }}
               >
-                {/* {data[d] !== undefined && (
+                {data[d] !== undefined && (
                   <ProjectCard path={basePath} project={data[d]} />
-                )} */}
+                )}
               </Grid>
             ))}
           </Grid>
@@ -222,17 +222,16 @@ CommentGrid.defaultProps = {
 };
 
 const FilterSidebar = ({ type = null }): JSX.Element => {
-  const PREFIX = 'RequestList';
+  const PREFIX = "RequestList";
 
   const classes = {
     filter: `${PREFIX}-filter`,
-  }
+  };
 
-  const Root = styled('div')(({ theme }) => ({
+  const Root = styled("div")(({ theme }) => ({
     [`&.${classes.filter}`]: {
       backgroundColor: theme.palette.primary.light,
     },
-
   }));
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
@@ -241,7 +240,11 @@ const FilterSidebar = ({ type = null }): JSX.Element => {
   //const classes = useStyles();
   return (
     <Root>
-      <Card className={classes.filter} id="filter-sidebar" sx={{ display: { sm: "none" } }}>
+      <Card
+        className={classes.filter}
+        id="filter-sidebar"
+        sx={{ display: { sm: "none" } }}
+      >
         <CardContent>
           <PriorityFilter />
           <StatusFilter />
@@ -261,7 +264,7 @@ export const RequestList = (props: any): JSX.Element => {
   const [showBanner, setShowBanner] = React.useState(false);
   const [filterValue, setFilterValue] = React.useState("");
   const [currTab, setCurrTab] = React.useState(
-    window.location.href.includes("myRequests") ? "myself" : "behalf",
+    window.location.href.includes("myRequests") ? "myself" : "behalf"
   );
   const tabs = [
     { id: "0", value: "myself", label: "My Requests" },
@@ -270,8 +273,10 @@ export const RequestList = (props: any): JSX.Element => {
   // const userInfoReducer = useSelector(
   //   (state: AppState) => state.userInfoReducer,
   // );
-  const userInfoReducer: any = {}
+  const userInfoReducer: any = useContext(UserContext)
   const [emailNotVerified, setEmailNotVerified] = useState(false);
+
+  console.log("currTab", currTab)
 
   useEffect(() => {
     if (!userInfoReducer.emailVerified) {
@@ -298,7 +303,7 @@ export const RequestList = (props: any): JSX.Element => {
   // const [ppaRequests, setPpaRequests] = useState([]);
   const handleTabsChange = (
     event: React.ChangeEvent<{}>,
-    value: string,
+    value: string
   ): void => {
     if (value === "myself") {
       navigate("/myRequests");
@@ -419,6 +424,7 @@ export const RequestList = (props: any): JSX.Element => {
                     // filters={<UserFilter />}
                     // filterDefaultValues={{ categoryType: "request" }}
                     >
+
                       <CommentGrid {...props} />
                     </List>
                   </>

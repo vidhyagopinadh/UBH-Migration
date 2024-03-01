@@ -3,29 +3,24 @@ import { context, trace, SpanStatusCode } from "@opentelemetry/api";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
 import { Resource } from "@opentelemetry/resources";
 import { SimpleSpanProcessor } from "@opentelemetry/sdk-trace-base";
-// import { CollectorTraceExporter } from "@opentelemetry/exporter-collector";
+import { CollectorTraceExporter } from "@opentelemetry/exporter-collector";
 import { ZoneContextManager } from "@opentelemetry/context-zone";
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { isMobile, isTablet } from "react-device-detect";
-interface ISpan {
-  spanId: string;
-  traceFlags: string;
-  traceId: string
-}
-const { VITE_OT_SERVICE_NAME, VITE_OT_TRACING_URL } = import.meta.env;
+const { REACT_APP_OT_SERVICE_NAME, REACT_APP_OT_TRACING_URL } = process.env;
 const resource = new Resource({
-  "service.name": String(VITE_OT_SERVICE_NAME),
+  "service.name": String(REACT_APP_OT_SERVICE_NAME),
 });
 const provider = new WebTracerProvider({ resource });
 
-// const collector = new CollectorTraceExporter({
-//   url: VITE_OT_TRACING_URL,
-//   headers: {},
-// });
-// provider.addSpanProcessor(new SimpleSpanProcessor(collector));
+const collector = new CollectorTraceExporter({
+  url: REACT_APP_OT_TRACING_URL,
+  headers: {},
+});
+provider.addSpanProcessor(new SimpleSpanProcessor(collector));
 provider.register({ contextManager: new ZoneContextManager() });
 
-const webTracerWithZone = provider.getTracer(String(VITE_OT_SERVICE_NAME));
+const webTracerWithZone = provider.getTracer(String(REACT_APP_OT_SERVICE_NAME));
 
 declare const window: any;
 let bindingSpan: Span | undefined;
@@ -73,7 +68,7 @@ export function traceSpan<F extends (...args: any) => ReturnType<F>>(
   name: string,
   customContext: any,
   func: F,
-) {
+): ReturnType<F> {
   let singleSpan: Span;
   const domain = new URL(window.location.href);
   const spanAttribute = customContext;
@@ -92,22 +87,21 @@ export function traceSpan<F extends (...args: any) => ReturnType<F>>(
     singleSpan = webTracerWithZone.startSpan(name);
   }
   singleSpan.setAttributes(spanAttribute);
-  return null;
-  // return context.with(trace.setSpan(context.active(), singleSpan), () => {
-  //   const tempSingleSpan = singleSpan["spanContext"];
-  //   const singleSpanSet:ISpan = {
-  //     spanId: tempSingleSpan.spanId,
-  //     traceFlags: tempSingleSpan.traceFlags,
-  //     traceId: tempSingleSpan.traceId,
-  //   };
-  //   try {
-  //     const result = func(singleSpanSet, localStorage.getItem("visitorId"));
-  //     singleSpan.end();
-  //     return result;
-  //   } catch (error) {
-  //     singleSpan.setStatus({ code: SpanStatusCode.ERROR });
-  //     singleSpan.end();
-  //     throw error;
-  //   }
-  // });
+  return context.with(trace.setSpan(context.active(), singleSpan), () => {
+    const tempSingleSpan = singleSpan["_spanContext"];
+    const singleSpanSet = {
+      spanId: tempSingleSpan.spanId,
+      traceFlags: tempSingleSpan.traceFlags,
+      traceId: tempSingleSpan.traceId,
+    };
+    try {
+      const result = func(singleSpanSet, localStorage.getItem("visitorId"));
+      singleSpan.end();
+      return result;
+    } catch (error) {
+      singleSpan.setStatus({ code: SpanStatusCode.ERROR });
+      singleSpan.end();
+      throw error;
+    }
+  });
 }

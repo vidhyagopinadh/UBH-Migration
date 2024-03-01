@@ -96,6 +96,7 @@ const StyledDiv = styled("div")(({ theme }) => ({
     pointerEvents: "auto",
   },
 }));
+
 function MedicalRecordSearchTable({ mrrList, setResponse }): JSX.Element {
   const notify = useNotify();
   const dataProvider = useDataProvider();

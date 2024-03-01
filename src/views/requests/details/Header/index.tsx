@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { colors, Grid, Typography } from "@material-ui/core";
 import { useTranslate } from "react-admin";
 import Label from "./../../../../components/label";
 import { useSelector } from "react-redux";
+
 import type { AppState, IRequestPayload } from "../../../../types";
 // const useStyles = makeStyles((theme) => ({
 //   root: {},
