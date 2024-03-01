@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
 import type { ListProps } from "react-admin";
 import type { ReactElement } from "react";
-import {
-  Card,
-  CardContent,
-  IconButton,
-  makeStyles,
-  Button,
-} from "@material-ui/core";
+
 import { BootstrapTooltip as Tooltip } from "../../components/Tooltip";
-import { Delete, Visibility, VisibilityOff } from "@material-ui/icons";
+import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import type { UpdatePersonRecordStatusV1Input } from "../../__generated__/typescript-operations_all";
@@ -22,12 +18,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import { Link } from "react-router-dom";
 import PlaylistAddSharpIcon from "@mui/icons-material/PlaylistAddSharp";
-import { Grid, Box, Divider } from "@mui/material";
+import { Grid, Box, Divider, Card, Button, IconButton } from "@mui/material";
 import CreatePageHeader from "../../components/createPageHeader";
 import Chip from "@mui/material/Chip";
 import type { GridColDef } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid";
-import { Info } from "@material-ui/icons";
+import InfoIcon from '@mui/icons-material/Info';
 import { formatSSN } from "../../utils/validator";
 import {
   Datagrid,
@@ -333,11 +329,11 @@ export const DependentList = (props: ListProps): ReactElement => {
         >
           {!expanded ? (
             <Tooltip title="View More">
-              <Visibility className={classes.showIcon} />
+              <VisibilityIcon className={classes.showIcon} />
             </Tooltip>
           ) : (
             <Tooltip title="View Less">
-              <VisibilityOff className={classes.showIcon} />
+              <VisibilityOffIcon className={classes.showIcon} />
             </Tooltip>
           )}
         </IconButton>
@@ -416,7 +412,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                 setSelectedId(props.record.id);
               }}
             >
-              <Delete
+              <DeleteIcon
                 style={{
                   color: isDisabled ? "grey" : "red",
                 }}
@@ -472,6 +468,7 @@ export const DependentList = (props: ListProps): ReactElement => {
         setShowInviteStatusDetails(true);
       }
     };
+
     const useStyles = makeStyles({
       customHeader: {
         width: "200px",
@@ -686,49 +683,49 @@ export const DependentList = (props: ListProps): ReactElement => {
       },
       ...(showPreviousAddressDetails
         ? [
-            {
-              id: 18,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_address1`,
-              ),
-              value: previousAddressData?.previous_address1 || null,
-            },
-            {
-              id: 19,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_address2`,
-              ),
-              value: previousAddressData?.previous_address2 || null,
-            },
-            {
-              id: 20,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_country`,
-              ),
-              value: previousAddressData?.previous_country || null,
-            },
-            {
-              id: 21,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_state`,
-              ),
-              value: previousAddressData?.previous_state || null,
-            },
-            {
-              id: 22,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_city`,
-              ),
-              value: previousAddressData?.previous_city || null,
-            },
-            {
-              id: 23,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_zip`,
-              ),
-              value: previousAddressData?.previous_zip || null,
-            },
-          ]
+          {
+            id: 18,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_address1`,
+            ),
+            value: previousAddressData?.previous_address1 || null,
+          },
+          {
+            id: 19,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_address2`,
+            ),
+            value: previousAddressData?.previous_address2 || null,
+          },
+          {
+            id: 20,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_country`,
+            ),
+            value: previousAddressData?.previous_country || null,
+          },
+          {
+            id: 21,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_state`,
+            ),
+            value: previousAddressData?.previous_state || null,
+          },
+          {
+            id: 22,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_city`,
+            ),
+            value: previousAddressData?.previous_city || null,
+          },
+          {
+            id: 23,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_zip`,
+            ),
+            value: previousAddressData?.previous_zip || null,
+          },
+        ]
         : []),
       {
         id: 24,
@@ -757,51 +754,51 @@ export const DependentList = (props: ListProps): ReactElement => {
       },
       ...(showInviteDetails
         ? [
-            ...(showInviteStatusDetails
-              ? [
-                  {
-                    id: 25,
-                    label: translate(
-                      `resources.patients.expandFields.inviteDetails.invite_status`,
-                    ),
-                    value: InviteData?.invite_status || null,
-                  },
-                  {
-                    id: 26,
-                    label: translate(
-                      `resources.patients.expandFields.inviteDetails.signup_completed_date`,
-                    ),
+          ...(showInviteStatusDetails
+            ? [
+              {
+                id: 25,
+                label: translate(
+                  `resources.patients.expandFields.inviteDetails.invite_status`,
+                ),
+                value: InviteData?.invite_status || null,
+              },
+              {
+                id: 26,
+                label: translate(
+                  `resources.patients.expandFields.inviteDetails.signup_completed_date`,
+                ),
 
-                    value: InviteData?.signup_completed_date
-                      ? tommddyyyy(InviteData.signup_completed_date)
-                      : null,
-                  },
-                  {
-                    id: 27,
-                    label: translate(
-                      `resources.patients.expandFields.inviteDetails.first_sign_in_date`,
-                    ),
-                    value: InviteData?.first_sign_in_date
-                      ? tommddyyyy(InviteData.first_sign_in_date)
-                      : null,
-                  },
-                ]
-              : [
-                  {
-                    id: 28,
-                    label: (
-                      <div
-                        style={{
-                          marginLeft: "250px",
-                        }}
-                      >
-                        Not yet invited
-                      </div>
-                    ),
-                    value: "    ",
-                  },
-                ]),
-          ]
+                value: InviteData?.signup_completed_date
+                  ? tommddyyyy(InviteData.signup_completed_date)
+                  : null,
+              },
+              {
+                id: 27,
+                label: translate(
+                  `resources.patients.expandFields.inviteDetails.first_sign_in_date`,
+                ),
+                value: InviteData?.first_sign_in_date
+                  ? tommddyyyy(InviteData.first_sign_in_date)
+                  : null,
+              },
+            ]
+            : [
+              {
+                id: 28,
+                label: (
+                  <div
+                    style={{
+                      marginLeft: "250px",
+                    }}
+                  >
+                    Not yet invited
+                  </div>
+                ),
+                value: "    ",
+              },
+            ]),
+        ]
         : []),
     ];
 
@@ -846,7 +843,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                       <span>
                         {translate(`resources.patients.noInfoDetails.noInfo`)}
                         <Tooltip title={FirstNameTooltipTitle}>
-                          <Info className={classes.info} />
+                          <InfoIcon className={classes.info} />
                         </Tooltip>
                       </span>
                     );
@@ -1006,11 +1003,10 @@ export const DependentList = (props: ListProps): ReactElement => {
                     label={translate(
                       "resources.patients.fields.dependent_name",
                     )}
-                    render={(record) => (
+                    render={(record: any) => (
                       <span>
-                        {`${record.firstName} ${
-                          record.middleName ? record.middleName : ""
-                        } ${record.lastName}`}
+                        {`${record.firstName} ${record.middleName ? record.middleName : ""
+                          } ${record.lastName}`}
                       </span>
                     )}
                   />
@@ -1021,7 +1017,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FunctionField
                     label={translate("resources.patients.fields.ssn")}
-                    render={(record) => (
+                    render={(record: any) => (
                       <span>
                         {record.ssn !== null ? formatSSN(record.ssn) : null}
                       </span>
@@ -1030,7 +1026,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FunctionField
                     label={translate("resources.patients.fields.sex")}
-                    render={(record) => {
+                    render={(record: any) => {
                       const sexData = JSON.parse(record.sex);
                       const sexValue = sexData.other
                         ? sexData.other_value
@@ -1042,7 +1038,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FunctionField
                     label={translate("resources.patients.fields.gender")}
-                    render={(record) => {
+                    render={(record: any) => {
                       const genderData = JSON.parse(record.gender);
                       const genderValue = genderData.other
                         ? genderData.other_value
@@ -1054,7 +1050,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FunctionField
                     label={translate("resources.patients.fields.email")}
-                    render={(record) => (
+                    render={(record: any) => (
                       <span>
                         <a href={"mailto:" + record.email}>{record.email}</a>
                       </span>
@@ -1073,7 +1069,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FunctionField
                     label={translate("resources.patients.fields.status")}
-                    render={(record) => (
+                    render={(record: any) => (
                       <span>
                         {record.registrationStatus === "Virtual" ? (
                           <Chip

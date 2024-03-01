@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, List, usePermissions, useTranslate } from "react-admin";
+import { Button, List, usePermissions, useRecordContext, useTranslate } from "react-admin";
 import ProjectCard from "./../../../components/projectCard";
 import {
   PatientDependentFilter,
@@ -152,7 +152,7 @@ const Card = withStyles((theme) => ({
   },
 }))(MuiCard);
 
-export const CommentGrid = ({ ...props }: any): JSX.Element => {
+export const CommentGrid = ({ ids, data, basePath }: any): JSX.Element => {
   const { StyledDiv } = useRequestList();
   const [mode, setMode] = useState("grid");
   const { permissions } = usePermissions();
@@ -161,6 +161,8 @@ export const CommentGrid = ({ ...props }: any): JSX.Element => {
   //   (state: AppState) => state.userInfoReducer,
   // );
   const userInfoReducer: any = useContext(UserContext);
+
+
   useEffect(() => {
     setMode("grid");
     // if (permissions === CO_ROLE_PPA) {
@@ -189,11 +191,12 @@ export const CommentGrid = ({ ...props }: any): JSX.Element => {
     };
   }, []);
 
-  console.log(props);
+  console.log(ids);
+  console.log(data);
 
   return (
     <StyledDiv>
-      {/* {ids.length !== 0 ? (
+      {ids.length !== 0 ? (
         <>
           <Typography
             className={classes.title}
@@ -229,17 +232,17 @@ export const CommentGrid = ({ ...props }: any): JSX.Element => {
             />
           )}
         </Box>
-      )} */}
+      )}
     </StyledDiv>
   );
 };
 
-// CommentGrid.defaultProps = {
-//   data: {},
-//   ids: [],
-// };
+CommentGrid.defaultProps = {
+  data: {},
+  ids: [],
+};
 
-const FilterSidebar = ({ type = null }): JSX.Element => {
+const FilterSidebar = ({ type: any = null }): JSX.Element => {
   const PREFIX = "RequestList";
 
   const classes = {
@@ -447,7 +450,7 @@ export const RequestList = (props: any): JSX.Element => {
                       aside={<FilterSidebar type={currTab} />}
                     // filters={<UserFilter />}
                     // filterDefaultValues={{ categoryType: "request" }}
-                    >
+                    >{console.log("in griddddd", props)}
                       <CommentGrid {...props} />
                     </List>
                   </>
