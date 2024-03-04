@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  Grid,
-  InputLabel,
-  Typography,
-} from "@material-ui/core";
-import type { Theme } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
+// import {
+//   Card,
+//   CardContent,
+//   Container,
+//   Divider,
+//   Grid,
+//   InputLabel,
+//   Typography,
+// } from "@material-ui/core";
+// import type { Theme } from "@material-ui/core";
+// import { makeStyles } from "@material-ui/core";
 import { useDataProvider } from "react-admin";
 import { tommddyyyy } from "../../utils/dateFormator";
 import { Header } from "./header";
@@ -21,58 +21,128 @@ import {
   AUTHORIZATION_SERVICE_PROVIDERS_TYPE,
   FORM_CONTENT,
 } from "../../utils/constants";
-import type { IAuthorizationProps } from "../../types";
+import { styled } from "@mui/material/styles";
+// import type { IAuthorizationProps } from "../../types";
+import {
+  Card,
+  CardContent,
+  Container,
+  Divider,
+  Grid,
+  InputLabel,
+  Typography,
+} from "@mui/material";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    "& .MuiTextField-root": {
-      margin: theme.spacing(1),
-    },
-    backgroundColor: theme.palette.primary.light,
-  },
-  fullWidth: {
-    marginBottom: theme.spacing(1),
-    width: "100%",
-  },
-  fields: {
-    margin: theme.spacing(-1),
-    display: "flex",
-    flexWrap: "wrap",
-    "& > *": {
-      flexGrow: 1,
-      margin: theme.spacing(1),
-    },
-  },
-  select: {
-    minWidth: "40%",
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-  header: {
+// const useStyles = makeStyles((theme: Theme) => ({
+//   root: {
+//     "& .MuiTextField-root": {
+//       margin: theme.spacing(1),
+//     },
+//     backgroundColor: theme.palette.primary.light,
+//   },
+//   fullWidth: {
+//     marginBottom: theme.spacing(1),
+//     width: "100%",
+//   },
+//   fields: {
+//     margin: theme.spacing(-1),
+//     display: "flex",
+//     flexWrap: "wrap",
+//     "& > *": {
+//       flexGrow: 1,
+//       margin: theme.spacing(1),
+//     },
+//   },
+//   select: {
+//     minWidth: "40%",
+//   },
+//   button: {
+//     margin: theme.spacing(1),
+//   },
+//   header: {
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+//     flexWrap: "wrap",
+//     marginBottom: theme.spacing(2),
+//   },
+//   subHead: {
+//     backgroundColor: theme.palette.primary.light,
+//     padding: "5px 10px",
+//     marginBottom: "0px",
+//     fontWeight: 600,
+//     fontSize: "16px",
+//   },
+//   label: {
+//     fontWeight: "bold",
+//     fontSize: "13px",
+//   },
+//   rootLabel: {
+//     marginLeft: "0px",
+//     marginRight: "0px",
+//   },
+//   contentText1: {
+//     padding: "10px 15px 10px 18px",
+//   },
+// }));
+
+const PREFIX = "AuthorizationDetails";
+const classes = {
+  root: `${PREFIX}-root`,
+  fullWidth: `${PREFIX}-fullWidth`,
+  fields: `${PREFIX}-fields`,
+  select: `${PREFIX}-select`,
+  button: `${PREFIX}-button`,
+  header: `${PREFIX}-header`,
+  subHead: `${PREFIX}-subHead`,
+  label: `${PREFIX}-label`,
+  rootLabel: `${PREFIX}-rootLabel`,
+  contentText1: `${PREFIX}- contentText1`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-    marginBottom: theme.spacing(2),
+    backgroundColor: theme.palette.primary.main,
   },
-  subHead: {
-    backgroundColor: theme.palette.primary.light,
-    padding: "5px 10px",
-    marginBottom: "0px",
-    fontWeight: 600,
-    fontSize: "16px",
+  [`& .${classes.fullWidth}`]: {
+    borderRadius: theme.shape.radius,
   },
-  label: {
-    fontWeight: "bold",
-    fontSize: "13px",
+  [`& .${classes.fields}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
   },
-  rootLabel: {
-    marginLeft: "0px",
-    marginRight: "0px",
+  [`&.${classes.select}`]: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: theme.palette.primary.main,
   },
-  contentText1: {
-    padding: "10px 15px 10px 18px",
+  [`& .${classes.button}`]: {
+    borderRadius: theme.shape.radius,
+  },
+  [`& .${classes.header}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
+  },
+  [`&.${classes.subHead}`]: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: theme.palette.primary.main,
+  },
+  [`& .${classes.label}`]: {
+    borderRadius: theme.shape.radius,
+  },
+  [`& .${classes.rootLabel}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
+  },
+  [`& .${classes.contentText1}`]: {
+    color: theme.palette.common.white,
+    fontSize: 16,
+    lineHeight: 1.7,
   },
 }));
 
@@ -81,7 +151,7 @@ const AuthorizationDetails = ({
   token,
 }: IAuthorizationProps): JSX.Element => {
   const [subscribepatientDetailsMutation] = useMutation(patientDetails, {});
-  const classes = useStyles();
+
   const dataProvider = useDataProvider();
   const [fileData, setFileData] = useState<File>();
   const [legalIdData, setLegalIdData] = useState<File>();
@@ -151,7 +221,7 @@ const AuthorizationDetails = ({
           data[0].authFormType === 1
             ? "healthInfoAuthorizationV2"
             : "substanceDisorderAuthorizationV1s",
-          queryOptionRequest,
+          queryOptionRequest
         )
         .then(({ data }) => {
           if (data) {
@@ -165,7 +235,7 @@ const AuthorizationDetails = ({
               authorizationServiceProvidersOthers:
                 data[0].authorizationServiceProvidersOthers,
               authorizationServiceProvidersType: Number(
-                data[0].authorizationServiceProvidersType,
+                data[0].authorizationServiceProvidersType
               ),
               useDisorderAuthorizationTitle:
                 data[0].useDisorderAuthorizationTitle,
