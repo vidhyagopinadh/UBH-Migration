@@ -2,68 +2,98 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import type { GridColDef } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid";
-import { Grid, IconButton, makeStyles, Radio } from "@material-ui/core";
+import { Grid, IconButton, Radio } from "@mui/material";
 import { useDataProvider } from "react-admin";
 import { perPageMax } from "../utils/pageConstants";
-import type { QueryOptions } from "../types";
+import type { QueryOptions } from "../types/types";
 import moment from "moment";
 import { Typography } from "@mui/material";
-import { Close } from "@material-ui/icons";
+import { Close } from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
 
-const useStyles = makeStyles(() => ({
-  root: {
-    "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer":
-      {
-        display: "none",
-      },
+const PREFIX = "dependentTable";
 
-    "& .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus":
-      {
+const classes = {
+  root: `${PREFIX}-root`,
+  noOutline: `${PREFIX}-noOutline`,
+  noSelection: `${PREFIX}-noSelection`,
+  customCell: `${PREFIX}-customCell`,
+  selectedRow: `${PREFIX}-selectedRow`,
+  table: `${PREFIX}-table`,
+  info: `${PREFIX}-info`,
+  helperText: `${PREFIX}-helperText`,
+  tableBox: `${PREFIX}-tableBox`,
+  searchLabel: `${PREFIX}-searchLabel`,
+  subLabel: `${PREFIX}-subLabel`,
+  button: `${PREFIX}-button`,
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
+
+      "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer":
+        {
+          display: "none",
+        },
+  
+      "& .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus":
+        {
+          outline: "none !important",
+        },
+      "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-cell:focus": {
         outline: "none !important",
       },
-    "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-cell:focus": {
-      outline: "none !important",
-    },
   },
-  noOutline: {
+  [`& .${classes.noOutline}`]: {
     outline: "none",
   },
-  noSelection: {
+  [`& .${classes.noSelection}`]: {
     "&.Mui-selected": {
       backgroundColor: "transparent",
     },
   },
-  customCell: {
+  [`&.${classes.customCell}`]: {
     outline: "none",
   },
-  selectedRow: {
+  [`& .${classes.selectedRow}`]: {
     "& .MuiDataGrid-cell": {
       outline: "none !important",
       boxShadow: "none !important",
     },
   },
-  table: {
+  [`& .${classes.table}`]: {
     padding: 0,
   },
-  info: {
-    cursor: "auto",
+  [`&.${classes.info}`]: {
+    "& th": {
+      cursor: "auto",
     width: "20px",
     height: "15px",
     color: "grey",
+    },
   },
-  helperText: {
+  [`& .${classes.helperText}`]: {
     textAlign: "right",
   },
-  tableBox: { height: 370, width: "100%" },
-  searchLabel: { fontSize: 16, fontWeight: 500 },
-  subLabel: { marginTop: "10px", marginBottom: "10px" },
-  button: { textTransform: "none" },
-  "& .MuiDataGrid-cell:focus": {
-    outline: "0px solid white",
+  [`& .${classes.tableBox}`]: {
+    height: 370,
+    width: "100%" 
+  },
+  [`&.${classes.searchLabel}`]: {
+    fontSize: 16,
+    fontWeight: 500
+  },
+  [`& .${classes.subLabel}`]: {
+    marginTop: "10px", 
+    marginBottom: "10px"
+  },
+  [`& .${classes.button}`]: {
+    "& .MuiDataGrid-cell:focus": {
+      outline: "0px solid white",
+    },
   },
 }));
 const DependentTable = ({ getSelectedDependent }): JSX.Element => {
-  const classes = useStyles();
   const dataProvider = useDataProvider();
   const [dependentData, setDependentData] = useState([]);
   const [noResult, setNoResult] = useState(false);
@@ -158,6 +188,7 @@ const DependentTable = ({ getSelectedDependent }): JSX.Element => {
 
   return (
     <>
+    <StyledDiv>
       {noResult ? (
         <div
           style={{
@@ -228,6 +259,7 @@ const DependentTable = ({ getSelectedDependent }): JSX.Element => {
           </div>
         </Grid>
       )}
+      </StyledDiv>
     </>
   );
 };

@@ -285,7 +285,7 @@ function InvitePatient({ open, patientData, handleClose }: any): JSX.Element {
   }, [patientData]);
   return (
   <StyledDiv>
-    <Modal onClose={handleClose} open={open} disableBackdropClick>
+    {/* <Modal onClose={handleClose} open={open} disableBackdropClick> */}
       <Box
         sx={{
           position: "absolute",
@@ -652,7 +652,7 @@ function InvitePatient({ open, patientData, handleClose }: any): JSX.Element {
           />
         )}
       </Box>
-    </Modal>
+    {/* </Modal> */}
     </StyledDiv>
   );
 }

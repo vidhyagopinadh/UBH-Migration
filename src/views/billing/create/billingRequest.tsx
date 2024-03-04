@@ -77,7 +77,7 @@ const classes = {
   button: `${PREFIX}-button`,
   header: `${PREFIX}-header`,
 };
-const Root = styled("div")(({ theme }) => ({
+const StyledDiv = styled("div")(({ theme }) => ({
   [`&.${classes.root}`]: {
     backgroundColor: theme.palette.primary.light,
     marginTop: 20,
@@ -867,6 +867,7 @@ export default function BillingRequest(): JSX.Element {
   return !emailNotVerified &&
     (userInfoReducer.role === CO_ROLE_PPA ||
       userInfoReducer.role === CO_ROLE_PATIENT) ? (
+        <StyledDiv>
     <Container maxWidth="xl" style={{ maxWidth: "unset" }}>
       {isLoading && <LinearProgress color="secondary" />}
       {openBase && (
@@ -1381,6 +1382,7 @@ export default function BillingRequest(): JSX.Element {
         </CardActions>
       </div>
     </Container>
+    </StyledDiv>
   ) : (
     <PageNotFound />
   );

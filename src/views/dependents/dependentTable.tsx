@@ -229,18 +229,19 @@ export const DependentList = (props: ListProps): ReactElement => {
   const [openDeleteBase, setOpenDeleteBase] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState("");
   const [selectedDependentData, setSelectedDependentData] =React.useState(null);
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReduce.email = ""
+  // useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
   const [subscribeUpdateRequestTokenMutation] = useMutation(
     updatePersonRecordStatus,
     {},
   );
   useEffect(() => {
-    if (!userInfoReducer.emailVerified) {
+    //if (!userInfoReducer.emailVerified) {
       setEmailNotVerified(true);
       setShowBanner(true);
-    }
+   // }
   }, []);
   const handleCloseDependentInvite = (): void => {
     setDependentInvitePopup(false);
@@ -294,7 +295,7 @@ export const DependentList = (props: ListProps): ReactElement => {
             getTrace(
               "Account Closed Successfully",
               "ev-085",
-              userInfoReducer.email,
+              "userInfoReducer.email",
             );
           } else {
             notify(
@@ -308,13 +309,13 @@ export const DependentList = (props: ListProps): ReactElement => {
   };
 
   function exportDependent(patientDemographics): void {
-    getTrace("Export Clicked", "ev-086", userInfoReducer.email);
+    getTrace("Export Clicked", "ev-086", "userInfoReducer.email");
     jsonExport(patientDemographics, (err, csv) => {
       downloadCSV(csv, "dependents");
       getTrace(
         "Dependent Demographics file downloaded as csv format",
         "ev-087",
-        userInfoReducer.email,
+        "userInfoReducer.email",
       );
     });
   }
@@ -325,17 +326,22 @@ export const DependentList = (props: ListProps): ReactElement => {
 
   const FormattedDateField = (props): JSX.Element => {
     const { record, source } = props;
-    const formattedDate = tommddyyyy(record[source]);
+    if(record){
+      const formattedDate = tommddyyyy(record[source]);
     return <span>{formattedDate}</span>;
+    }else{
+      return <></>
+    }
+   
   };
 
   const CustomButtonLinkField = (props): JSX.Element => {
     const [expanded, toggleExpanded] = useExpanded(
       "dependents",
-      props.record.id,
+      props?.record?.id,
     );
     useEffect(() => {
-      if (props.record.id !== selectedId) {
+      if (props?.record?.id !== selectedId) {
         if (expanded) {
           toggleExpanded();
         }
@@ -385,7 +391,7 @@ export const DependentList = (props: ListProps): ReactElement => {
             onClick={handleEditClick}
             component={Link}
             to={{
-              pathname: `/addDependents/${props.record.id}`,
+              pathname: `/addDependents/${props?.record?.id}`,
               state: {
                 patientDetails: props.record,
                 isForEdit: true,
@@ -403,7 +409,7 @@ export const DependentList = (props: ListProps): ReactElement => {
         </Tooltip>
         <Tooltip
           title={
-            props.record.registrationStatus === "REGISTERED"
+            props?.record?.registrationStatus === "REGISTERED"
               ? "Inviting an already registered dependent is not permitted."
               : "Invite Dependent"
           }
@@ -414,7 +420,7 @@ export const DependentList = (props: ListProps): ReactElement => {
               color="primary"
               onClick={handleInviteClick}
               disabled={
-                props.record.registrationStatus === "REGISTERED" ? true : false
+                props?.record?.registrationStatus === "REGISTERED" ? true : false
               }
             >
               <PersonAddAltIcon
@@ -422,7 +428,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   width: "20px",
                   height: "20px",
                   color:
-                    props.record.registrationStatus === "REGISTERED"
+                    props?.record?.registrationStatus === "REGISTERED"
                       ? "grey"
                       : "blue",
                 }}
@@ -465,9 +471,9 @@ export const DependentList = (props: ListProps): ReactElement => {
     return (
       <div className={classes.filterContainer}>
         <Card className={classes.filter}>
-          <CardContent className={classes.filterContent}>
+          {/* <CardContent className={classes.filterContent}> */}
             <StatusFilter />
-          </CardContent>
+          {/* </CardContent> */}
         </Card>
       </div>
     );
@@ -504,42 +510,51 @@ export const DependentList = (props: ListProps): ReactElement => {
       }
     };
 
-    const useStyles = makeStyles({
-      customHeader: {
-        width: "200px",
-      },
-      dataGridContainer: {
-        width: "700px",
-        maxWidth: "100%",
-      },
-      hideHeader: {
-        "& .MuiDataGrid-columnHeaders": {
-          minHeight: "0!important",
-          maxHeight: "0!important",
-          lineHeight: "0!important",
-        },
-      },
-      customColumn: {
-        width: "200px",
-      },
-      customValue: {
-        marginLeft: "20px",
-      },
-      customDivider: {
-        margin: 0,
-        borderStyle: "hidden!important ",
-        borderColor: "rgba(0, 0, 0, 0.12)",
-        borderBottomWidth: "inherit!important",
-        disply: "none",
-      },
-      info: {
-        cursor: "auto",
-        width: "20px",
-        height: "15px",
-        color: "grey",
-      },
-    });
-    const classes = useStyles();
+const PREFIX = "deptTable";
+const classes = {
+  customHeader: `${PREFIX}-customHeader`,
+  dataGridContainer: `${PREFIX}-dataGridContainer`,
+  hideHeader: `${PREFIX}-hideHeader`,
+  customColumn: `${PREFIX}-customColumn`,
+  customValue: `${PREFIX}-customValue`,
+  customDivider: `${PREFIX}-customDivider`,
+  info: `${PREFIX}-info`,
+};
+const Root = styled("div")(({ theme }) => ({
+  [`&.${classes.customHeader}`]: {
+    width: "200px",
+  },
+  [`& .${classes.dataGridContainer}`]: {
+    width: "700px",
+    maxWidth: "100%",
+  },
+  [`& .${classes.hideHeader}`]: {
+    "& .MuiDataGrid-columnHeaders": {
+      minHeight: "0!important",
+      maxHeight: "0!important",
+      lineHeight: "0!important",
+    },
+  },
+  [`& .${classes.customColumn}`]: {
+    width: "200px",
+  },
+  [`& .${classes.customValue}`]: {
+    marginLeft: "20px",
+  },
+  [`& .${classes.customDivider}`]: {
+    margin: 0,
+    borderStyle: "hidden!important ",
+    borderColor: "rgba(0, 0, 0, 0.12)",
+    borderBottomWidth: "inherit!important",
+    disply: "none",
+  },
+  [`& .${classes.info}`]: {
+    cursor: "auto",
+    width: "20px",
+    height: "15px",
+    color: "grey",
+  },
+}));
     const getRowHeight = (): number => {
       return 35;
     };
@@ -578,29 +593,29 @@ export const DependentList = (props: ListProps): ReactElement => {
         id: 1,
         label: translate(`resources.patients.expandFields.firstName`),
         value:
-          record.firstName && record.firstName.trim() ? record.firstName : null,
+          record?.firstName && record?.firstName.trim() ? record?.firstName : null,
       },
 
       {
         id: 2,
         label: translate(`resources.patients.expandFields.middleName`),
         value:
-          record.middleName && record.middleName.trim()
-            ? record.middleName
+          record?.middleName && record?.middleName.trim()
+            ? record?.middleName
             : null,
       },
       {
         id: 3,
         label: translate(`resources.patients.expandFields.lastName`),
         value:
-          record.lastName && record.lastName.trim() ? record.lastName : null,
+          record?.lastName && record?.lastName.trim() ? record?.lastName : null,
       },
       {
         id: 28,
         label: translate(`resources.patients.expandFields.previousFirstName`),
         value:
-          record.previousFirstName && record.previousFirstName.trim()
-            ? record.previousFirstName
+          record?.previousFirstName && record?.previousFirstName.trim()
+            ? record?.previousFirstName
             : null,
       },
 
@@ -608,84 +623,84 @@ export const DependentList = (props: ListProps): ReactElement => {
         id: 29,
         label: translate(`resources.patients.expandFields.previousMiddleName`),
         value:
-          record.previousMiddleName && record.previousMiddleName.trim()
-            ? record.previousMiddleName
+          record?.previousMiddleName && record?.previousMiddleName?.trim()
+            ? record?.previousMiddleName
             : null,
       },
       {
         id: 30,
         label: translate(`resources.patients.expandFields.previousLastName`),
         value:
-          record.previousLastName && record.previousLastName.trim()
-            ? record.previousLastName
+          record?.previousLastName && record?.previousLastName?.trim()
+            ? record?.previousLastName
             : null,
       },
       {
         id: 4,
         label: translate(`resources.patients.expandFields.birthDate`),
-        value: record.birthDate ? tommddyyyy(record.birthDate) : null,
+        value: record?.birthDate ? tommddyyyy(record?.birthDate) : null,
       },
       {
         id: 5,
         label: translate(`resources.patients.expandFields.ssn`),
-        value: record.ssn ? formatSSN(record.ssn) : null,
+        value: record?.ssn ? formatSSN(record?.ssn) : null,
       },
       {
         id: 6,
         label: translate(`resources.patients.expandFields.sex`),
-        value: record.sex ? sexValue : null,
+        value: record?.sex ? sexValue : null,
       },
       {
         id: 7,
         label: translate(`resources.patients.expandFields.gender`),
-        value: record.gender ? genderValue : null,
+        value: record?.gender ? genderValue : null,
       },
       {
         id: 8,
         label: translate(`resources.patients.expandFields.email`),
-        value: record.email ? record.email : null,
+        value: record?.email ? record.email : null,
       },
       {
         id: 9,
         label: translate(`resources.patients.expandFields.phone`),
-        value: record.phoneNumber ? record.phoneNumber : null,
+        value: record?.phoneNumber ? record?.phoneNumber : null,
       },
       {
         id: 10,
         label: translate(`resources.patients.expandFields.relation`),
-        value: record.relatedPersonRelationshipValue
-          ? record.relatedPersonRelationshipValue
+        value: record?.relatedPersonRelationshipValue
+          ? record?.relatedPersonRelationshipValue
           : null,
       },
       {
         id: 11,
         label: translate(`resources.patients.expandFields.Address.address1`),
-        value: record.address1 ? record.address1 : null,
+        value: record?.address1 ? record.address1 : null,
       },
       {
         id: 12,
         label: translate(`resources.patients.expandFields.Address.address2`),
-        value: record.address2 ? record.address2 : null,
+        value: record?.address2 ? record.address2 : null,
       },
       {
         id: 13,
         label: translate(`resources.patients.expandFields.Address.country`),
-        value: record.country ? record.country : null,
+        value: record?.country ? record?.country : null,
       },
       {
         id: 14,
         label: translate(`resources.patients.expandFields.Address.state`),
-        value: record.state ? record.state : null,
+        value: record?.state ? record?.state : null,
       },
       {
         id: 15,
         label: translate(`resources.patients.expandFields.Address.city`),
-        value: record.city ? record.city : null,
+        value: record?.city ? record?.city : null,
       },
       {
         id: 16,
         label: translate(`resources.patients.expandFields.Address.zip`),
-        value: record.zip ? record.zip : null,
+        value: record?.zip ? record?.zip : null,
       },
       {
         id: 17,
@@ -805,7 +820,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                 ),
 
                 value: InviteData?.signup_completed_date
-                  ? tommddyyyy(InviteData.signup_completed_date)
+                  ? tommddyyyy(InviteData?.signup_completed_date)
                   : null,
               },
               {
@@ -814,7 +829,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   `resources.patients.expandFields.inviteDetails.first_sign_in_date`,
                 ),
                 value: InviteData?.first_sign_in_date
-                  ? tommddyyyy(InviteData.first_sign_in_date)
+                  ? tommddyyyy(InviteData?.first_sign_in_date)
                   : null,
               },
             ]
@@ -852,6 +867,7 @@ export const DependentList = (props: ListProps): ReactElement => {
       );
     }, []);
     return (
+      <Root>
       <Box
         sx={{
           width: "100%",
@@ -945,10 +961,13 @@ export const DependentList = (props: ListProps): ReactElement => {
           />
         </div>
       </Box>
+      </Root>
     );
+    
   };
   return (
     <>
+    <StyledDiv>
       <InvitePatient
         open={openDependentInvitePopup}
         patientData={selectedDependentData}
@@ -1047,7 +1066,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FormattedDateField
                     source="birthDate"
-                    label={translate("resources.patients.fields.dob")}
+                    label={translate("resources?.patients?.fields?.dob")}
                     cellClassName={classes.dob}
                   />
                   <FunctionField
@@ -1150,6 +1169,7 @@ export const DependentList = (props: ListProps): ReactElement => {
           type="delete"
         />
       )}
+    </StyledDiv>
     </>
   );
 };
