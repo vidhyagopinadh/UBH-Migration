@@ -11,14 +11,14 @@ import {
   InputLabel,
   LinearProgress,
   Typography,
-} from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import type { Theme } from "@material-ui/core/styles";
+} from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+//import type { Theme } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
 import { useMutation } from "@apollo/react-hooks";
 import createInsuranceRequestQuery from "../../../queries/createInsuranceRequest/createInsuranceRequestQuery";
 import createFileUploadQuery from "../../../queries/createFileUpload/createFileUploadQuery";
@@ -32,11 +32,11 @@ import type {
   IContactType,
   IFileResponse,
   IGenericType,
-} from "../../../types";
+} from "../../../types/types";
 import CreatePageHeader from "../../../components/createPageHeader";
-import { useHistory } from "react-router";
-import type { AppState } from "../../../types";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+//import type { AppState } from "../../../types";
+//import { useSelector } from "react-redux";
 import { perPageMax } from "../../../utils/pageConstants";
 // import useTraces from "../../../hooks/useTraces";
 import { correlationConstants } from "../../../utils/OT/correlationConstants";
@@ -101,9 +101,8 @@ interface IOrganization {
   name?: string;
 }
 export default function BillingRequest(): JSX.Element {
-  const classes = useStyles();
   const dataProvider = useDataProvider();
-  const history = useHistory();
+  const navigate = useNavigate();
   const translate = useTranslate();
   const [doSubmit, setDoSubmit] = useState(true);
   const userInfoReducer = useSelector(
@@ -187,7 +186,7 @@ export default function BillingRequest(): JSX.Element {
   const [assignToList, setAssignedList] = useState([]);
   const [errorSet, setErrorSet] = useState(false);
   const [errorUpload, setErrorUpload] = useState(false);
-  const { getTrace, handleTrace } = useTraces();
+  //const { getTrace, handleTrace } = useTraces();
   const [contactType, setContactType] = useState<IContactType>({
     isPhone: false,
     istext: false,
@@ -895,17 +894,17 @@ export default function BillingRequest(): JSX.Element {
           confirmAction={() => {
             setOpenSubmitBase(false);
             if (userInfoReducer.role === CO_ROLE_PATIENT) {
-              history.push("/myRequests");
+              navigate("/myRequests");
             } else {
-              history.push("/requests");
+              navigate("/requests");
             }
           }}
           onClose={() => {
             setOpenSubmitBase(false);
             if (userInfoReducer.role === CO_ROLE_PATIENT) {
-              history.push("/myRequests");
+              navigate("/myRequests");
             } else {
-              history.push("/requests");
+              navigate("/requests");
             }
           }}
           title={
@@ -928,9 +927,9 @@ export default function BillingRequest(): JSX.Element {
           confirmAction={() => {
             setOpenErrorBase(false);
             if (userInfoReducer.role === CO_ROLE_PATIENT) {
-              history.push("/myRequests");
+              navigate("/myRequests");
             } else {
-              history.push("/requests");
+              navigate("/requests");
             }
           }}
           onClose={() => {

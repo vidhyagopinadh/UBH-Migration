@@ -10,7 +10,7 @@ import {
   Typography,
   Tab,
   Tabs,
-} from "@material-ui/core";
+} from "@mui/material";
 import { BootstrapTooltip as Tooltip } from "../../components/Tooltip";
 import {
   AccountCircle,
@@ -18,7 +18,7 @@ import {
   Delete,
   Visibility,
   VisibilityOff,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import type {
@@ -39,7 +39,7 @@ import CreatePageHeader from "../../components/createPageHeader";
 import Chip from "@mui/material/Chip";
 import type { GridColDef } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid";
-import { Info } from "@material-ui/icons";
+import { Info } from "@mui/icons-material";
 import {
   Datagrid,
   TextField,
@@ -53,11 +53,11 @@ import {
   downloadCSV,
   useDataProvider,
 } from "react-admin";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 import useTraces from "../../hooks/useTraces";
-import type { AppState } from "../../types";
+//import type { AppState } from "../../types/comptypes";
 import jsonExport from "jsonexport/dist";
-import { tommddyyyy } from "../../utils/dateFormator";
+import { tommddyyyy } from "../../lib/universal/utils/dateFormator";
 import { StatusFilter } from "./filters";
 import { formatSSN } from "../../utils/validator";
 import CustomEmpty from "../../components/customEmpty";
@@ -72,8 +72,40 @@ import ConfirmMrrView from "./confirmMrrView";
 import LoadingMrr from "./loadingMrr";
 import { perPageMax } from "../../utils/pageConstants";
 import ErrorMrr from "./errorMrr";
-const useStyles = makeStyles((theme) => ({
-  container: {
+import { styled } from "@mui/material/styles";
+
+const PREFIX = "patientTable";
+
+const classes = {
+  container: `${PREFIX}-container`,
+  filterBar: `${PREFIX}-filterBar`,
+  tableContainer: `${PREFIX}-tableContainer`,
+  icons: `${PREFIX}-icons`,
+  addIcon: `${PREFIX}-addIcon`,
+  patientInviteButton: `${PREFIX}-patientInviteButton`,
+  patientTable: `${PREFIX}-patientTable`,
+  item: `${PREFIX}-item`,
+  email: `${PREFIX}-email`,
+  userGroup: `${PREFIX}-userGroup`,
+  createdAt: `${PREFIX}-createdAt`,
+  invitationStatus: `${PREFIX}-invitationStatus`,
+  showIcon: `${PREFIX}-showIcon`,
+  reminderIcon: `${PREFIX}-reminderIcon`,
+  iconDiv: `${PREFIX}-iconDiv`,
+  filterContainer: `${PREFIX}-filterContainer`,
+  filter: `${PREFIX}-filter`,
+  customHeaderem: `${PREFIX}-customHeader`,
+  dataGridContainer: `${PREFIX}-dataGridContainer`,
+  hideHeader: `${PREFIX}-hideHeader`,
+  customColumn: `${PREFIX}-customColumn`,
+  customDivider: `${PREFIX}-customDivider`,
+  ssn: `${PREFIX}-ssn`,
+  filterContent: `${PREFIX}-filterContent`,
+  customHeader: `${PREFIX}-customHeader`,
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.container}`]: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -83,102 +115,111 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "hidden",
     overflowX: "scroll",
   },
-  filterBar: {
+  [`& .${classes.filterBar}`]: {
     marginBottom: "20px",
   },
-  tableContainer: {
+  [`& .${classes.tableContainer}`]: {
     width: "100%",
     overflowX: "auto",
   },
-  icons: { margin: "0px", padding: "0px", paddingRight: "3px" },
-  addIcon: {
+  [`&.${classes.icons}`]: {
+    margin: "0px",
+    padding: "0px",
+    paddingRight: "3px"
+  },
+  [`& .${classes.addIcon}`]: {
     marginRight: theme.spacing(1),
   },
-  patientInviteButton: {
+  [`&.${classes.patientInviteButton}`]: {
     "&:hover": {
       backgroundColor: "#ffffff",
     },
     marginTop: "15px",
     float: "right",
   },
-  patientTable: {
+  [`& .${classes.filterBar}`]: {
+    marginRight: "20px",
+    fontWeight: 600,
+  },
+  [`& .${classes.patientTable}`]: {
     "& th": {
       borderBottom: "2px solid #ccc",
     },
   },
-
-  item: {
+  [`&.${classes.item}`]: {
     fontSize: "12px",
     lineHeight: "1",
   },
-
-  email: {
+  [`& .${classes.email}`]: {
     maxWidth: 150,
     overflow: "hidden",
     textOverflow: "ellipsis",
     wordBreak: "break-all",
   },
-  userGroup: {
+  [`&.${classes.userGroup}`]: {
     maxWidth: 100,
   },
-  createdAt: {
+  [`& .${classes.createdAt}`]: {
     maxWidth: 120,
   },
-  invitationStatus: {
+  [`& .${classes.createdAt}`]: {
+    maxWidth: 120,
+  },
+  [`&.${classes.invitationStatus}`]: {
     maxWidth: 100,
   },
-  showIcon: {
+  [`& .${classes.showIcon}`]: {
     color: "green",
   },
-  reminderIcon: {
+  [`& .${classes.reminderIcon}`]: {
     color: "blue",
   },
-  iconDiv: {
+  [`& .${classes.iconDiv}`]: {
     display: "flex",
     justifyContent: "flex-start",
     width: "100%",
   },
-  filterContainer: {
+  [`&.${classes.filterContainer}`]: {
     display: "flex",
     order: -1,
     paddingRight: "20px",
   },
-  filter: {
+  [`& .${classes.filter}`]: {
     backgroundColor: theme.palette.primary.light,
     width: 200,
     display: "flex",
     flexDirection: "column",
   },
-  filterContent: {
+  [`&.${classes.filterContent}`]: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
   },
-  customHeader: {
+  [`& .${classes.customHeader}`]: {
     width: "200px",
   },
-  dataGridContainer: {
+  [`& .${classes.dataGridContainer}`]: {
     width: "700px",
     maxWidth: "100%",
   },
-  hideHeader: {
+  [`&.${classes.hideHeader}`]: {
     "& .MuiDataGrid-columnHeaders": {
       minHeight: "0!important",
       maxHeight: "0!important",
       lineHeight: "0!important",
     },
   },
-  customColumn: {
+  [`& .${classes.customColumn}`]: {
     width: "200px",
   },
-  customDivider: {
+  [`&.${classes.customDivider}`]: {
     margin: 0,
     borderStyle: "hidden!important ",
     borderColor: "rgba(0, 0, 0, 0.12)",
     borderBottomWidth: "inherit!important",
     disply: "none",
   },
-  ssn: {
+  [`& .${classes.ssn}`]: {
     maxWidth: 150,
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -192,7 +233,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const PatientList = (props: ListProps): ReactElement => {
-  const classes = useStyles();
   const refresh = useRefresh();
   const notify = useNotify();
   const translate = useTranslate();
@@ -344,7 +384,7 @@ export const PatientList = (props: ListProps): ReactElement => {
     };
     const isDisabled = emailNotVerified;
     return (
-      <div className={classes.iconDiv}>
+      <StyledDiv className={classes.iconDiv}>
         <IconButton
           className={classes.icons}
           color="primary"
@@ -447,7 +487,7 @@ export const PatientList = (props: ListProps): ReactElement => {
             </IconButton>
           </div>
         </Tooltip>
-      </div>
+      </StyledDiv>
     );
   };
 

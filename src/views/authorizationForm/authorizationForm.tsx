@@ -13,14 +13,14 @@ import {
   RadioGroup,
   TextField,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import { Header } from "./header";
 import { AuthorizationComponent } from "./../../components/authorizationComponent";
 import { SignatureBox } from "./../../components/signature";
 import Acknowledge from "../../components/acknowledge";
 import BaseModal from "../../components/baseModal";
-import type { IAlreadyLoggedIn, IAuthorizationProps } from "../../types";
-import { useHistory } from "react-router";
+import type { IAlreadyLoggedIn, IAuthorizationProps } from "../../types/types";
+import { useNavigate } from "react-router";
 import { CO_NAME_GUEST, CO_ROLE_PATIENT } from "../../utils/roles";
 import moment from "moment";
 import UploadFile from "../../components/uploadFile";
@@ -69,7 +69,7 @@ const AuthorizationForm = ({
     setpatientRelationStatus,
   } = useAuthorizationForm({ formType, token });
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { getTrace } = useTraces();
   const today = moment(new Date()).format("YYYY-MM-DD");
   const [openBase, setOpenBase] = useState(false);
@@ -140,7 +140,7 @@ const AuthorizationForm = ({
               confirmAction={alreadyConfirmation}
               onClose={() => {
                 setOpenBase(false);
-                history.push("/");
+                navigate("/");
               }}
               content={`${alreadyLoggedIn.userName} is already loggedin on this browser. If you continue, ${alreadyLoggedIn.userName} will disconnect. Do you want to continue?`}
               title="User Already Logged In"

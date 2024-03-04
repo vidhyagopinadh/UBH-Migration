@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
 import type { ListProps } from "react-admin";
 import type { ReactElement } from "react";
-import {
-  Card,
-  CardContent,
-  IconButton,
-  makeStyles,
-  Button,
-} from "@material-ui/core";
+
 import { BootstrapTooltip as Tooltip } from "../../components/Tooltip";
-import { Delete, Visibility, VisibilityOff } from "@material-ui/icons";
+import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import type { UpdatePersonRecordStatusV1Input } from "../../__generated__/typescript-operations_all";
@@ -22,12 +18,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import { Link } from "react-router-dom";
 import PlaylistAddSharpIcon from "@mui/icons-material/PlaylistAddSharp";
-import { Grid, Box, Divider } from "@mui/material";
+import { Grid, Box, Divider, Card, Button, IconButton } from "@mui/material";
 import CreatePageHeader from "../../components/createPageHeader";
 import Chip from "@mui/material/Chip";
 import type { GridColDef } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid";
-import { Info } from "@material-ui/icons";
+import InfoIcon from '@mui/icons-material/Info';
 import { formatSSN } from "../../utils/validator";
 import {
   Datagrid,
@@ -41,18 +37,53 @@ import {
   useNotify,
   downloadCSV,
 } from "react-admin";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 import useTraces from "../../hooks/useTraces";
-import type { AppState } from "../../types";
+//import type { AppState } from "../../types";
 import jsonExport from "jsonexport/dist";
 import { tommddyyyy } from "../../utils/dateFormator";
 import { StatusFilter } from "./filters";
 import CustomEmpty from "../../components/customEmpty";
 import CustomFilter from "../../components/customFilter";
 import NotVerifiedBanner from "../../components/notVerifiedBanner";
+import { styled } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-  container: {
+const PREFIX = "dependentTables";
+
+const classes = {
+  container: `${PREFIX}-container`,
+  filterBar: `${PREFIX}-filterBar`,
+  tableContainer: `${PREFIX}-tableContainer`,
+  dialogContainer: `${PREFIX}-dialogContainer`,
+  icons: `${PREFIX}-icons`,
+  addIcon: `${PREFIX}-addIcon`,
+  dependentInviteButton: `${PREFIX}-dependentInviteButton`,
+  dependentTable: `${PREFIX}-dependentTable`,
+  item: `${PREFIX}-item`,
+  fullName: `${PREFIX}-fullName`,
+  email: `${PREFIX}-email`,
+  userGroup: `${PREFIX}-userGroup`,
+  createdAt: `${PREFIX}-createdAt`,
+  invitationStatus: `${PREFIX}-invitationStatus`,
+  showIcon: `${PREFIX}-showIcon`,
+  reminderIcon: `${PREFIX}-reminderIcon`,
+  iconDiv: `${PREFIX}-iconDiv`,
+  filterContainer: `${PREFIX}-filterContainer`,
+  filter: `${PREFIX}-filter`,
+  filterContent: `${PREFIX}-filterContent`,
+  customHeader: `${PREFIX}-customHeader`,
+  dataGridContainer: `${PREFIX}-dataGridContainer`,
+  hideHeader: `${PREFIX}-hideHeader`,
+  customColumn: `${PREFIX}-customColumn`,
+  customDivider: `${PREFIX}-customDivider`,
+  dob: `${PREFIX}-dob`,
+  ssn: `${PREFIX}-ssn`,
+  sex: `${PREFIX}-sex`,
+  phone: `${PREFIX}-phone`,
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.container}`]: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -62,40 +93,40 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "hidden",
     overflowX: "scroll",
   },
-  filterBar: {
+  [`& .${classes.filterBar}`]: {
     marginBottom: "20px",
     marginTop: "-30px",
   },
-  tableContainer: {
+  [`& .${classes.tableContainer}`]: {
     width: "100%",
     overflowX: "auto",
   },
-  icons: { margin: "0px", padding: "0px", paddingRight: "3px" },
-  addIcon: {
+  [`&.${classes.icons}`]: {
+    margin: "0px",
+    padding: "0px", 
+    paddingRight: "3px" 
+  },
+  [`& .${classes.addIcon}`]: {
     marginRight: theme.spacing(1),
   },
-  dependentInviteButton: {
+  [`& .${classes.dependentInviteButton}`]: {
     "&:hover": {
       backgroundColor: "#ffffff",
     },
     marginTop: "15px",
     float: "right",
   },
-  dependentTable: {
+  [`&.${classes.dependentTable}`]: {
     "& th": {
       borderBottom: "2px solid #ccc",
     },
   },
-  item: {
-    fontSize: "12px",
-    lineHeight: "1",
-  },
-  fullName: {
+  [`& .${classes.fullName}`]: {
     maxWidth: 100,
     paddingLeft: "0px",
     paddingRight: "3px",
   },
-  email: {
+  [`& .${classes.email}`]: {
     maxWidth: 150,
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -103,74 +134,75 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "3px",
     paddingRight: "3px",
   },
-  userGroup: {
+  [`&.${classes.userGroup}`]: {
     maxWidth: 100,
     paddingLeft: "10px",
     paddingRight: "3px",
   },
-  createdAt: {
+  [`& .${classes.createdAt}`]: {
     maxWidth: 120,
     paddingLeft: "3px",
     paddingRight: "3px",
   },
-  invitationStatus: {
+  [`& .${classes.invitationStatus}`]: {
     maxWidth: 100,
     paddingLeft: "3px",
     paddingRight: "3px",
   },
-  showIcon: {
+  [`&.${classes.showIcon}`]: {
     color: "green",
   },
-  reminderIcon: {
+  [`& .${classes.reminderIcon}`]: {
     color: "blue",
   },
-  iconDiv: {
+  [`& .${classes.iconDiv}`]: {
     display: "flex",
     justifyContent: "flex-start",
     width: "100%",
   },
-  filterContainer: {
+  [`&.${classes.filterContainer}`]: {
     display: "flex",
     order: -1,
     paddingRight: "20px",
   },
-  filter: {
+  [`& .${classes.filter}`]: {
     backgroundColor: theme.palette.primary.light,
     width: 200,
     display: "flex",
     flexDirection: "column",
   },
-  filterContent: {
+  [`& .${classes.filterContent}`]: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
   },
-  customHeader: {
+  [`&.${classes.customHeader}`]: {
     width: "200px",
   },
-  dataGridContainer: {
+  [`& .${classes.dataGridContainer}`]: {
     width: "700px",
     maxWidth: "100%",
   },
-  hideHeader: {
+  [`& .${classes.hideHeader}`]: {
     "& .MuiDataGrid-columnHeaders": {
       minHeight: "0!important",
       maxHeight: "0!important",
       lineHeight: "0!important",
     },
   },
-  customColumn: {
+  [`&.${classes.customColumn}`]: {
     width: "200px",
   },
-  customDivider: {
+  [`& .${classes.customDivider}`]: {
     margin: 0,
     borderStyle: "hidden!important ",
     borderColor: "rgba(0, 0, 0, 0.12)",
     borderBottomWidth: "inherit!important",
     disply: "none",
   },
-  dob: {},
-  ssn: {
+  [`& .${classes.dob}`]: {
+  },
+  [`&.${classes.ssn}`]: {
     maxWidth: 150,
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -178,12 +210,13 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "3px",
     paddingRight: "3px",
   },
-  sex: {},
-  phone: {},
+  [`& .${classes.sex}`]: {
+  },
+  [`& .${classes.phone}`]: {
+  },
 }));
 
 export const DependentList = (props: ListProps): ReactElement => {
-  const classes = useStyles();
   const refresh = useRefresh();
   const notify = useNotify();
   const translate = useTranslate();
@@ -192,12 +225,10 @@ export const DependentList = (props: ListProps): ReactElement => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [showBanner, setShowBanner] = React.useState(false);
   const [emailNotVerified, setEmailNotVerified] = React.useState(false);
-  const [openDependentInvitePopup, setDependentInvitePopup] =
-    React.useState(false);
+  const [openDependentInvitePopup, setDependentInvitePopup] =React.useState(false);
   const [openDeleteBase, setOpenDeleteBase] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState("");
-  const [selectedDependentData, setSelectedDependentData] =
-    React.useState(null);
+  const [selectedDependentData, setSelectedDependentData] =React.useState(null);
   const userInfoReducer = useSelector(
     (state: AppState) => state.userInfoReducer,
   );
@@ -325,7 +356,7 @@ export const DependentList = (props: ListProps): ReactElement => {
     const isDisabled = emailNotVerified;
 
     return (
-      <div className={classes.iconDiv}>
+      <StyledDiv className={classes.iconDiv}>
         <IconButton
           className={classes.icons}
           color="primary"
@@ -333,11 +364,11 @@ export const DependentList = (props: ListProps): ReactElement => {
         >
           {!expanded ? (
             <Tooltip title="View More">
-              <Visibility className={classes.showIcon} />
+              <VisibilityIcon className={classes.showIcon} />
             </Tooltip>
           ) : (
             <Tooltip title="View Less">
-              <VisibilityOff className={classes.showIcon} />
+              <VisibilityOffIcon className={classes.showIcon} />
             </Tooltip>
           )}
         </IconButton>
@@ -416,7 +447,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                 setSelectedId(props.record.id);
               }}
             >
-              <Delete
+              <DeleteIcon
                 style={{
                   color: isDisabled ? "grey" : "red",
                 }}
@@ -424,7 +455,7 @@ export const DependentList = (props: ListProps): ReactElement => {
             </IconButton>
           </div>
         </Tooltip>
-      </div>
+      </StyledDiv>
     );
   };
 
@@ -472,6 +503,7 @@ export const DependentList = (props: ListProps): ReactElement => {
         setShowInviteStatusDetails(true);
       }
     };
+
     const useStyles = makeStyles({
       customHeader: {
         width: "200px",
@@ -686,49 +718,49 @@ export const DependentList = (props: ListProps): ReactElement => {
       },
       ...(showPreviousAddressDetails
         ? [
-            {
-              id: 18,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_address1`,
-              ),
-              value: previousAddressData?.previous_address1 || null,
-            },
-            {
-              id: 19,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_address2`,
-              ),
-              value: previousAddressData?.previous_address2 || null,
-            },
-            {
-              id: 20,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_country`,
-              ),
-              value: previousAddressData?.previous_country || null,
-            },
-            {
-              id: 21,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_state`,
-              ),
-              value: previousAddressData?.previous_state || null,
-            },
-            {
-              id: 22,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_city`,
-              ),
-              value: previousAddressData?.previous_city || null,
-            },
-            {
-              id: 23,
-              label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_zip`,
-              ),
-              value: previousAddressData?.previous_zip || null,
-            },
-          ]
+          {
+            id: 18,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_address1`,
+            ),
+            value: previousAddressData?.previous_address1 || null,
+          },
+          {
+            id: 19,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_address2`,
+            ),
+            value: previousAddressData?.previous_address2 || null,
+          },
+          {
+            id: 20,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_country`,
+            ),
+            value: previousAddressData?.previous_country || null,
+          },
+          {
+            id: 21,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_state`,
+            ),
+            value: previousAddressData?.previous_state || null,
+          },
+          {
+            id: 22,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_city`,
+            ),
+            value: previousAddressData?.previous_city || null,
+          },
+          {
+            id: 23,
+            label: translate(
+              `resources.patients.expandFields.previousAddressDetails.previous_zip`,
+            ),
+            value: previousAddressData?.previous_zip || null,
+          },
+        ]
         : []),
       {
         id: 24,
@@ -757,51 +789,51 @@ export const DependentList = (props: ListProps): ReactElement => {
       },
       ...(showInviteDetails
         ? [
-            ...(showInviteStatusDetails
-              ? [
-                  {
-                    id: 25,
-                    label: translate(
-                      `resources.patients.expandFields.inviteDetails.invite_status`,
-                    ),
-                    value: InviteData?.invite_status || null,
-                  },
-                  {
-                    id: 26,
-                    label: translate(
-                      `resources.patients.expandFields.inviteDetails.signup_completed_date`,
-                    ),
+          ...(showInviteStatusDetails
+            ? [
+              {
+                id: 25,
+                label: translate(
+                  `resources.patients.expandFields.inviteDetails.invite_status`,
+                ),
+                value: InviteData?.invite_status || null,
+              },
+              {
+                id: 26,
+                label: translate(
+                  `resources.patients.expandFields.inviteDetails.signup_completed_date`,
+                ),
 
-                    value: InviteData?.signup_completed_date
-                      ? tommddyyyy(InviteData.signup_completed_date)
-                      : null,
-                  },
-                  {
-                    id: 27,
-                    label: translate(
-                      `resources.patients.expandFields.inviteDetails.first_sign_in_date`,
-                    ),
-                    value: InviteData?.first_sign_in_date
-                      ? tommddyyyy(InviteData.first_sign_in_date)
-                      : null,
-                  },
-                ]
-              : [
-                  {
-                    id: 28,
-                    label: (
-                      <div
-                        style={{
-                          marginLeft: "250px",
-                        }}
-                      >
-                        Not yet invited
-                      </div>
-                    ),
-                    value: "    ",
-                  },
-                ]),
-          ]
+                value: InviteData?.signup_completed_date
+                  ? tommddyyyy(InviteData.signup_completed_date)
+                  : null,
+              },
+              {
+                id: 27,
+                label: translate(
+                  `resources.patients.expandFields.inviteDetails.first_sign_in_date`,
+                ),
+                value: InviteData?.first_sign_in_date
+                  ? tommddyyyy(InviteData.first_sign_in_date)
+                  : null,
+              },
+            ]
+            : [
+              {
+                id: 28,
+                label: (
+                  <div
+                    style={{
+                      marginLeft: "250px",
+                    }}
+                  >
+                    Not yet invited
+                  </div>
+                ),
+                value: "    ",
+              },
+            ]),
+        ]
         : []),
     ];
 
@@ -846,7 +878,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                       <span>
                         {translate(`resources.patients.noInfoDetails.noInfo`)}
                         <Tooltip title={FirstNameTooltipTitle}>
-                          <Info className={classes.info} />
+                          <InfoIcon className={classes.info} />
                         </Tooltip>
                       </span>
                     );
@@ -1006,11 +1038,10 @@ export const DependentList = (props: ListProps): ReactElement => {
                     label={translate(
                       "resources.patients.fields.dependent_name",
                     )}
-                    render={(record) => (
+                    render={(record: any) => (
                       <span>
-                        {`${record.firstName} ${
-                          record.middleName ? record.middleName : ""
-                        } ${record.lastName}`}
+                        {`${record.firstName} ${record.middleName ? record.middleName : ""
+                          } ${record.lastName}`}
                       </span>
                     )}
                   />
@@ -1021,7 +1052,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FunctionField
                     label={translate("resources.patients.fields.ssn")}
-                    render={(record) => (
+                    render={(record: any) => (
                       <span>
                         {record.ssn !== null ? formatSSN(record.ssn) : null}
                       </span>
@@ -1030,7 +1061,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FunctionField
                     label={translate("resources.patients.fields.sex")}
-                    render={(record) => {
+                    render={(record: any) => {
                       const sexData = JSON.parse(record.sex);
                       const sexValue = sexData.other
                         ? sexData.other_value
@@ -1042,7 +1073,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FunctionField
                     label={translate("resources.patients.fields.gender")}
-                    render={(record) => {
+                    render={(record: any) => {
                       const genderData = JSON.parse(record.gender);
                       const genderValue = genderData.other
                         ? genderData.other_value
@@ -1054,7 +1085,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FunctionField
                     label={translate("resources.patients.fields.email")}
-                    render={(record) => (
+                    render={(record: any) => (
                       <span>
                         <a href={"mailto:" + record.email}>{record.email}</a>
                       </span>
@@ -1073,7 +1104,7 @@ export const DependentList = (props: ListProps): ReactElement => {
                   />
                   <FunctionField
                     label={translate("resources.patients.fields.status")}
-                    render={(record) => (
+                    render={(record: any) => (
                       <span>
                         {record.registrationStatus === "Virtual" ? (
                           <Chip

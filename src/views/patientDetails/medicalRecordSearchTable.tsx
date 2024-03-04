@@ -14,12 +14,12 @@ import {
   Stepper,
   Typography,
   makeStyles,
-} from "@material-ui/core";
+} from "@mui/material";
 import { Box } from "@mui/material";
 import type { GridColDef } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid";
 import moment from "moment";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import { useMutation } from "@apollo/react-hooks";
 import getMedicalRecordImportStatus from "../../queries/getMedicalRecordImportStatus/getMedicalRecordImportStatus";
 import type {
@@ -37,55 +37,67 @@ import {
   ExpandMore,
   ExpandMoreOutlined,
   Sync,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { AccessTimeFilled, TaskAlt } from "@mui/icons-material";
 import getPatientIndividualMedicalRecordDocument from "../../queries/getPatientIndividualMedicalRecordDocument/getPatientIndividualMedicalRecordDocument";
 import { useDataProvider, useNotify } from "react-admin";
 import { perPageMax } from "../../utils/pageConstants";
 import userMedicalRecordOperationStatusHistory from "../../queries/userMedicalRecordOperationStatusHistory/userMedicalRecordOperationStatusHistory";
 import { titleCase } from "../../utils/titleCase";
-import type { IDetails } from "../../types";
-const useStyles = makeStyles(() => ({
-  message: {
+import type { IDetails } from "../../types/types";
+import { styled } from "@mui/material/styles";
+
+const PREFIX = "loadingMrr";
+
+const classes = {
+  root: `${PREFIX}-root`,
+  tickIcon: `${PREFIX}-tickIcon`,
+  errorIcon: `${PREFIX}-errorIcon`,
+  moreInfo: `${PREFIX}-moreInfo`,
+  message: `${PREFIX}-message`,
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
+    "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer":
+    {
+      display: "none",
+    },
+  "& .MuiDataGrid-menuOpen": {
+    display: "none",
+  },
+  "& .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus":
+    {
+      outline: "none !important",
+    },
+  "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-cell:focus": {
+    outline: "none !important",
+  },
+  },
+  [`& .${classes.message}`]: {
     marginRight: "20px",
     fontWeight: 600,
   },
-  tickIcon: {
+  [`& .${classes.tickIcon}`]: {
     color: "#2AAA8A",
     width: "30px",
     height: "30px",
     marginRight: "10px",
   },
-  errorIcon: {
+  [`&.${classes.errorIcon}`]: {
     color: "red",
     width: "30px",
     height: "30px",
     marginRight: "10px",
   },
-  moreInfo: {
+  [`& .${classes.moreInfo}`]: {
     textTransform: "none",
     fontWeight: 600,
     pointerEvents: "auto",
   },
-  root: {
-    "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer":
-      {
-        display: "none",
-      },
-    "& .MuiDataGrid-menuOpen": {
-      display: "none",
-    },
-    "& .MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus":
-      {
-        outline: "none !important",
-      },
-    "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-cell:focus": {
-      outline: "none !important",
-    },
-  },
 }));
+
 function MedicalRecordSearchTable({ mrrList, setResponse }): JSX.Element {
-  const classes = useStyles();
   const notify = useNotify();
   const dataProvider = useDataProvider();
   const [showLoader, setShowLoader] = useState<boolean>(false);
@@ -265,7 +277,7 @@ function MedicalRecordSearchTable({ mrrList, setResponse }): JSX.Element {
           color = "red";
         }
         return (
-          <div
+          <StyledDiv
             style={{
               backgroundColor: backgroundColor,
               color: color,
@@ -291,7 +303,7 @@ function MedicalRecordSearchTable({ mrrList, setResponse }): JSX.Element {
               {params.value?.toLowerCase() === "completed" &&
                 ": " + params.row.totalNoOfDocuments + " record(s) found"}
             </b>
-          </div>
+          </StyledDiv>
         );
       },
     },

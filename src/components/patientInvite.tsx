@@ -23,29 +23,45 @@ import CreatePageHeader from "./createPageHeader";
 import inviteUserQuery from "../queries/inviteUser/inviteUserQuery";
 import { inviteErrorMessages } from "../utils/messages/errorMessages";
 import verifyUserExists from "../queries/verifyUserExistQuery/verifyUserExists";
-const { REACT_APP_BASE_URL } = process.env;
-const useStyles = makeStyles(() => ({
-  root: {
+import { styled } from '@mui/styles';
+
+const { REACT_APP_BASE_URL } = import.meta.env;
+
+const PREFIX = "PatientInvite";
+const classes = {
+  root: `${PREFIX}-root`,
+  infoText: `${PREFIX}-infoText`,
+  subTitle: `${PREFIX}-SubTitle`,
+  cancel: `${PREFIX}-cancel`,
+  myOrg: `${PREFIX}-myOrg`,
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.root}`]: {
     width: "100%",
     "& label": {
       marginTop: -3,
     },
   },
-  infoText: { fontSize: 14, fontWeight: 500 },
-  subTitle: {
+  [`& .${classes.infoText}`]: {
+    fontSize: 14, fontWeight: 500
+  },
+  [`& .${classes.subTitle}`]: {
     fontSize: 16,
     fontWeight: 500,
   },
-  cancel: {
+  [`& .${classes.cancel}`]: {
     marginRight: "10px",
     backgroundColor: "grey",
     color: "white",
   },
-  myOrg: { display: "inline-flex", width: "100%" },
+  [`& .${classes.myOrg}`]: {
+    display: "inline-flex", width: "100%"
+  }
 }));
 
+
 function InvitePatient({ open, patientData, handleClose }: any): JSX.Element {
-  const classes = useStyles();
   const translate = useTranslate();
   const [disableWhileEmailCheck, setDisableWhileEmailCheck] = useState(false);
   const [submitDisable, setSubmitDisable] = useState(false);
@@ -268,6 +284,7 @@ function InvitePatient({ open, patientData, handleClose }: any): JSX.Element {
     }
   }, [patientData]);
   return (
+  <StyledDiv>
     <Modal onClose={handleClose} open={open} disableBackdropClick>
       <Box
         sx={{
@@ -636,6 +653,7 @@ function InvitePatient({ open, patientData, handleClose }: any): JSX.Element {
         )}
       </Box>
     </Modal>
+    </StyledDiv>
   );
 }
 

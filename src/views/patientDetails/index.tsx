@@ -1,4 +1,4 @@
-import PatientIcon from "@material-ui/icons/Person";
+import PatientIcon from "@mui/icons-material/Person";
 import { PatientList } from "./patientTable";
 
 export default {
