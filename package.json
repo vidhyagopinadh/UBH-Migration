@@ -51,7 +51,8 @@
     "react-truncate": "^2.4.0",
     "semantic-ui-react": "^2.1.5",
     "tss-react": "^4.9.4",
-    "typeface-roboto": "^1.1.13"
+    "typeface-roboto": "^1.1.13",
+    "use-state-with-callback": "^3.0.2"
   },
   "devDependencies": {
     "@types/apollo-upload-client": "^17.0.0",

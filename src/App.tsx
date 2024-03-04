@@ -209,7 +209,7 @@ const App = () => {
 
                   <Resource name="requestsOnBehalf" {...requests} />,
                   <Resource name="userInviteLists" {...invite} />,
-                  // <Resource name="dependents" {...dependents} />,
+                  <Resource name="dependents" {...dependents} />,
                 ]
                 : null,
               <Resource name="personDemographicsDetailsV1" />,

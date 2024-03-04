@@ -37,18 +37,53 @@ import {
   useNotify,
   downloadCSV,
 } from "react-admin";
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 import useTraces from "../../hooks/useTraces";
-import type { AppState } from "../../types";
+//import type { AppState } from "../../types";
 import jsonExport from "jsonexport/dist";
 import { tommddyyyy } from "../../utils/dateFormator";
 import { StatusFilter } from "./filters";
 import CustomEmpty from "../../components/customEmpty";
 import CustomFilter from "../../components/customFilter";
 import NotVerifiedBanner from "../../components/notVerifiedBanner";
+import { styled } from "@mui/material/styles";
 
-const useStyles = makeStyles((theme) => ({
-  container: {
+const PREFIX = "dependentTables";
+
+const classes = {
+  container: `${PREFIX}-container`,
+  filterBar: `${PREFIX}-filterBar`,
+  tableContainer: `${PREFIX}-tableContainer`,
+  dialogContainer: `${PREFIX}-dialogContainer`,
+  icons: `${PREFIX}-icons`,
+  addIcon: `${PREFIX}-addIcon`,
+  dependentInviteButton: `${PREFIX}-dependentInviteButton`,
+  dependentTable: `${PREFIX}-dependentTable`,
+  item: `${PREFIX}-item`,
+  fullName: `${PREFIX}-fullName`,
+  email: `${PREFIX}-email`,
+  userGroup: `${PREFIX}-userGroup`,
+  createdAt: `${PREFIX}-createdAt`,
+  invitationStatus: `${PREFIX}-invitationStatus`,
+  showIcon: `${PREFIX}-showIcon`,
+  reminderIcon: `${PREFIX}-reminderIcon`,
+  iconDiv: `${PREFIX}-iconDiv`,
+  filterContainer: `${PREFIX}-filterContainer`,
+  filter: `${PREFIX}-filter`,
+  filterContent: `${PREFIX}-filterContent`,
+  customHeader: `${PREFIX}-customHeader`,
+  dataGridContainer: `${PREFIX}-dataGridContainer`,
+  hideHeader: `${PREFIX}-hideHeader`,
+  customColumn: `${PREFIX}-customColumn`,
+  customDivider: `${PREFIX}-customDivider`,
+  dob: `${PREFIX}-dob`,
+  ssn: `${PREFIX}-ssn`,
+  sex: `${PREFIX}-sex`,
+  phone: `${PREFIX}-phone`,
+};
+
+const StyledDiv = styled("div")(({ theme }) => ({
+  [`&.${classes.container}`]: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -58,40 +93,40 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "hidden",
     overflowX: "scroll",
   },
-  filterBar: {
+  [`& .${classes.filterBar}`]: {
     marginBottom: "20px",
     marginTop: "-30px",
   },
-  tableContainer: {
+  [`& .${classes.tableContainer}`]: {
     width: "100%",
     overflowX: "auto",
   },
-  icons: { margin: "0px", padding: "0px", paddingRight: "3px" },
-  addIcon: {
+  [`&.${classes.icons}`]: {
+    margin: "0px",
+    padding: "0px", 
+    paddingRight: "3px" 
+  },
+  [`& .${classes.addIcon}`]: {
     marginRight: theme.spacing(1),
   },
-  dependentInviteButton: {
+  [`& .${classes.dependentInviteButton}`]: {
     "&:hover": {
       backgroundColor: "#ffffff",
     },
     marginTop: "15px",
     float: "right",
   },
-  dependentTable: {
+  [`&.${classes.dependentTable}`]: {
     "& th": {
       borderBottom: "2px solid #ccc",
     },
   },
-  item: {
-    fontSize: "12px",
-    lineHeight: "1",
-  },
-  fullName: {
+  [`& .${classes.fullName}`]: {
     maxWidth: 100,
     paddingLeft: "0px",
     paddingRight: "3px",
   },
-  email: {
+  [`& .${classes.email}`]: {
     maxWidth: 150,
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -99,74 +134,75 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "3px",
     paddingRight: "3px",
   },
-  userGroup: {
+  [`&.${classes.userGroup}`]: {
     maxWidth: 100,
     paddingLeft: "10px",
     paddingRight: "3px",
   },
-  createdAt: {
+  [`& .${classes.createdAt}`]: {
     maxWidth: 120,
     paddingLeft: "3px",
     paddingRight: "3px",
   },
-  invitationStatus: {
+  [`& .${classes.invitationStatus}`]: {
     maxWidth: 100,
     paddingLeft: "3px",
     paddingRight: "3px",
   },
-  showIcon: {
+  [`&.${classes.showIcon}`]: {
     color: "green",
   },
-  reminderIcon: {
+  [`& .${classes.reminderIcon}`]: {
     color: "blue",
   },
-  iconDiv: {
+  [`& .${classes.iconDiv}`]: {
     display: "flex",
     justifyContent: "flex-start",
     width: "100%",
   },
-  filterContainer: {
+  [`&.${classes.filterContainer}`]: {
     display: "flex",
     order: -1,
     paddingRight: "20px",
   },
-  filter: {
+  [`& .${classes.filter}`]: {
     backgroundColor: theme.palette.primary.light,
     width: 200,
     display: "flex",
     flexDirection: "column",
   },
-  filterContent: {
+  [`& .${classes.filterContent}`]: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
   },
-  customHeader: {
+  [`&.${classes.customHeader}`]: {
     width: "200px",
   },
-  dataGridContainer: {
+  [`& .${classes.dataGridContainer}`]: {
     width: "700px",
     maxWidth: "100%",
   },
-  hideHeader: {
+  [`& .${classes.hideHeader}`]: {
     "& .MuiDataGrid-columnHeaders": {
       minHeight: "0!important",
       maxHeight: "0!important",
       lineHeight: "0!important",
     },
   },
-  customColumn: {
+  [`&.${classes.customColumn}`]: {
     width: "200px",
   },
-  customDivider: {
+  [`& .${classes.customDivider}`]: {
     margin: 0,
     borderStyle: "hidden!important ",
     borderColor: "rgba(0, 0, 0, 0.12)",
     borderBottomWidth: "inherit!important",
     disply: "none",
   },
-  dob: {},
-  ssn: {
+  [`& .${classes.dob}`]: {
+  },
+  [`&.${classes.ssn}`]: {
     maxWidth: 150,
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -174,12 +210,13 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "3px",
     paddingRight: "3px",
   },
-  sex: {},
-  phone: {},
+  [`& .${classes.sex}`]: {
+  },
+  [`& .${classes.phone}`]: {
+  },
 }));
 
 export const DependentList = (props: ListProps): ReactElement => {
-  const classes = useStyles();
   const refresh = useRefresh();
   const notify = useNotify();
   const translate = useTranslate();
@@ -188,12 +225,10 @@ export const DependentList = (props: ListProps): ReactElement => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [showBanner, setShowBanner] = React.useState(false);
   const [emailNotVerified, setEmailNotVerified] = React.useState(false);
-  const [openDependentInvitePopup, setDependentInvitePopup] =
-    React.useState(false);
+  const [openDependentInvitePopup, setDependentInvitePopup] =React.useState(false);
   const [openDeleteBase, setOpenDeleteBase] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState("");
-  const [selectedDependentData, setSelectedDependentData] =
-    React.useState(null);
+  const [selectedDependentData, setSelectedDependentData] =React.useState(null);
   const userInfoReducer = useSelector(
     (state: AppState) => state.userInfoReducer,
   );
@@ -321,7 +356,7 @@ export const DependentList = (props: ListProps): ReactElement => {
     const isDisabled = emailNotVerified;
 
     return (
-      <div className={classes.iconDiv}>
+      <StyledDiv className={classes.iconDiv}>
         <IconButton
           className={classes.icons}
           color="primary"
@@ -420,7 +455,7 @@ export const DependentList = (props: ListProps): ReactElement => {
             </IconButton>
           </div>
         </Tooltip>
-      </div>
+      </StyledDiv>
     );
   };
 

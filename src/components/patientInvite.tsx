@@ -62,7 +62,6 @@ const StyledDiv = styled("div")(({ theme }) => ({
 
 
 function InvitePatient({ open, patientData, handleClose }: any): JSX.Element {
-  const classes = useStyles();
   const translate = useTranslate();
   const [disableWhileEmailCheck, setDisableWhileEmailCheck] = useState(false);
   const [submitDisable, setSubmitDisable] = useState(false);
@@ -285,6 +284,7 @@ function InvitePatient({ open, patientData, handleClose }: any): JSX.Element {
     }
   }, [patientData]);
   return (
+  <StyledDiv>
     <Modal onClose={handleClose} open={open} disableBackdropClick>
       <Box
         sx={{
@@ -653,6 +653,7 @@ function InvitePatient({ open, patientData, handleClose }: any): JSX.Element {
         )}
       </Box>
     </Modal>
+    </StyledDiv>
   );
 }
 
