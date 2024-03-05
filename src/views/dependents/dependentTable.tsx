@@ -23,7 +23,8 @@ import CreatePageHeader from "../../components/createPageHeader";
 import Chip from "@mui/material/Chip";
 import type { GridColDef } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid";
-import InfoIcon from '@mui/icons-material/Info';
+import Info from '@mui/icons-material/Info';
+import { CardContent } from '@mui/material';
 import { formatSSN } from "../../utils/validator";
 import {
   Datagrid,
@@ -166,7 +167,7 @@ const StyledDiv = styled("div")(({ theme }) => ({
     paddingRight: "20px",
   },
   [`& .${classes.filter}`]: {
-    backgroundColor: theme.palette.primary.light,
+    //backgroundColor: theme.palette.primary.light,
     width: 200,
     display: "flex",
     flexDirection: "column",
@@ -239,8 +240,8 @@ export const DependentList = (props: ListProps): ReactElement => {
   );
   useEffect(() => {
     //if (!userInfoReducer.emailVerified) {
-      setEmailNotVerified(true);
-      setShowBanner(true);
+      setEmailNotVerified(false);
+      //setShowBanner(true);
    // }
   }, []);
   const handleCloseDependentInvite = (): void => {
@@ -348,16 +349,16 @@ export const DependentList = (props: ListProps): ReactElement => {
       }
     }, []);
     const handleInviteClick = (): void => {
-      setSelectedDependentData(props.record);
+      setSelectedDependentData(props?.record);
       setDependentInvitePopup(true);
     };
     const handleEditClick = (): void => {
-      setSelectedDependentData(props.record);
+      setSelectedDependentData(props?.record);
     };
 
     const onExpandClick = (): void => {
       toggleExpanded();
-      setSelectedId(props.record.id);
+      setSelectedId(props?.record?.id);
     };
     const isDisabled = emailNotVerified;
 
@@ -469,13 +470,13 @@ export const DependentList = (props: ListProps): ReactElement => {
 
   const FilterSidebar = (): JSX.Element => {
     return (
-      <div className={classes.filterContainer}>
+      <StyledDiv className={classes.filterContainer}>
         <Card className={classes.filter}>
-          {/* <CardContent className={classes.filterContent}> */}
+          <CardContent className={classes.filterContent}>
             <StatusFilter />
-          {/* </CardContent> */}
+          </CardContent>
         </Card>
-      </div>
+      </StyledDiv>
     );
   };
 
@@ -894,7 +895,7 @@ const Root = styled("div")(({ theme }) => ({
                       <span>
                         {translate(`resources.patients.noInfoDetails.noInfo`)}
                         <Tooltip title={FirstNameTooltipTitle}>
-                          <InfoIcon className={classes.info} />
+                          <Info className={classes.info} />
                         </Tooltip>
                       </span>
                     );
@@ -967,13 +968,13 @@ const Root = styled("div")(({ theme }) => ({
   };
   return (
     <>
-    <StyledDiv>
+    {/* <StyledDiv> */}
       <InvitePatient
         open={openDependentInvitePopup}
         patientData={selectedDependentData}
         handleClose={handleCloseDependentInvite}
       />
-      <div id="dependentTable" className={classes.container}>
+      <StyledDiv id="dependentTable" className={classes.container}>
         {showBanner && <NotVerifiedBanner setShowBanner={setShowBanner} />}
         <Grid container spacing={3}>
           <Grid item md={10}>
@@ -1066,7 +1067,7 @@ const Root = styled("div")(({ theme }) => ({
                   />
                   <FormattedDateField
                     source="birthDate"
-                    label={translate("resources?.patients?.fields?.dob")}
+                    label={translate("resources.patients.fields.dob")}
                     cellClassName={classes.dob}
                   />
                   <FunctionField
@@ -1153,7 +1154,7 @@ const Root = styled("div")(({ theme }) => ({
             </List>
           </div>
         </div>
-      </div>
+      </StyledDiv>
       {openDeleteBase && (
         <BaseModal
           open={openDeleteBase}
@@ -1169,7 +1170,7 @@ const Root = styled("div")(({ theme }) => ({
           type="delete"
         />
       )}
-    </StyledDiv>
+    {/* </StyledDiv> */}
     </>
   );
 };

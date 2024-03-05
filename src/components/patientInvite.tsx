@@ -24,6 +24,7 @@ import inviteUserQuery from "../queries/inviteUser/inviteUserQuery";
 import { inviteErrorMessages } from "../utils/messages/errorMessages";
 import verifyUserExists from "../queries/verifyUserExistQuery/verifyUserExists";
 import { styled } from '@mui/styles';
+import Modal from '@mui/material/Modal';
 
 const { REACT_APP_BASE_URL } = import.meta.env;
 
@@ -285,7 +286,7 @@ function InvitePatient({ open, patientData, handleClose }: any): JSX.Element {
   }, [patientData]);
   return (
   <StyledDiv>
-    {/* <Modal onClose={handleClose} open={open} disableBackdropClick> */}
+    <Modal onClose={handleClose} open={open} disableBackdropClick>
       <Box
         sx={{
           position: "absolute",
@@ -652,7 +653,7 @@ function InvitePatient({ open, patientData, handleClose }: any): JSX.Element {
           />
         )}
       </Box>
-    {/* </Modal> */}
+    </Modal>
     </StyledDiv>
   );
 }

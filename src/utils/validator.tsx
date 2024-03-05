@@ -136,7 +136,6 @@ export const validateAddPatient = (name: string, value: string): boolean => {
       return validateSsn(value);
     }
     case "zipCode":
-    case "previousAddressZip":
     case "addressZip":
     case "previousAddressZip": {
       return validateZipCode(value);

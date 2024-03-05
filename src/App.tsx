@@ -179,6 +179,7 @@ const App = () => {
                 ? [
                   <Resource name="requests" {...requests} />,
                   <Resource name="userInviteLists" {...invite} />,
+                  <Resource name="dependents" {...dependents} />,
                   // <Resource name="insuranceQuestionRequests" {...billing} />,
                   // <Resource name="userInviteLists" {...invite} />,
                   // <Resource name="patientDemographics" {...patientDetails} />,
