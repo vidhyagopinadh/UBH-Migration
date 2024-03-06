@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import type { ListProps } from "react-admin";
+
 import type { ReactElement } from "react";
 import {
   Card,
@@ -56,7 +57,7 @@ import {
 //import { useSelector } from "react-redux";
 import useTraces from "../../hooks/useTraces";
 //import type { AppState } from "../../types/comptypes";
-import jsonExport from "jsonexport/dist";
+// import jsonExport from "jsonexport/dist";
 import { tommddyyyy } from "../../lib/universal/utils/dateFormator";
 import { StatusFilter } from "./filters";
 import { formatSSN } from "../../utils/validator";
@@ -73,6 +74,7 @@ import LoadingMrr from "./loadingMrr";
 import { perPageMax } from "../../utils/pageConstants";
 import ErrorMrr from "./errorMrr";
 import { styled } from "@mui/material/styles";
+import { UserContext } from "../../contexts";
 
 const PREFIX = "patientTable";
 
@@ -125,7 +127,7 @@ const StyledDiv = styled("div")(({ theme }) => ({
   [`&.${classes.icons}`]: {
     margin: "0px",
     padding: "0px",
-    paddingRight: "3px"
+    paddingRight: "3px",
   },
   [`& .${classes.addIcon}`]: {
     marginRight: theme.spacing(1),
@@ -241,7 +243,9 @@ export const PatientList = (props: ListProps): ReactElement => {
   const [filterValue, setFilterValue] = React.useState("");
   const [openPatientInvitePopup, setOpenPatientInvitePopup] =
     React.useState(false);
-  const [response, setResponse] = useState<string>(null);
+  // const [response, setResponse] = useState<string>(null);
+  const [response, setResponse] = useState<string | null>(null);
+
   const [openDeleteBase, setOpenDeleteBase] = React.useState(false);
   const [emailNotVerified, setEmailNotVerified] = React.useState(false);
   const [showBanner, setShowBanner] = React.useState(false);
@@ -254,12 +258,13 @@ export const PatientList = (props: ListProps): ReactElement => {
 
   const [selectedId, setSelectedId] = React.useState("");
   const [selectedPatientData, setSelectedPatientData] = React.useState(null);
-  const userInfoReducer = useSelector(
-    (state: AppState) => state.userInfoReducer,
-  );
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer,
+  // );
+  const userInfoReducer: any = useContext(UserContext);
   const [subscribeUpdateRequestTokenMutation] = useMutation(
     updatePersonRecordStatus,
-    {},
+    {}
   );
   useEffect(() => {
     if (!userInfoReducer.emailVerified) {
@@ -296,7 +301,7 @@ export const PatientList = (props: ListProps): ReactElement => {
     const eventObj = correlationConstants["ev-084"];
     console.group(
       "%cOT Traces",
-      "background-color: #008000 ; color: #ffffff ; font-weight: bold ; padding: 4px ;",
+      "background-color: #008000 ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
     );
     console.log(eventObj);
     console.groupEnd();
@@ -326,52 +331,52 @@ export const PatientList = (props: ListProps): ReactElement => {
             getTrace(
               "Account Closed Successfully",
               "ev-085",
-              userInfoReducer.email,
+              " userInfoReducer.email"
             );
           } else {
             notify(
-              translate("resources.patients.accountCloseError"),
-              "warning",
+              translate("resources.patients.accountCloseError")
+              // "warning"
             );
           }
         });
-      },
+      }
     );
   };
 
-  function exportPatient(patientDemographics): void {
-    getTrace("Export Clicked", "ev-086", userInfoReducer.email);
-    jsonExport(patientDemographics, (err, csv) => {
-      downloadCSV(csv, "patientDemographics");
-      getTrace(
-        "Patient Demographics file downloaded as csv format",
-        "ev-087",
-        userInfoReducer.email,
-      );
-    });
-  }
+  // function exportPatient(patientDemographics: any): void {
+  //   getTrace("Export Clicked", "ev-086", userInfoReducer.email);
+  //   jsonExport(patientDemographics, (_err, csv) => {
+  //     downloadCSV(csv, "patientDemographics");
+  //     getTrace(
+  //       "Patient Demographics file downloaded as csv format",
+  //       "ev-087",
+  //       userInfoReducer.email
+  //     );
+  //   });
+  // }
 
   const rowStyle = (): { borderBottom: string; borderTop: string } => {
     return { borderBottom: "1px solid #ccc", borderTop: "1px solid #ccc" };
   };
 
-  const CustomButtonLinkField = (props): JSX.Element => {
+  const CustomButtonLinkField = (props: any): JSX.Element => {
     const [expanded, toggleExpanded] = useExpanded(
       "patientDemographics",
-      props.record.id,
+      props.record?.id
     );
     useEffect(() => {
-      if (props?.record.id !== selectedId) {
+      if (props?.record?.id !== selectedId) {
         if (expanded) {
           toggleExpanded();
         }
       }
     }, []);
     const handleInviteClick = (): void => {
-      if (props.record.inviteDetails) {
+      if (props.record?.inviteDetails) {
         setOpenInviteBase(true);
       } else {
-        setSelectedPatientData(props.record);
+        setSelectedPatientData(props?.record);
         setOpenPatientInvitePopup(true);
       }
     };
@@ -380,7 +385,7 @@ export const PatientList = (props: ListProps): ReactElement => {
     };
     const onExpandClick = (): void => {
       toggleExpanded();
-      setSelectedId(props.record.id);
+      setSelectedId(props.record?.id);
     };
     const isDisabled = emailNotVerified;
     return (
@@ -404,7 +409,7 @@ export const PatientList = (props: ListProps): ReactElement => {
           title={
             isDisabled
               ? translate("tooltip.patient.editEmailNotVerified")
-              : props.record.status === "Verified"
+              : props.record?.status === "Verified"
               ? translate("tooltip.patient.editIdVerified")
               : translate("tooltip.patient.edit")
           }
@@ -416,14 +421,14 @@ export const PatientList = (props: ListProps): ReactElement => {
               component={Link}
               onClick={handleEditClick}
               to={{
-                pathname: `/patients/${props.record.id}`,
+                pathname: `/patients/${props.record?.id}`,
                 state: {
                   patientDetails: props.record,
                   isForEdit: true,
                   type: "patient",
                 },
               }}
-              disabled={isDisabled || props.record.status === "Verified"}
+              disabled={isDisabled || props.record?.status === "Verified"}
             >
               <EditIcon
                 style={{
@@ -435,7 +440,7 @@ export const PatientList = (props: ListProps): ReactElement => {
         </Tooltip>
         <Tooltip
           title={
-            props.record.registrationStatus === "REGISTERED"
+            props.record?.registrationStatus === "REGISTERED"
               ? translate("tooltip.patient.inviteRegistered")
               : translate("tooltip.patient.inviteIcon")
           }
@@ -446,7 +451,7 @@ export const PatientList = (props: ListProps): ReactElement => {
               color="primary"
               onClick={handleInviteClick}
               disabled={
-                props.record.registrationStatus === "REGISTERED" ? true : false
+                props.record?.registrationStatus === "REGISTERED" ? true : false
               }
             >
               <PersonAddAltIcon
@@ -454,7 +459,7 @@ export const PatientList = (props: ListProps): ReactElement => {
                   width: "20px",
                   height: "20px",
                   color:
-                    props.record.registrationStatus === "REGISTERED"
+                    props.record?.registrationStatus === "REGISTERED"
                       ? "grey"
                       : "blue",
                 }}
@@ -476,7 +481,7 @@ export const PatientList = (props: ListProps): ReactElement => {
               disabled={isDisabled ? true : false}
               onClick={() => {
                 setOpenDeleteBase(true);
-                setSelectedId(props.record.id);
+                setSelectedId(props.record?.id);
               }}
             >
               <Delete
@@ -506,62 +511,62 @@ export const PatientList = (props: ListProps): ReactElement => {
   };
 
   const ExpandPanel = (): JSX.Element => {
-    const useStyles = makeStyles({
-      customHeader: {
-        width: "200px",
-      },
-      dataGridContainer: {
-        width: "700px",
-        maxWidth: "100%",
-      },
-      hideHeader: {
-        "& .MuiDataGrid-columnHeaders": {
-          minHeight: "0!important",
-          maxHeight: "0!important",
-          lineHeight: "0!important",
-        },
-      },
-      customColumn: {
-        width: "200px",
-      },
-      customValue: {
-        marginLeft: "20px",
-      },
-      customDivider: {
-        margin: 0,
-        borderStyle: "hidden!important ",
-        borderColor: "rgba(0, 0, 0, 0.12)",
-        borderBottomWidth: "inherit!important",
-        disply: "none",
-      },
-      info: {
-        cursor: "auto",
-        width: "20px",
-        height: "15px",
-        color: "grey",
-      },
-      tab: {
-        textTransform: "none",
-        fontSize: "12px",
-        fontWeight: 500,
-      },
-    });
-    const classes = useStyles();
+    // const useStyles = makeStyles({
+    //   customHeader: {
+    //     width: "200px",
+    //   },
+    //   dataGridContainer: {
+    //     width: "700px",
+    //     maxWidth: "100%",
+    //   },
+    //   hideHeader: {
+    //     "& .MuiDataGrid-columnHeaders": {
+    //       minHeight: "0!important",
+    //       maxHeight: "0!important",
+    //       lineHeight: "0!important",
+    //     },
+    //   },
+    //   customColumn: {
+    //     width: "200px",
+    //   },
+    //   customValue: {
+    //     marginLeft: "20px",
+    //   },
+    //   customDivider: {
+    //     margin: 0,
+    //     borderStyle: "hidden!important ",
+    //     borderColor: "rgba(0, 0, 0, 0.12)",
+    //     borderBottomWidth: "inherit!important",
+    //     disply: "none",
+    //   },
+    //   info: {
+    //     cursor: "auto",
+    //     width: "20px",
+    //     height: "15px",
+    //     color: "grey",
+    //   },
+    //   tab: {
+    //     textTransform: "none",
+    //     fontSize: "12px",
+    //     fontWeight: 500,
+    //   },
+    // });
+    // const classes = useStyles();
     const record = useRecordContext();
     const translate = useTranslate();
     const dataProvider = useDataProvider();
     const [currTab, setCurrTab] = React.useState("");
     const [FirstNameTooltipTitle, setFirstNameTooltipTitle] = React.useState(
-      translate(`resources.patients.noInfoDetails.noFirstname`),
+      translate(`resources.patients.noInfoDetails.noFirstname`)
     );
     const [MiddleNameTooltipTitle, setMiddleNameTooltipTitle] = React.useState(
-      translate(`resources.patients.noInfoDetails.noMiddlename`),
+      translate(`resources.patients.noInfoDetails.noMiddlename`)
     );
     const [LastNameTooltipTitle, setLastNameTooltipTitle] = React.useState(
-      translate(`resources.patients.noInfoDetails.noLastname`),
+      translate(`resources.patients.noInfoDetails.noLastname`)
     );
     const [phoneTooltipTitle, setPhoneTooltipTitle] = React.useState(
-      translate(`resources.patients.noInfoDetails.noPhone`),
+      translate(`resources.patients.noInfoDetails.noPhone`)
     );
 
     const [showPreviousAddressDetails, setShowPreviousAddressDetails] =
@@ -596,7 +601,7 @@ export const PatientList = (props: ListProps): ReactElement => {
     const getRowHeight = (): number => {
       return 35;
     };
-    const getTabStyle = (tabValue) => {
+    const getTabStyle = (tabValue: any) => {
       if (currTab === tabValue) {
         return { color: "blue" };
       }
@@ -765,42 +770,42 @@ export const PatientList = (props: ListProps): ReactElement => {
             {
               id: 17,
               label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_address1`,
+                `resources.patients.expandFields.previousAddressDetails.previous_address1`
               ),
               value: previousAddressData?.previous_address1 || null,
             },
             {
               id: 18,
               label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_address2`,
+                `resources.patients.expandFields.previousAddressDetails.previous_address2`
               ),
               value: previousAddressData?.previous_address2 || null,
             },
             {
               id: 19,
               label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_country`,
+                `resources.patients.expandFields.previousAddressDetails.previous_country`
               ),
               value: previousAddressData?.previous_country || null,
             },
             {
               id: 20,
               label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_state`,
+                `resources.patients.expandFields.previousAddressDetails.previous_state`
               ),
               value: previousAddressData?.previous_state || null,
             },
             {
               id: 21,
               label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_city`,
+                `resources.patients.expandFields.previousAddressDetails.previous_city`
               ),
               value: previousAddressData?.previous_city || null,
             },
             {
               id: 22,
               label: translate(
-                `resources.patients.expandFields.previousAddressDetails.previous_zip`,
+                `resources.patients.expandFields.previousAddressDetails.previous_zip`
               ),
               value: previousAddressData?.previous_zip || null,
             },
@@ -838,14 +843,14 @@ export const PatientList = (props: ListProps): ReactElement => {
                   {
                     id: 24,
                     label: translate(
-                      `resources.patients.expandFields.inviteDetails.invite_status`,
+                      `resources.patients.expandFields.inviteDetails.invite_status`
                     ),
                     value: InviteData?.invite_status || null,
                   },
                   {
                     id: 25,
                     label: translate(
-                      `resources.patients.expandFields.inviteDetails.signup_completed_date`,
+                      `resources.patients.expandFields.inviteDetails.signup_completed_date`
                     ),
 
                     value: InviteData?.signup_completed_date
@@ -855,7 +860,7 @@ export const PatientList = (props: ListProps): ReactElement => {
                   {
                     id: 26,
                     label: translate(
-                      `resources.patients.expandFields.inviteDetails.first_sign_in_date`,
+                      `resources.patients.expandFields.inviteDetails.first_sign_in_date`
                     ),
                     value: InviteData?.first_sign_in_date
                       ? tommddyyyy(InviteData.first_sign_in_date)
@@ -880,8 +885,12 @@ export const PatientList = (props: ListProps): ReactElement => {
           ]
         : []),
     ];
-    const [selectedIntegration, setSelectedIntegration] =
-      useState<string>(null);
+    // const [selectedIntegration, setSelectedIntegration] =
+    //   useState<string>(null);
+    const [selectedIntegration, setSelectedIntegration] = useState<
+      string | null
+    >(null);
+
     useEffect(() => {
       if (
         openConfirmBase ||
@@ -895,22 +904,22 @@ export const PatientList = (props: ListProps): ReactElement => {
         setCurrTab("personal");
       }
       setFirstNameTooltipTitle(
-        translate(`resources.patients.noInfoDetails.noFirstname`),
+        translate(`resources.patients.noInfoDetails.noFirstname`)
       );
       setMiddleNameTooltipTitle(
-        translate(`resources.patients.noInfoDetails.noMiddlename`),
+        translate(`resources.patients.noInfoDetails.noMiddlename`)
       );
       setLastNameTooltipTitle(
-        translate(`resources.patients.noInfoDetails.noLastname`),
+        translate(`resources.patients.noInfoDetails.noLastname`)
       );
       setPhoneTooltipTitle(
-        translate(`resources.patients.noInfoDetails.noPhone`),
+        translate(`resources.patients.noInfoDetails.noPhone`)
       );
       getMrrDetails();
     }, [response]);
     const queryOption = {
       pagination: { page: 1, perPage: perPageMax },
-      sort: { field: "createdAt", order: "DESC" },
+      sort: { field: "createdAt", order: "DESC" as const },
       filter: {
         partyId: selectedId,
       },
@@ -938,23 +947,15 @@ export const PatientList = (props: ListProps): ReactElement => {
           <Tab
             key={"1"}
             style={{ textTransform: "none", ...getTabStyle("personal") }}
-            label={
-              <Typography className={classes.tab}>
-                Personal Information
-              </Typography>
-            }
+            label={<Typography>Personal Information</Typography>}
             value={"personal"}
             icon={<AccountCircle />}
           />
-          {record.status === "Verified" && (
+          {record?.status === "Verified" && (
             <Tab
               key={"2"}
               style={{ textTransform: "none", ...getTabStyle("mrr") }}
-              label={
-                <Typography className={classes.tab}>
-                  Medical Records Search
-                </Typography>
-              }
+              label={<Typography>Medical Records Search</Typography>}
               value={"mrr"}
               icon={<ContentPasteSearch />}
             />
@@ -986,10 +987,10 @@ export const PatientList = (props: ListProps): ReactElement => {
                         return (
                           <span>
                             {translate(
-                              `resources.patients.noInfoDetails.noInfo`,
+                              `resources.patients.noInfoDetails.noInfo`
                             )}
                             <Tooltip title={FirstNameTooltipTitle}>
-                              <Info className={classes.info} />
+                              <Info />
                             </Tooltip>
                           </span>
                         );
@@ -1001,10 +1002,10 @@ export const PatientList = (props: ListProps): ReactElement => {
                         return (
                           <span>
                             {translate(
-                              `resources.patients.noInfoDetails.noInfo`,
+                              `resources.patients.noInfoDetails.noInfo`
                             )}
                             <Tooltip title={MiddleNameTooltipTitle}>
-                              <Info className={classes.info} />
+                              <Info />
                             </Tooltip>
                           </span>
                         );
@@ -1016,10 +1017,10 @@ export const PatientList = (props: ListProps): ReactElement => {
                         return (
                           <span>
                             {translate(
-                              `resources.patients.noInfoDetails.noInfo`,
+                              `resources.patients.noInfoDetails.noInfo`
                             )}
                             <Tooltip title={LastNameTooltipTitle}>
-                              <Info className={classes.info} />
+                              <Info />
                             </Tooltip>
                           </span>
                         );
@@ -1031,14 +1032,14 @@ export const PatientList = (props: ListProps): ReactElement => {
                         return (
                           <span>
                             {translate(
-                              `resources.patients.noInfoDetails.noInfo`,
+                              `resources.patients.noInfoDetails.noInfo`
                             )}
                             <Tooltip
                               title={translate(
-                                `resources.patients.noInfoDetails.noInfo`,
+                                `resources.patients.noInfoDetails.noInfo`
                               )}
                             >
-                              <Info className={classes.info} />
+                              <Info />
                             </Tooltip>
                           </span>
                         );
@@ -1049,10 +1050,10 @@ export const PatientList = (props: ListProps): ReactElement => {
                         return (
                           <span>
                             {translate(
-                              `resources.patients.noInfoDetails.noInfo`,
+                              `resources.patients.noInfoDetails.noInfo`
                             )}
                             <Tooltip title={phoneTooltipTitle}>
-                              <Info className={classes.info} />
+                              <Info />
                             </Tooltip>
                           </span>
                         );
@@ -1070,10 +1071,10 @@ export const PatientList = (props: ListProps): ReactElement => {
                           {translate(`resources.patients.noInfoDetails.noInfo`)}
                           <Tooltip
                             title={translate(
-                              `resources.patients.noInfoDetails.noInfo`,
+                              `resources.patients.noInfoDetails.noInfo`
                             )}
                           >
-                            <Info className={classes.info} />
+                            <Info />
                           </Tooltip>
                         </span>
                       );
@@ -1081,11 +1082,18 @@ export const PatientList = (props: ListProps): ReactElement => {
                   },
                   key: column.field,
                 }))}
+                // autoHeight
+                // hideFooter
+                // disableRowSelectionOnClick
+                // className={classes.hideHeader}
+                // getRowHeight={getRowHeight}
                 autoHeight
-                hideFooter
-                disableRowSelectionOnClick
-                className={classes.hideHeader}
-                getRowHeight={getRowHeight}
+                // disableSelectionOnClick
+                // className={classes.hideHeader}
+                getRowId={(row) => row.id}
+                components={{
+                  NoRowsOverlay: CustomEmpty, // Your custom NoRowsOverlay component
+                }}
               />
             </div>
           </Box>
@@ -1131,7 +1139,7 @@ export const PatientList = (props: ListProps): ReactElement => {
                         )}
                   </>
                 )}
-                <ConfirmMrrView
+                {/* <ConfirmMrrView
                   open={openConfirmBase}
                   onClose={() => {
                     setOpenConfirmBase(false);
@@ -1139,9 +1147,9 @@ export const PatientList = (props: ListProps): ReactElement => {
                   setOpenLoadingBase={setOpenLoadingBase}
                   setOpenErrorBase={setOpenErrorBase}
                   setSelectedIntegration={setSelectedIntegration}
-                  selectedIntegration={selectedIntegration}
+                  // selectedIntegration={selectedIntegration}
                   selectedPatientId={selectedId}
-                />
+                /> */}
                 <LoadingMrr
                   open={openLoadingBase}
                   onClose={() => {
@@ -1202,15 +1210,15 @@ export const PatientList = (props: ListProps): ReactElement => {
                     disabled={emailNotVerified ? true : false}
                     className={classes.patientInviteButton}
                     color="primary"
-                    component={Link}
-                    to={{
-                      pathname: "/patients",
-                      state: {
-                        patientDetails: null,
-                        isForEdit: false,
-                        type: "patient",
-                      },
-                    }}
+                    // component={Link}
+                    // to={{
+                    //   pathname: "/patients",
+                    //   state: {
+                    //     patientDetails: null,
+                    //     isForEdit: false,
+                    //     type: "patient",
+                    //   },
+                    // }}
                     variant="contained"
                   >
                     <PlaylistAddSharpIcon className={classes.addIcon} />
@@ -1237,7 +1245,7 @@ export const PatientList = (props: ListProps): ReactElement => {
                     firstName: filterValue,
                   }}
                   perPage={10}
-                  exporter={exportPatient}
+                  // exporter={exportPatient}
                   aside={<FilterSidebar />}
                   className={classes.filterBar}
                 >
@@ -1252,18 +1260,18 @@ export const PatientList = (props: ListProps): ReactElement => {
                         label={
                           <span style={{ paddingLeft: "20px" }}>
                             {translate(
-                              "resources.patients.fields.patient_name",
+                              "resources.patients.fields.patient_name"
                             )}
                           </span>
                         }
-                        render={(record) => (
+                        render={(record: any) => (
                           <div
                             style={{
                               display: "flex",
                             }}
                           >
                             {" "}
-                            {record.status === "Verified" ? (
+                            {record?.status === "Verified" ? (
                               <Tooltip
                                 title={translate("tooltip.patient.idVerified")}
                               >
@@ -1292,7 +1300,7 @@ export const PatientList = (props: ListProps): ReactElement => {
                         )}
                       />
                       <FunctionField
-                        render={(record) => (
+                        render={(record: any) => (
                           <span>
                             {record.birthDate
                               ? tommddyyyy(record.birthDate)
@@ -1304,7 +1312,7 @@ export const PatientList = (props: ListProps): ReactElement => {
 
                       <FunctionField
                         label={translate("resources.patients.fields.sex")}
-                        render={(record) => {
+                        render={(record: any) => {
                           const sexData = JSON.parse(record.sex);
                           const sexValue = sexData.other
                             ? sexData.other_value
@@ -1315,7 +1323,7 @@ export const PatientList = (props: ListProps): ReactElement => {
                       />
                       <FunctionField
                         label={translate("resources.patients.fields.email")}
-                        render={(record) => (
+                        render={(record: any) => (
                           <span>
                             <a href={"mailto:" + record.email}>
                               {record.email}
@@ -1327,25 +1335,25 @@ export const PatientList = (props: ListProps): ReactElement => {
 
                       <TextField
                         label={translate(
-                          "resources.patients.fields.phone_number",
+                          "resources.patients.fields.phone_number"
                         )}
                         source="phoneNumber"
                       />
                       <FunctionField
                         label={translate("resources.patients.fields.status")}
-                        render={(record) => (
+                        render={(record: any) => (
                           <span>
-                            {record.registrationStatus === "Virtual" ? (
+                            {record?.registrationStatus === "Virtual" ? (
                               <Chip
                                 label={translate(
-                                  "resources.patients.fields.registrationStatusVirtual",
+                                  "resources.patients.fields.registrationStatusVirtual"
                                 )}
                                 style={{ width: "80px" }}
                               />
-                            ) : record.registrationStatus === "REGISTERED" ? (
+                            ) : record?.registrationStatus === "REGISTERED" ? (
                               <Chip
                                 label={translate(
-                                  "resources.patients.fields.registrationStatus",
+                                  "resources.patients.fields.registrationStatus"
                                 )}
                                 color="success"
                                 style={{ width: "80px" }}
@@ -1376,7 +1384,7 @@ export const PatientList = (props: ListProps): ReactElement => {
               type="delete"
             />
           )}
-          {openInviteBase && (
+          {/* {openInviteBase && (
             <BaseModal
               open={openInviteBase}
               confirmAction={() => {
@@ -1390,7 +1398,7 @@ export const PatientList = (props: ListProps): ReactElement => {
               closeButtonName="Okay, got it"
               type="reminderWarning"
             />
-          )}
+          )} */}
         </>
       ) : (
         <PageNotFound />

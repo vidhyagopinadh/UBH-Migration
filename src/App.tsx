@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Admin, Resource, AdminRouter } from 'react-admin';
+import React, { useState, useRef, useEffect } from "react";
+import { Admin, Resource, AdminRouter } from "react-admin";
 import { withApollo } from "react-apollo";
 import { ApolloProvider } from "@apollo/react-hooks";
 import apolloConfig from "./service/apolloConfig";
 
 import type { DataProvider } from "react-admin";
-import keycloak from './keycloakConfig';
+import keycloak from "./keycloakConfig";
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 import { BrowserRouter } from "react-router-dom";
 
@@ -21,35 +21,33 @@ import {
   CO_ROLE_PATIENT,
 } from "././roles";
 
-
 import { CustomRoutes } from "react-admin";
 import { Route } from "react-router-dom";
 import Configuration from "./configuration/configuration";
 import { DataProviderConfig } from "./dataProviderConfig";
-import authProvider from "./useAuthProvider"
+import authProvider from "./useAuthProvider";
 import useLogout from "./hooks/useLogout";
 
-import Dashboard from './dashboard/dashboard';
-import KeycloakLogin from './layout/keycloakLogin';
-import i18nProvider from './i18nProvider';
-import PageNotFound from './layout/PageNotFound';
-import BaseModal from './components/baseModal';
-import { Layout } from './layout/index';
-import requests from './views/requests';
+import Dashboard from "./dashboard/dashboard";
+import KeycloakLogin from "./layout/keycloakLogin";
+import i18nProvider from "./i18nProvider";
+import PageNotFound from "./layout/PageNotFound";
+import BaseModal from "./components/baseModal";
+import { Layout } from "./layout/index";
+import requests from "./views/requests";
 import invite from "./views/invite";
 
-import { CO_ROLE_ADMIN } from './lib/universal/utils/roles';
-import { RequestList } from './views/requests/list/requestList';
-import dependents from './views/dependents';
+import { CO_ROLE_ADMIN } from "./lib/universal/utils/roles";
+import { RequestList } from "./views/requests/list/requestList";
+import dependents from "./views/dependents";
+import billing from "./views/billing";
+import patientDetails from "./views/patientDetails";
 
 const client = apolloConfig();
-console.log(client)
+console.log(client);
 export let ACCESS_TOKEN = "";
 
-
 // here you can implement the permission mapping logic for react-admin
-
-
 
 const App = () => {
   // const authProvider = useRef<AuthProvider>();
@@ -64,19 +62,17 @@ const App = () => {
   const { keycloakLogout } = useLogout();
 
   useEffect(() => {
-
     fetchDataProvider();
-
   }, []);
   const fetchDataProvider = async () => {
-    console.log("fetchdataprovide1111r")
+    console.log("fetchdataprovide1111r");
 
     const dataProviderInstance = await DataProviderConfig();
     // @ts-ignore
     setDataProvider(() => dataProviderInstance);
   };
   const onKeycloakTokens = (tokens: any) => {
-    console.log("tokn", tokens)
+    console.log("tokn", tokens);
     if (tokens.token !== undefined) {
       ACCESS_TOKEN = tokens.token;
       localStorage.setItem("access_token", tokens.token);
@@ -112,7 +108,7 @@ const App = () => {
       }
     }
   };
-  console.log(dataProvider)
+  console.log(dataProvider);
   // hide the admin until the keycloak client is ready
   if (!keycloak) return <p>Loading...</p>;
   if (!dataProvider) {
@@ -144,7 +140,8 @@ const App = () => {
           "Please log in again.",
         ]}
         successButtonName="Log in again"
-        type="logout" />
+        type="logout"
+      />
     );
   }
   return (
@@ -157,7 +154,8 @@ const App = () => {
         pkceMethod: "S256",
         silentCheckSsoRedirectUri:
           window.location.origin + "/silent-check-sso.html",
-      }}>
+      }}
+    >
       <BrowserRouter>
         <Admin
           title="Unblock Health"
@@ -177,12 +175,12 @@ const App = () => {
             return [
               permissions === CO_ROLE_PPA
                 ? [
-                  <Resource name="requests" {...requests} />,
-                  <Resource name="userInviteLists" {...invite} />,
-                  // <Resource name="insuranceQuestionRequests" {...billing} />,
-                  // <Resource name="userInviteLists" {...invite} />,
-                  // <Resource name="patientDemographics" {...patientDetails} />,
-                ]
+                    <Resource name="requests" {...requests} />,
+                    <Resource name="userInviteLists" {...invite} />,
+                    // <Resource name="insuranceQuestionRequests" {...billing} />,
+                    // <Resource name="userInviteLists" {...invite} />,
+                    <Resource name="patientDemographics" {...patientDetails} />,
+                  ]
                 : null,
               // permissions === CO_ROLE_ADMIN
               //   ? [
@@ -205,12 +203,12 @@ const App = () => {
               //   : null,
               permissions === CO_ROLE_PATIENT
                 ? [
-                  <Resource name="myRequests" list={RequestList} />,
+                    <Resource name="myRequests" list={RequestList} />,
 
-                  <Resource name="requestsOnBehalf" {...requests} />,
-                  <Resource name="userInviteLists" {...invite} />,
-                  <Resource name="dependents" {...dependents} />,
-                ]
+                    <Resource name="requestsOnBehalf" {...requests} />,
+                    <Resource name="userInviteLists" {...invite} />,
+                    <Resource name="dependents" {...dependents} />,
+                  ]
                 : null,
               <Resource name="personDemographicsDetailsV1" />,
               <Resource name="personProfile" />,
@@ -245,13 +243,8 @@ const App = () => {
           <CustomRoutes>
             <Route path="/" element={<Dashboard />} />
           </CustomRoutes>
-
-
         </Admin>
       </BrowserRouter>
-
-
-
     </ReactKeycloakProvider>
   );
 };
