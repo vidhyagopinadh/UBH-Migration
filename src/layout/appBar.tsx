@@ -1,15 +1,37 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { AppBar, UserMenu, useDataProvider, usePermissions, } from "react-admin";
+import React, {
+  forwardRef,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  AppBar,
+  MenuItemLink,
+  UserMenu,
+  useDataProvider,
+  usePermissions,
+  useTranslate,
+} from "react-admin";
 import LogoutModal from "../components/logoutModal";
-import { Avatar, Badge, IconButton, Toolbar, Typography, styled, useMediaQuery } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  IconButton,
+  Toolbar,
+  Typography,
+  styled,
+  useMediaQuery,
+} from "@mui/material";
 import type { Theme } from "@mui/material";
 import { UserContext } from "../contexts";
 import { getImagesByFileUploadId } from "../service/restConfig";
 import logo from "../images/logo.png";
 import NotificationsPopover from "../components/NotificationsPopover";
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import useLogout from "../hooks/useLogout";
 import { useMutation } from "@apollo/client";
+import PersonIcon from "@mui/icons-material/Person";
 import {
   CO_NAME_GUEST,
   CO_ROLE_ADMIN,
@@ -17,7 +39,7 @@ import {
   CO_ROLE_MRA,
   CO_ROLE_PATIENT,
   CO_ROLE_PPA,
-} from "../lib/universal/utils/roles"
+} from "../lib/universal/utils/roles";
 import createNotificationRead from "../queries/createNotificationRead/createNotificationRead";
 import secureLocalStorage from "react-secure-storage";
 import { perPageMax } from "../lib/universal/utils/pageConstants";
@@ -27,7 +49,7 @@ const customStyle = {
   zIndex: 999,
   visibility: "visible",
 };
-const PREFIX = 'AppBar';
+const PREFIX = "AppBar";
 const classes = {
   title: `${PREFIX}-title`,
   spacer: `${PREFIX}-spacer`,
@@ -35,9 +57,8 @@ const classes = {
   denseToolbar: `${PREFIX}-denseToolbar`,
   appBarToolbar: `${PREFIX}-appBarToolbar`,
   logoutButton: `${PREFIX}-logoutButton`,
-
-}
-const StyledDiv = styled('div')(({ theme }) => ({
+};
+const StyledDiv = styled("div")(({ theme }) => ({
   [`&.${classes.title}`]: {
     flex: 1,
     textOverflow: "ellipsis",
@@ -70,13 +91,13 @@ const StyledDiv = styled('div')(({ theme }) => ({
     marginLeft: "-10px",
     marginRight: "10px",
   },
-}))
+}));
 
 const MyCustomIcon = () => {
   const dataProvider = useDataProvider();
   // const userInfo = useSelector((state: AppState) => state.userInfoReducer);
-  const userInfo = useContext(UserContext)
-  const [fileResult, setFileResult] = useState(null || '');
+  const userInfo = useContext(UserContext);
+  const [fileResult, setFileResult] = useState(null || "");
   // useEffect(() => {
   //   if (userInfo.profilePicId) {
   //     getFileDetails(userInfo.profilePicId);
@@ -97,7 +118,7 @@ const MyCustomIcon = () => {
         getImagesByFileUploadId({
           fileName: data[0].fileName,
         }).then((res: any) => {
-          let fileobj: any = blobToFile(res, data[0].fileName)
+          let fileobj: any = blobToFile(res, data[0].fileName);
           setFileResult(URL.createObjectURL(fileobj));
         });
       }
@@ -123,7 +144,42 @@ const MyCustomIcon = () => {
     </div>
   );
 };
-
+const ProfileMenu = forwardRef<any, any>((props, ref) => {
+  const translate = useTranslate();
+  // const { getTrace } = useTraces();
+  // const userInfoReducer = useSelector(
+  //   (state: AppState) => state.userInfoReducer
+  // );
+  // ConfigurationMenu.displayName = "MyProfile";
+  return (
+    // <MenuItemLink
+    //   ref={ref}
+    //   to="/profile/myAccount"
+    //   primaryText={translate("pos.profile")}
+    //   leftIcon={<Person />}
+    //   onClick={() => {
+    //     if (userInfoReducer.role === CO_ROLE_PATIENT) {
+    //       getTrace("Select Profile", "ev-148", userInfoReducer.email);
+    //     }
+    //     props.onClick();
+    //   }}
+    //   sidebarIsOpen
+    // />
+    <MenuItemLink
+      ref={ref}
+      to="/profile/myAccount"
+      primaryText={translate("pos.profile")}
+      leftIcon={<PersonIcon />}
+      onClick={() => {
+        // if (userInfoReducer.role === CO_ROLE_PATIENT) {
+        //   getTrace("Select Profile", "ev-148", userInfoReducer.email);
+        // }
+        props.onClick && props.onClick();
+      }}
+      sidebarIsOpen={true} // sidebarIsOpen is now a boolean property
+    />
+  );
+});
 const CustomUserMenu = (props: any): JSX.Element => {
   const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
   return (
@@ -144,11 +200,12 @@ const CustomUserMenu = (props: any): JSX.Element => {
           setOpenLogoutModal(false);
         }}
       />
+
+      <ProfileMenu />
     </>
   );
 };
 const CustomAppBar = (props: any): JSX.Element => {
-
   const { keycloakLogout } = useLogout();
   const [openNotifications, setOpenNotifications] = useState(false);
   const notificationsRef = useRef(null);
@@ -157,7 +214,7 @@ const CustomAppBar = (props: any): JSX.Element => {
   // const [notificationsCount, setNotificationsCount] = useState(0);
   const dataProvider = useDataProvider();
   //const userInfo = useSelector((state: AppState) => state.userInfoReducer);
-  const userInfo = useContext(UserContext)
+  const userInfo = useContext(UserContext);
   // const { permissions } = usePermissions();
   // const [subscribeUpdateNotificationMutation] = useMutation(
   //   createNotificationRead,
@@ -215,13 +272,13 @@ const CustomAppBar = (props: any): JSX.Element => {
   };
   useEffect(() => {
     if (!mounted) {
-      console.log(1111111111111)
+      console.log(1111111111111);
       if (localStorage.getItem("User") === CO_NAME_GUEST) {
         keycloakLogout();
       }
       if (!ROLES.includes(String(secureLocalStorage.getItem("role")))) {
-        console.log(33333333333)
-        console.log(secureLocalStorage.getItem("role"))
+        console.log(33333333333);
+        console.log(secureLocalStorage.getItem("role"));
 
         keycloakLogout();
       }
@@ -267,7 +324,6 @@ const CustomAppBar = (props: any): JSX.Element => {
         id="scrollable-app-bar"
         userMenu={<CustomUserMenu />}
       >
-
         <div style={{ display: "flex" }}>
           <img className={"appLogo"} alt="Demos" src={logo} />
         </div>
@@ -296,7 +352,6 @@ const CustomAppBar = (props: any): JSX.Element => {
         {/* )} */}
       </AppBar>
     </StyledDiv>
-
   );
 };
 
